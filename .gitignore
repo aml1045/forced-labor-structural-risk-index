@@ -1,0 +1,8 @@
+# Only track dashboard files — ignore everything else
+*
+
+# Dashboard files to track
+!.gitignore
+!index.html
+!flsri-data.json
+!README.md
