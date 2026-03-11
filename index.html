@@ -385,6 +385,212 @@ a { color: var(--accent-blue); text-decoration: none; }
 .tag-recruit { background: rgba(239,68,68,0.15); color: #fca5a5; }
 .tag-exploit { background: rgba(245,158,11,0.15); color: #fcd34d; }
 .tag-monetize { background: rgba(16,185,129,0.15); color: #6ee7b7; }
+
+/* ===== LANDING PAGE (ultra minimal) ===== */
+.page-landing-minimal { padding-top: 0 !important; }
+.hero-minimal {
+  text-align: center;
+  padding: 12vh 2rem 4rem;
+  min-height: 60vh;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  background: radial-gradient(ellipse at 50% 0%, rgba(59,130,246,0.08) 0%, transparent 70%);
+}
+.logo-mark {
+  font-size: 0.75rem; font-weight: 700; letter-spacing: 3px;
+  color: var(--accent-blue); margin-bottom: 2rem; opacity: 0.7;
+}
+.hero-minimal h1 {
+  font-size: 3.2rem; font-weight: 900; line-height: 1.1;
+  margin-bottom: 1rem; letter-spacing: -1.5px;
+}
+.hero-minimal h1 span { color: var(--accent-blue); }
+.hero-tagline {
+  font-size: 1.15rem; color: var(--text-secondary);
+  margin-bottom: 1.5rem; font-weight: 400; max-width: 600px;
+}
+.hero-context {
+  font-size: 0.9rem; color: var(--text-muted);
+  max-width: 620px; line-height: 1.7; margin-bottom: 0;
+}
+.entry-cards {
+  max-width: 1100px; margin: 0 auto;
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem; padding: 0 2rem 3rem;
+}
+.entry-card {
+  background: var(--bg-card); border: 1px solid var(--border);
+  border-radius: 16px; padding: 2rem 1.75rem;
+  cursor: pointer; transition: all 0.3s cubic-bezier(0.4,0,0.2,1);
+  position: relative; overflow: hidden;
+  display: flex; flex-direction: column; gap: 0.75rem;
+}
+.entry-card:hover { transform: translateY(-6px); border-color: rgba(255,255,255,0.15); background: var(--bg-card-hover); }
+.entry-card::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0;
+  height: 3px; opacity: 0; transition: opacity 0.3s;
+}
+.entry-card:hover::before { opacity: 1; }
+.card-learn::before { background: var(--accent-blue); }
+.card-explore::before { background: var(--gradient-reinforce); }
+.card-data::before { background: var(--gradient-exploit); }
+.entry-icon { font-size: 1.5rem; opacity: 0.9; }
+.entry-card h3 { font-size: 1.1rem; font-weight: 700; margin: 0; }
+.entry-card p { font-size: 0.85rem; color: var(--text-secondary); margin: 0; flex-grow: 1; line-height: 1.6; }
+.entry-cta {
+  font-size: 0.8rem; font-weight: 600; color: var(--accent-blue);
+  margin-top: 0.5rem; transition: transform 0.2s;
+}
+.entry-card:hover .entry-cta { transform: translateX(4px); }
+.landing-footer {
+  text-align: center; padding: 2rem;
+  color: var(--text-muted); font-size: 0.8rem;
+  letter-spacing: 0.5px;
+}
+
+/* ===== FRAMEWORK PAGE ===== */
+.framework-hero {
+  text-align: center; padding: 4rem 2rem 3rem;
+  background: linear-gradient(180deg, rgba(59,130,246,0.06) 0%, transparent 100%);
+}
+.framework-hero h1 { font-size: 2.5rem; font-weight: 800; margin-bottom: 0.75rem; }
+.framework-hero > p { color: var(--text-secondary); max-width: 700px; margin: 0 auto; font-size: 1rem; line-height: 1.7; }
+.fw-section { padding: 3rem 0; border-bottom: 1px solid var(--border); }
+.fw-section:last-of-type { border-bottom: none; }
+.fw-container { max-width: 1100px; margin: 0 auto; padding: 0 2rem; }
+.fw-container h2 { font-size: 1.6rem; font-weight: 700; margin-bottom: 0.75rem; }
+.fw-container > p { color: var(--text-secondary); line-height: 1.8; margin-bottom: 1.5rem; max-width: 800px; }
+.fw-grid-2 { display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 2.5rem; align-items: center; }
+.fw-text p { color: var(--text-secondary); line-height: 1.8; margin-bottom: 1rem; }
+.fw-stat-box {
+  background: var(--bg-card); border: 1px solid var(--border);
+  border-radius: 12px; padding: 2.5rem; text-align: center;
+}
+.fw-stat-large { font-size: 3.5rem; font-weight: 900; color: var(--accent-blue); margin-bottom: 0.25rem; }
+.fw-stat-label { font-size: 0.95rem; font-weight: 600; color: var(--text-primary); }
+.fw-stat-sub { font-size: 0.8rem; color: var(--text-muted); margin-top: 0.25rem; }
+
+.compare-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+.compare-card {
+  background: var(--bg-card); border: 1px solid var(--border);
+  border-radius: 12px; padding: 1.75rem;
+}
+.compare-title { font-weight: 700; margin-bottom: 1rem; font-size: 1.05rem; }
+.compare-item {
+  padding: 0.4rem 0; font-size: 0.85rem; color: var(--text-secondary);
+  padding-left: 1.25rem; position: relative;
+}
+.compare-item::before { content: '→'; position: absolute; left: 0; color: var(--accent-blue); font-weight: 700; }
+.compare-result {
+  margin-top: 1rem; padding-top: 0.75rem; border-top: 1px solid var(--border);
+  font-weight: 600; font-size: 0.85rem;
+}
+.compare-result.positive { color: #10b981; }
+.compare-result.caution { color: #f59e0b; }
+
+.fw-loop-visual {
+  display: flex; gap: 0.75rem; align-items: center;
+  justify-content: center; padding: 2rem 1rem; flex-wrap: wrap;
+  background: var(--bg-card); border-radius: 12px; border: 1px solid var(--border);
+}
+.fw-loop-stage {
+  background: var(--bg-dark); border: 2px solid var(--border);
+  border-radius: 12px; padding: 1.25rem 1.5rem; text-align: center;
+  min-width: 160px; transition: transform 0.2s;
+}
+.fw-loop-stage:hover { transform: scale(1.03); }
+.fw-loop-num { font-size: 1.5rem; font-weight: 900; margin-bottom: 0.25rem; }
+.fw-loop-title { font-weight: 700; font-size: 0.95rem; margin-bottom: 0.25rem; }
+.fw-loop-desc { font-size: 0.75rem; color: var(--text-secondary); line-height: 1.5; }
+.fw-loop-arrow { font-size: 1.5rem; color: var(--text-muted); }
+
+.phase-def-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+.phase-def-card {
+  background: var(--bg-card); border: 2px solid var(--border);
+  border-radius: 12px; padding: 1.75rem;
+}
+.phase-def-card h3 { font-size: 1.15rem; margin-bottom: 0.25rem; }
+.phase-def-subtitle { color: var(--text-secondary); font-size: 0.85rem; margin-bottom: 0.75rem; font-style: italic; }
+.phase-def-card > p { color: var(--text-secondary); line-height: 1.6; margin-bottom: 1rem; font-size: 0.85rem; }
+.phase-mech {
+  background: rgba(59,130,246,0.05); border-left: 3px solid var(--border);
+  padding: 0.75rem 1rem; border-radius: 0 4px 4px 0; font-size: 0.8rem;
+}
+.phase-mech strong { display: block; margin-bottom: 0.4rem; color: var(--text-primary); }
+.phase-mech-list { list-style: none; padding: 0; margin: 0; }
+.phase-mech-list li { padding: 0.15rem 0; color: var(--text-secondary); }
+.phase-mech-list li::before { content: '◆ '; color: var(--accent-blue); font-size: 0.7rem; }
+.phase-comp { margin-top: 1rem; padding-top: 0.75rem; border-top: 1px solid var(--border); font-size: 0.75rem; color: var(--text-muted); font-weight: 600; }
+.recruit-def { border-color: #ef4444; }
+.recruit-def h3 { color: #fca5a5; }
+.recruit-def .phase-mech { border-left-color: #ef4444; }
+.exploit-def { border-color: #f59e0b; }
+.exploit-def h3 { color: #fcd34d; }
+.exploit-def .phase-mech { border-left-color: #f59e0b; }
+.monetize-def { border-color: #10b981; }
+.monetize-def h3 { color: #6ee7b7; }
+.monetize-def .phase-mech { border-left-color: #10b981; }
+
+.fw-cta {
+  text-align: center; padding: 4rem 2rem;
+  background: linear-gradient(0deg, rgba(59,130,246,0.06) 0%, transparent 100%);
+}
+.fw-cta h2 { font-size: 1.8rem; margin-bottom: 1.5rem; }
+.btn-primary {
+  background: var(--accent-blue); color: #fff; border: none;
+  border-radius: 8px; padding: 0.85rem 2rem; font-size: 0.95rem;
+  font-weight: 600; cursor: pointer; transition: all 0.3s;
+  display: inline-block;
+}
+.btn-primary:hover { background: #2563eb; transform: translateY(-2px); }
+
+/* ===== NAV UPDATES ===== */
+.nav.hidden { transform: translateY(-100%); }
+.nav-right { display: flex; gap: 0.25rem; margin-left: auto; }
+
+/* ===== BREADCRUMB TRAIL ===== */
+.breadcrumb-trail {
+  display: flex; align-items: center; gap: 0.4rem;
+  padding: 0.75rem 2rem; background: rgba(59,130,246,0.03);
+  border-bottom: 1px solid var(--border);
+  overflow-x: auto; white-space: nowrap;
+}
+.bc-item {
+  padding: 0.35rem 0.65rem; border-radius: 4px;
+  font-size: 0.8rem; font-weight: 500; color: var(--text-muted);
+  cursor: pointer; transition: all 0.2s;
+}
+.bc-item:hover { background: rgba(59,130,246,0.08); color: var(--text-secondary); }
+.bc-item.bc-active { background: rgba(59,130,246,0.12); color: var(--accent-blue); }
+.bc-item.bc-future { opacity: 0.4; }
+.bc-arrow { color: var(--text-muted); font-size: 0.7rem; opacity: 0.5; }
+
+/* ===== PHASE SEQUENTIAL NAV ===== */
+.phase-nav-footer {
+  max-width: 1400px; margin: 2rem auto 0; padding: 2rem;
+  display: flex; justify-content: space-between; align-items: center;
+  border-top: 1px solid var(--border);
+}
+.btn-phase-nav {
+  background: var(--bg-card); border: 1px solid var(--border);
+  border-radius: 8px; padding: 0.75rem 1.5rem;
+  color: var(--text-secondary); font-size: 0.85rem; font-weight: 600;
+  cursor: pointer; transition: all 0.2s;
+}
+.btn-phase-nav:hover { background: var(--bg-card-hover); color: var(--text-primary); border-color: rgba(255,255,255,0.15); }
+.btn-phase-nav.btn-next { background: rgba(59,130,246,0.1); border-color: rgba(59,130,246,0.3); color: var(--accent-blue); }
+.btn-phase-nav.btn-next:hover { background: rgba(59,130,246,0.2); }
+.btn-phase-nav:disabled { opacity: 0.3; cursor: default; }
+
+/* Responsive additions */
+@media (max-width: 900px) {
+  .entry-cards { grid-template-columns: 1fr; }
+  .hero-minimal h1 { font-size: 2.2rem; }
+  .fw-grid-2, .compare-grid, .phase-def-grid { grid-template-columns: 1fr; }
+  .fw-loop-visual { flex-direction: column; }
+  .fw-loop-arrow { transform: rotate(90deg); }
+}
+
 </style>
 </head>
 <body>
@@ -392,66 +598,199 @@ a { color: var(--accent-blue); text-decoration: none; }
 <div id="loading"><div class="spinner"></div><div style="color:var(--text-secondary);font-size:0.9rem">Loading FLSRI Dashboard...</div></div>
 
 <!-- Navigation -->
-<nav class="nav">
-  <div class="nav-brand">FLSRI</div>
-  <div class="nav-links">
-    <div class="nav-link active" data-page="landing" onclick="showPage('landing')">Overview</div>
-    <div class="nav-link" data-page="recruitment" onclick="showPage('recruitment')">Phase 1: Recruitment</div>
-    <div class="nav-link" data-page="exploitation" onclick="showPage('exploitation')">Phase 2: Exploitation</div>
-    <div class="nav-link" data-page="monetization" onclick="showPage('monetization')">Phase 3: Monetization</div>
-    <div class="nav-link" data-page="reinforcement" onclick="showPage('reinforcement')">Reinforcement &amp; Composite</div>
+<nav class="nav" id="main-nav">
+  <div class="nav-brand" onclick="showPage('landing')" style="cursor:pointer">FLSRI</div>
+  <div class="nav-right">
+    <div class="nav-link" data-page="landing" onclick="showPage('landing')">Home</div>
+    <div class="nav-link" data-page="framework" onclick="showPage('framework')">Framework</div>
+    <div class="nav-link" data-page="reinforcement" onclick="showPage('reinforcement')">Data &amp; Rankings</div>
   </div>
 </nav>
 
-<!-- ========== LANDING PAGE ========== -->
-<div class="page active" id="page-landing">
-  <div class="hero">
-    <h1>Forced Labor <span>Structural Risk Index</span></h1>
-    <p class="subtitle">A composite index measuring structural conditions that enable human trafficking across 195 countries. The index models the trafficking lifecycle as a self-reinforcing loop across three phases.</p>
+<!-- ========== LANDING PAGE (ultra minimal) ========== -->
+<div class="page active page-landing-minimal" id="page-landing">
+  <div class="hero-minimal">
+    <div class="logo-mark">FLSRI</div>
+    <h1>Understanding <span>Forced Labor Risk</span></h1>
+    <p class="hero-tagline">A structural analysis of how human trafficking systems persist across 195 countries.</p>
+    <p class="hero-context">Forced labor is not random. It emerges where vulnerable populations converge with weak institutional protection and economic incentives for exploitation. This index measures those structural conditions.</p>
   </div>
 
-  <div class="section">
-    <div class="grid-4" id="summary-stats"></div>
-  </div>
-
-  <div class="section">
-    <div class="section-title">Global Risk Map</div>
-    <div class="section-subtitle">Composite FLSRI score by country. Higher values (darker red) indicate greater structural risk of forced labor. Click a country for details.</div>
-    <div class="card" style="padding:0.5rem">
-      <div id="map-global" style="height:500px"></div>
+  <div class="entry-cards">
+    <div class="entry-card card-learn" onclick="showPage('framework')">
+      <div class="entry-icon">&#9670;</div>
+      <h3>Learn the Framework</h3>
+      <p>What is the FLSRI and how does the trafficking loop work?</p>
+      <div class="entry-cta">Start Here &rarr;</div>
+    </div>
+    <div class="entry-card card-explore" onclick="showPage('recruitment')">
+      <div class="entry-icon">&#9654;</div>
+      <h3>Explore the Loop</h3>
+      <p>Move through the three phases of trafficking and see the data.</p>
+      <div class="entry-cta">Begin Journey &rarr;</div>
+    </div>
+    <div class="entry-card card-data" onclick="showPage('reinforcement')">
+      <div class="entry-icon">&#9632;</div>
+      <h3>See the Data</h3>
+      <p>Global rankings, country profiles, and composite scores.</p>
+      <div class="entry-cta">Browse Data &rarr;</div>
     </div>
   </div>
 
-  <div class="section">
-    <div class="section-title">The Trafficking Loop</div>
-    <div class="section-subtitle">The FLSRI models trafficking as a self-reinforcing lifecycle. Structural conditions in each phase feed into the next, creating a persistent loop of vulnerability, exploitation, and profit extraction.</div>
-    <div class="grid-3" style="margin-bottom:2rem" id="phase-cards"></div>
+  <div class="landing-footer">195 countries &middot; 36 indicators &middot; 3 phases &middot; 1 self-reinforcing loop</div>
+</div>
+
+<!-- ========== FRAMEWORK PAGE ========== -->
+<div class="page" id="page-framework">
+  <div class="framework-hero">
+    <h1>The Framework</h1>
+    <p>Human trafficking is not random violence. It is a structural system enabled by specific, measurable conditions.</p>
   </div>
 
-  <div class="section">
-    <div class="section-title">Aggregation Architecture</div>
-    <div class="section-subtitle">The index aggregates 36 indicators through a four-layer pipeline, from raw indicator scores to a single composite measure.</div>
-    <div class="card" id="methodology-steps"></div>
-  </div>
-
-  <div class="section">
-    <div class="section-title">Top 20 Highest Risk Countries</div>
-    <div class="card" style="padding:0.5rem">
-      <div class="table-wrap" id="top20-table"></div>
+  <section class="fw-section">
+    <div class="fw-container">
+      <div class="fw-grid-2">
+        <div class="fw-text">
+          <h2>What is Forced Labor?</h2>
+          <p>Forced labor occurs when people are coerced into work through threat, deception, or exploitation of vulnerability. Human trafficking is the mechanism: recruiters identify vulnerable people, move them into exploitative situations, extract labor value, and retain proceeds.</p>
+          <p>The ILO estimates 28 million people are in forced labor globally. But raw numbers obscure the real question: <strong style="color:var(--text-primary)">what structural conditions enable trafficking to persist at scale?</strong></p>
+        </div>
+        <div class="fw-stat-box">
+          <div class="fw-stat-large">28M</div>
+          <div class="fw-stat-label">People in forced labor</div>
+          <div class="fw-stat-sub">ILO Global Estimate, 2021</div>
+        </div>
+      </div>
     </div>
-  </div>
+  </section>
 
-  <div class="section">
-    <div class="section-title">Score Distribution</div>
-    <div class="grid-2">
-      <div class="card" style="padding:0.5rem"><div id="chart-histogram" style="height:350px"></div></div>
-      <div class="card" style="padding:0.5rem"><div id="chart-scatter-phases" style="height:350px"></div></div>
+  <section class="fw-section">
+    <div class="fw-container">
+      <h2>Why Structural Analysis?</h2>
+      <p>Criminal interventions alone cannot end trafficking. Traffickers replace arrested operatives; victims are re-victimized. Prevention requires understanding the structural conditions that make trafficking possible.</p>
+      <div class="compare-grid">
+        <div class="compare-card">
+          <div class="compare-title">Behavioral Approach</div>
+          <div class="compare-item">Focus on individual traffickers</div>
+          <div class="compare-item">Action: arrest, prosecute, convict</div>
+          <div class="compare-item">Limitation: operatives are replaceable</div>
+          <div class="compare-result caution">Necessary but insufficient</div>
+        </div>
+        <div class="compare-card">
+          <div class="compare-title">Structural Approach</div>
+          <div class="compare-item">Focus on systemic conditions</div>
+          <div class="compare-item">Action: reduce vulnerability, strengthen institutions</div>
+          <div class="compare-item">Strength: addresses root causes</div>
+          <div class="compare-result positive">Required for prevention</div>
+        </div>
+      </div>
     </div>
-  </div>
+  </section>
+
+  <section class="fw-section">
+    <div class="fw-container">
+      <h2>The Self-Reinforcing Loop</h2>
+      <p>Trafficking is not linear. It is a cycle that perpetuates itself. Each phase creates the conditions for the next.</p>
+      <div class="fw-loop-visual">
+        <div class="fw-loop-stage" style="border-color:#ef4444">
+          <div class="fw-loop-num" style="color:#fca5a5">1</div>
+          <div class="fw-loop-title" style="color:#fca5a5">Recruitment</div>
+          <div class="fw-loop-desc">Shocks, displacement, and weak institutions create exposed populations.</div>
+        </div>
+        <div class="fw-loop-arrow">&rarr;</div>
+        <div class="fw-loop-stage" style="border-color:#f59e0b">
+          <div class="fw-loop-num" style="color:#fcd34d">2</div>
+          <div class="fw-loop-title" style="color:#fcd34d">Exploitation</div>
+          <div class="fw-loop-desc">Weak enforcement and high-risk sectors enable sustained forced labor.</div>
+        </div>
+        <div class="fw-loop-arrow">&rarr;</div>
+        <div class="fw-loop-stage" style="border-color:#10b981">
+          <div class="fw-loop-num" style="color:#6ee7b7">3</div>
+          <div class="fw-loop-title" style="color:#6ee7b7">Monetization</div>
+          <div class="fw-loop-desc">Financial opacity lets traffickers retain and reinvest proceeds.</div>
+        </div>
+        <div class="fw-loop-arrow">&#8631;</div>
+        <div class="fw-loop-stage" style="border-color:#8b5cf6">
+          <div class="fw-loop-num" style="color:#c4b5fd">&#8635;</div>
+          <div class="fw-loop-title" style="color:#c4b5fd">Reinforcement</div>
+          <div class="fw-loop-desc">Profits corrupt institutions, perpetuating recruitment conditions.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="fw-section">
+    <div class="fw-container">
+      <h2>The Three Phases</h2>
+      <p>The FLSRI measures structural risk across three interconnected phases of the trafficking lifecycle.</p>
+      <div class="phase-def-grid">
+        <div class="phase-def-card recruit-def">
+          <h3>Phase 1: Recruitment</h3>
+          <div class="phase-def-subtitle">Where traffickers gain access to victims</div>
+          <p>Structural conditions that generate exposed, immobile, or coercible populations.</p>
+          <div class="phase-mech">
+            <strong>Key Mechanisms</strong>
+            <ul class="phase-mech-list">
+              <li>Structural Disruption</li>
+              <li>Displacement &amp; Transit</li>
+              <li>Reduced Bargaining Power</li>
+              <li>Institutional Protection Deficit</li>
+            </ul>
+          </div>
+          <div class="phase-comp">4 domains &middot; 15 indicators</div>
+        </div>
+        <div class="phase-def-card exploit-def">
+          <h3>Phase 2: Exploitation</h3>
+          <div class="phase-def-subtitle">Where labor is extracted under coercion</div>
+          <p>Conditions that suppress resistance and enable sustained control of trafficked workers.</p>
+          <div class="phase-mech">
+            <strong>Key Mechanisms</strong>
+            <ul class="phase-mech-list">
+              <li>Enforcement Capacity</li>
+              <li>Concealment Geography</li>
+              <li>Sector Exposure</li>
+              <li>Institutional Coercion Enablement</li>
+              <li>Structural Entrapment</li>
+            </ul>
+          </div>
+          <div class="phase-comp">5 domains &middot; 15 indicators</div>
+        </div>
+        <div class="phase-def-card monetize-def">
+          <h3>Phase 3: Monetization</h3>
+          <div class="phase-def-subtitle">Where proceeds are retained and reinvested</div>
+          <p>Structural conditions that enable value extraction and financial concealment.</p>
+          <div class="phase-mech">
+            <strong>Key Mechanisms</strong>
+            <ul class="phase-mech-list">
+              <li>Financial Architecture Opacity</li>
+              <li>Laundering Capacity</li>
+              <li>Cash &amp; Informal Reliance</li>
+              <li>Financial Infrastructure Access</li>
+            </ul>
+          </div>
+          <div class="phase-comp">4 domains &middot; 6 indicators</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="fw-section">
+    <div class="fw-container">
+      <h2>The Composite Index</h2>
+      <p>The FLSRI combines all three phases into a single structural risk score. Because trafficking requires conditions across all phases, the final score penalizes imbalance&mdash;a country cannot score high unless risk exists throughout the loop.</p>
+      <div class="card" id="methodology-steps"></div>
+    </div>
+  </section>
+
+  <section class="fw-cta">
+    <h2>Ready to explore the data?</h2>
+    <button class="btn-primary" onclick="showPage('recruitment')">Begin the Journey &rarr;</button>
+  </section>
 </div>
 
 <!-- ========== RECRUITMENT PAGE ========== -->
 <div class="page" id="page-recruitment">
+  <div class="breadcrumb-trail"><div class="bc-item " onclick="showPage('landing')">Home</div><div class="bc-arrow">&#9654;</div><div class="bc-item " onclick="showPage('framework')">Framework</div><div class="bc-arrow">&#9654;</div><div class="bc-item bc-active" onclick="showPage('recruitment')">Phase 1: Recruitment</div><div class="bc-arrow">&#9654;</div><div class="bc-item bc-future" onclick="showPage('exploitation')">Phase 2: Exploitation</div><div class="bc-arrow">&#9654;</div><div class="bc-item bc-future" onclick="showPage('monetization')">Phase 3: Monetization</div><div class="bc-arrow">&#9654;</div><div class="bc-item bc-future" onclick="showPage('reinforcement')">Composite & Rankings</div></div>
   <div class="phase-hero recruit">
     <h2 style="color:#fca5a5">Phase 1: Recruitment</h2>
     <p id="recruit-definition"></p>
@@ -485,10 +824,12 @@ a { color: var(--accent-blue); text-decoration: none; }
     <div class="section-subtitle">Each indicator captures a distinct structural mechanism. Click a domain to expand and see the indicators, their data sources, and theoretical rationale.</div>
     <div id="recruit-indicators"></div>
   </div>
+<div class="phase-nav-footer"><button class="btn-phase-nav" onclick="showPage('framework')">&larr; Framework</button><button class="btn-phase-nav btn-next" onclick="showPage('exploitation')">Phase 2: Exploitation &rarr;</button></div>
 </div>
 
 <!-- ========== EXPLOITATION PAGE ========== -->
 <div class="page" id="page-exploitation">
+  <div class="breadcrumb-trail"><div class="bc-item " onclick="showPage('landing')">Home</div><div class="bc-arrow">&#9654;</div><div class="bc-item " onclick="showPage('framework')">Framework</div><div class="bc-arrow">&#9654;</div><div class="bc-item " onclick="showPage('recruitment')">Phase 1: Recruitment</div><div class="bc-arrow">&#9654;</div><div class="bc-item bc-active" onclick="showPage('exploitation')">Phase 2: Exploitation</div><div class="bc-arrow">&#9654;</div><div class="bc-item bc-future" onclick="showPage('monetization')">Phase 3: Monetization</div><div class="bc-arrow">&#9654;</div><div class="bc-item bc-future" onclick="showPage('reinforcement')">Composite & Rankings</div></div>
   <div class="phase-hero exploit">
     <h2 style="color:#fcd34d">Phase 2: Exploitation</h2>
     <p id="exploit-definition"></p>
@@ -521,10 +862,12 @@ a { color: var(--accent-blue); text-decoration: none; }
     <div class="section-title" style="color:#fcd34d">Indicator Details</div>
     <div id="exploit-indicators"></div>
   </div>
+<div class="phase-nav-footer"><button class="btn-phase-nav" onclick="showPage('recruitment')">&larr; Phase 1: Recruitment</button><button class="btn-phase-nav btn-next" onclick="showPage('monetization')">Phase 3: Monetization &rarr;</button></div>
 </div>
 
 <!-- ========== MONETIZATION PAGE ========== -->
 <div class="page" id="page-monetization">
+  <div class="breadcrumb-trail"><div class="bc-item " onclick="showPage('landing')">Home</div><div class="bc-arrow">&#9654;</div><div class="bc-item " onclick="showPage('framework')">Framework</div><div class="bc-arrow">&#9654;</div><div class="bc-item " onclick="showPage('recruitment')">Phase 1: Recruitment</div><div class="bc-arrow">&#9654;</div><div class="bc-item " onclick="showPage('exploitation')">Phase 2: Exploitation</div><div class="bc-arrow">&#9654;</div><div class="bc-item bc-active" onclick="showPage('monetization')">Phase 3: Monetization</div><div class="bc-arrow">&#9654;</div><div class="bc-item bc-future" onclick="showPage('reinforcement')">Composite & Rankings</div></div>
   <div class="phase-hero monetize">
     <h2 style="color:#6ee7b7">Phase 3: Monetization</h2>
     <p id="monetize-definition"></p>
@@ -557,10 +900,12 @@ a { color: var(--accent-blue); text-decoration: none; }
     <div class="section-title" style="color:#6ee7b7">Indicator Details</div>
     <div id="monetize-indicators"></div>
   </div>
+<div class="phase-nav-footer"><button class="btn-phase-nav" onclick="showPage('exploitation')">&larr; Phase 2: Exploitation</button><button class="btn-phase-nav btn-next" onclick="showPage('reinforcement')">Composite & Rankings &rarr;</button></div>
 </div>
 
 <!-- ========== REINFORCEMENT & COMPOSITE PAGE ========== -->
 <div class="page" id="page-reinforcement">
+  <div class="breadcrumb-trail"><div class="bc-item " onclick="showPage('landing')">Home</div><div class="bc-arrow">&#9654;</div><div class="bc-item " onclick="showPage('framework')">Framework</div><div class="bc-arrow">&#9654;</div><div class="bc-item " onclick="showPage('recruitment')">Phase 1: Recruitment</div><div class="bc-arrow">&#9654;</div><div class="bc-item " onclick="showPage('exploitation')">Phase 2: Exploitation</div><div class="bc-arrow">&#9654;</div><div class="bc-item " onclick="showPage('monetization')">Phase 3: Monetization</div><div class="bc-arrow">&#9654;</div><div class="bc-item bc-active" onclick="showPage('reinforcement')">Composite & Rankings</div></div>
   <div class="phase-hero reinforce">
     <h2 style="color:#c4b5fd">The Reinforcement Loop &amp; Composite Index</h2>
     <p>The trafficking lifecycle is a self-reinforcing loop. Exploitation and monetization infrastructure regenerate the structural conditions that enable recruitment. This page shows how the feedback mechanism works and the final composite scores.</p>
@@ -642,6 +987,7 @@ a { color: var(--accent-blue); text-decoration: none; }
       <div class="table-wrap" style="max-height:600px" id="full-rankings-table"></div>
     </div>
   </div>
+<div class="phase-nav-footer"><button class="btn-phase-nav" onclick="showPage('monetization')">&larr; Phase 3: Monetization</button><div></div></div>
 </div>
 
 <!-- Country Modal -->
@@ -666,7 +1012,15 @@ function showPage(page) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
   document.getElementById('page-' + page).classList.add('active');
-  document.querySelector(`.nav-link[data-page="${page}"]`).classList.add('active');
+  const navLink = document.querySelector(`.nav-link[data-page="${page}"]`);
+  if (navLink) navLink.classList.add('active');
+  // Hide nav on landing page, show elsewhere
+  const nav = document.getElementById('main-nav');
+  if (page === 'landing') {
+    nav.style.transform = 'translateY(-100%)';
+  } else {
+    nav.style.transform = 'translateY(0)';
+  }
   window.scrollTo(0, 0);
 }
 
@@ -693,14 +1047,14 @@ function buildDashboard() {
   const sorted = [...countries].filter(c => c['COMPOSITE INDEX'] != null)
     .sort((a, b) => (b['COMPOSITE INDEX'] || 0) - (a['COMPOSITE INDEX'] || 0));
 
-  // === LANDING PAGE ===
-  buildSummaryStats(countries);
-  buildGlobalMap(countries);
-  buildPhaseCards();
+  // === FRAMEWORK PAGE ===
   buildMethodologySteps();
-  buildTop20(sorted);
-  buildHistogram(countries);
-  buildPhaseScatter(countries);
+
+  // === LANDING PAGE (moved to reinforcement) ===
+  if (document.getElementById('top20-table')) buildTop20(sorted);
+  if (document.getElementById('map-global')) buildGlobalMap(countries);
+  if (document.getElementById('chart-histogram')) buildHistogram(countries);
+  if (document.getElementById('chart-scatter-phases')) buildPhaseScatter(countries);
 
   // === PHASE PAGES ===
   buildPhasePage('recruitment', 'RECRUITMENT', 1, '#ef4444', '#fca5a5');
@@ -712,6 +1066,7 @@ function buildDashboard() {
 }
 
 function buildSummaryStats(countries) {
+  if (!document.getElementById('summary-stats')) return;
   const valid = countries.filter(c => c['COMPOSITE INDEX'] != null);
   const avg = (valid.reduce((s, c) => s + c['COMPOSITE INDEX'], 0) / valid.length).toFixed(3);
   const max = Math.max(...valid.map(c => c['COMPOSITE INDEX'])).toFixed(3);
@@ -759,6 +1114,7 @@ function buildGlobalMap(countries) {
 }
 
 function buildPhaseCards() {
+  if (!document.getElementById('phase-cards')) return;
   const phases = [
     { cls: 'recruit', num: '1', title: 'Recruitment', page: 'recruitment',
       desc: 'Where traffickers gain access to victims. Structural conditions that generate exposed, immobile, or coercible populations.',
@@ -803,6 +1159,7 @@ function buildMethodologySteps() {
 }
 
 function buildTop20(sorted) {
+  if (!document.getElementById('top20-table')) return;
   const top20 = sorted.slice(0, 20);
   let html = `<table class="data-table"><thead><tr>
     <th>Rank</th><th>Country</th><th>Composite</th><th>Recruitment</th><th>Exploitation</th><th>Monetization</th><th>Reinforcement</th>
