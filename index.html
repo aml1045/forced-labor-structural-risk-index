@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>FLSRI - Forced Labor Structural Risk Index</title>
 <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
+<script src="flsri-data.js"></script>
 <style>
 :root {
   --bg-dark: #0f1923;
@@ -66,6 +67,7 @@ a { color: var(--accent-blue); text-decoration: none; }
 .nav-link[data-page="exploitation"].active { background: rgba(245,158,11,0.2); color: #fcd34d; }
 .nav-link[data-page="monetization"].active { background: rgba(16,185,129,0.2); color: #6ee7b7; }
 .nav-link[data-page="reinforcement"].active { background: rgba(139,92,246,0.2); color: #c4b5fd; }
+.nav-link[data-page="pipeline"].active { background: rgba(6,182,212,0.2); color: #67e8f9; }
 
 /* Pages */
 .page { display: none; padding-top: 60px; min-height: 100vh; }
@@ -591,6 +593,183 @@ a { color: var(--accent-blue); text-decoration: none; }
   .fw-loop-arrow { transform: rotate(90deg); }
 }
 
+/* ===== DATA PIPELINE PAGE ===== */
+.pipeline-hero {
+  text-align: center; padding: 4rem 2rem 1rem;
+  background: linear-gradient(180deg, rgba(6,182,212,0.08) 0%, transparent 100%);
+}
+.pipeline-hero h2 { font-size: 2.2rem; font-weight: 800; color: #67e8f9; margin-bottom: 0.5rem; }
+.pipeline-hero p { color: var(--text-secondary); max-width: 700px; margin: 0 auto; font-size: 0.95rem; }
+
+/* Particle animation container */
+.particle-container {
+  width: 100%; max-width: 1100px; margin: 1.5rem auto 0;
+  background: rgba(15,23,42,0.4); border: 1px solid rgba(100,116,139,0.15);
+  border-radius: 16px; padding: 1rem;
+}
+.particle-container svg { width: 100%; overflow: visible; display: block; }
+
+/* Pipeline flow diagram with SVG icons */
+.pipeline-flow {
+  display: flex; align-items: center; gap: 0;
+  padding: 1.5rem 0; overflow-x: auto;
+  justify-content: center; flex-wrap: wrap;
+}
+.pipeline-stage {
+  display: flex; flex-direction: column; align-items: center;
+  min-width: 120px; padding: 1.25rem 0.75rem; position: relative;
+  text-align: center; cursor: pointer; transition: all 0.3s;
+  border-radius: 16px;
+}
+.pipeline-stage:hover { background: rgba(255,255,255,0.03); transform: translateY(-4px); }
+.pipeline-stage.ps-active { background: rgba(6,182,212,0.08); }
+.pipeline-stage-icon {
+  width: 72px; height: 72px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  margin-bottom: 0.75rem; position: relative;
+  transition: transform 0.3s;
+}
+.pipeline-stage-icon::after {
+  content: ''; position: absolute; inset: -4px;
+  border-radius: 50%; border: 2px solid;
+  opacity: 0.25; animation: iconPulse 3s ease-in-out infinite;
+  border-color: inherit;
+}
+@keyframes iconPulse {
+  0%, 100% { transform: scale(1); opacity: 0.25; }
+  50% { transform: scale(1.12); opacity: 0.1; }
+}
+.pipeline-stage-icon svg { width: 32px; height: 32px; }
+.pipeline-stage:hover .pipeline-stage-icon { transform: scale(1.05); }
+.pipeline-stage-title { font-weight: 700; font-size: 0.8rem; margin-bottom: 0.2rem; }
+.pipeline-stage-count { font-size: 1.8rem; font-weight: 900; line-height: 1; margin-bottom: 0.1rem; }
+.pipeline-stage-label { font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; }
+.pipeline-arrow {
+  display: flex; align-items: center; color: var(--text-muted);
+  font-size: 1.2rem; padding: 0 0.15rem; opacity: 0.3;
+}
+
+/* Pipeline detail panel */
+.pipeline-detail {
+  background: var(--bg-card); border: 1px solid var(--border);
+  border-radius: 12px; padding: 2rem; margin-top: 1rem;
+  animation: fadeSlideIn 0.3s ease;
+}
+@keyframes fadeSlideIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Variable tree */
+.var-tree { margin: 1rem 0; }
+.var-tree-phase {
+  margin-bottom: 1.5rem;
+}
+.var-tree-phase-header {
+  display: flex; align-items: center; gap: 0.75rem;
+  padding: 0.75rem 1rem; border-radius: 8px;
+  cursor: pointer; transition: background 0.2s;
+  font-weight: 700; font-size: 0.95rem;
+}
+.var-tree-phase-header:hover { background: rgba(255,255,255,0.03); }
+.var-tree-domain {
+  margin-left: 1.5rem; margin-top: 0.5rem;
+}
+.var-tree-domain-header {
+  display: flex; align-items: center; gap: 0.5rem;
+  padding: 0.5rem 0.75rem; border-radius: 6px;
+  cursor: pointer; font-weight: 600; font-size: 0.85rem;
+  color: var(--text-secondary); transition: all 0.2s;
+}
+.var-tree-domain-header:hover { background: rgba(255,255,255,0.03); color: var(--text-primary); }
+.var-tree-indicator {
+  margin-left: 3rem; padding: 0.4rem 0.75rem;
+  display: flex; align-items: flex-start; gap: 0.75rem;
+  font-size: 0.8rem; border-left: 2px solid var(--border);
+}
+.var-tree-indicator:last-child { border-left-color: transparent; }
+.var-tree-ind-code { font-weight: 700; color: #67e8f9; min-width: 40px; }
+.var-tree-ind-name { color: var(--text-primary); min-width: 180px; }
+.var-tree-ind-source { color: var(--text-muted); font-size: 0.75rem; flex: 1; }
+.var-tree-ind-formula { color: var(--text-secondary); font-size: 0.75rem; font-family: 'Fira Code', monospace; margin-top: 0.2rem; }
+.var-tree-subs {
+  margin-left: 4.5rem; padding: 0.25rem 0;
+}
+.var-tree-sub {
+  display: flex; align-items: center; gap: 0.5rem;
+  padding: 0.2rem 0.5rem; font-size: 0.75rem;
+  color: var(--text-muted); position: relative;
+}
+.var-tree-sub::before {
+  content: ''; width: 8px; height: 1px;
+  background: var(--border); display: inline-block;
+}
+.var-tree-sub-dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  display: inline-block; flex-shrink: 0;
+}
+
+/* Count summary cards */
+.count-grid {
+  display: grid; grid-template-columns: repeat(6, 1fr);
+  gap: 1rem; margin: 1.5rem 0;
+}
+.count-card {
+  background: var(--bg-card); border: 1px solid var(--border);
+  border-radius: 12px; padding: 1.25rem; text-align: center;
+  position: relative; overflow: hidden;
+}
+.count-card::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+}
+.count-card .count-num { font-size: 2.2rem; font-weight: 900; line-height: 1.1; }
+.count-card .count-lbl { font-size: 0.75rem; color: var(--text-secondary); margin-top: 0.25rem; }
+
+/* Processing steps timeline */
+.proc-timeline { position: relative; padding-left: 2rem; }
+.proc-timeline::before {
+  content: ''; position: absolute; left: 15px; top: 0; bottom: 0;
+  width: 2px; background: linear-gradient(180deg, #06b6d4, #8b5cf6);
+}
+.proc-step {
+  position: relative; padding: 1.25rem 0 1.25rem 2rem;
+  border-bottom: none;
+}
+.proc-step::before {
+  content: ''; position: absolute; left: -2rem; top: 1.5rem;
+  width: 12px; height: 12px; border-radius: 50%;
+  background: #06b6d4; border: 2px solid var(--bg-dark);
+  z-index: 1;
+}
+.proc-step:nth-child(2)::before { background: #3b82f6; }
+.proc-step:nth-child(3)::before { background: #8b5cf6; }
+.proc-step:nth-child(4)::before { background: #f59e0b; }
+.proc-step:nth-child(5)::before { background: #10b981; }
+.proc-step:nth-child(6)::before { background: #ef4444; }
+.proc-step:nth-child(7)::before { background: #c4b5fd; }
+.proc-step h4 { font-size: 1rem; margin-bottom: 0.25rem; }
+.proc-step p { font-size: 0.85rem; color: var(--text-secondary); line-height: 1.6; }
+.proc-step .formula-box { margin-top: 0.5rem; }
+
+/* Source table */
+.source-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 0.75rem;
+}
+.source-card {
+  background: rgba(6,182,212,0.04); border: 1px solid rgba(6,182,212,0.15);
+  border-radius: 8px; padding: 0.75rem 1rem;
+  font-size: 0.8rem;
+}
+.source-card-name { font-weight: 600; color: #67e8f9; margin-bottom: 0.2rem; }
+.source-card-indicators { color: var(--text-muted); font-size: 0.75rem; }
+
+@media (max-width: 900px) {
+  .count-grid { grid-template-columns: repeat(3, 1fr); }
+  .pipeline-flow { flex-wrap: wrap; justify-content: center; }
+  .source-grid { grid-template-columns: 1fr; }
+}
+
 </style>
 </head>
 <body>
@@ -604,6 +783,7 @@ a { color: var(--accent-blue); text-decoration: none; }
     <div class="nav-link" data-page="landing" onclick="showPage('landing')">Home</div>
     <div class="nav-link" data-page="framework" onclick="showPage('framework')">Framework</div>
     <div class="nav-link" data-page="reinforcement" onclick="showPage('reinforcement')">Data &amp; Rankings</div>
+    <div class="nav-link" data-page="pipeline" onclick="showPage('pipeline')">Data Pipeline</div>
   </div>
 </nav>
 
@@ -637,7 +817,7 @@ a { color: var(--accent-blue); text-decoration: none; }
     </div>
   </div>
 
-  <div class="landing-footer">195 countries &middot; 36 indicators &middot; 3 phases &middot; 1 self-reinforcing loop</div>
+  <div class="landing-footer">195 countries &middot; 36 indicators &middot; ~80 raw variables &middot; 3 phases &middot; 1 self-reinforcing loop</div>
 </div>
 
 <!-- ========== FRAMEWORK PAGE ========== -->
@@ -990,13 +1170,123 @@ a { color: var(--accent-blue); text-decoration: none; }
 <div class="phase-nav-footer"><button class="btn-phase-nav" onclick="showPage('monetization')">&larr; Phase 3: Monetization</button><div></div></div>
 </div>
 
+<!-- ========== DATA PIPELINE PAGE ========== -->
+<div class="page" id="page-pipeline">
+  <div class="pipeline-hero">
+    <h2>Data Pipeline</h2>
+    <p>How raw numbers from 20+ global data sources become the structural risk scores you see in this dashboard. Every variable, every transformation, every step.</p>
+    <div class="particle-container">
+      <svg viewBox="0 0 1000 320" id="pipeline-svg">
+        <defs>
+          <filter id="glow"><feGaussianBlur stdDeviation="3" result="blur"/><feComposite in="SourceGraphic" in2="blur" operator="over"/></filter>
+          <linearGradient id="pathGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stop-color="#06b6d4" stop-opacity="0.3"/>
+            <stop offset="15%" stop-color="#3b82f6" stop-opacity="0.3"/>
+            <stop offset="30%" stop-color="#8b5cf6" stop-opacity="0.3"/>
+            <stop offset="50%" stop-color="#f59e0b" stop-opacity="0.3"/>
+            <stop offset="70%" stop-color="#10b981" stop-opacity="0.3"/>
+            <stop offset="85%" stop-color="#c4b5fd" stop-opacity="0.3"/>
+            <stop offset="100%" stop-color="#ef4444" stop-opacity="0.3"/>
+          </linearGradient>
+          <radialGradient id="ng1" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#06b6d4" stop-opacity="0.3"/><stop offset="100%" stop-color="#06b6d4" stop-opacity="0"/></radialGradient>
+          <radialGradient id="ng2" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#3b82f6" stop-opacity="0.3"/><stop offset="100%" stop-color="#3b82f6" stop-opacity="0"/></radialGradient>
+          <radialGradient id="ng3" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#8b5cf6" stop-opacity="0.3"/><stop offset="100%" stop-color="#8b5cf6" stop-opacity="0"/></radialGradient>
+          <radialGradient id="ng4" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#f59e0b" stop-opacity="0.3"/><stop offset="100%" stop-color="#f59e0b" stop-opacity="0"/></radialGradient>
+          <radialGradient id="ng5" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#10b981" stop-opacity="0.3"/><stop offset="100%" stop-color="#10b981" stop-opacity="0"/></radialGradient>
+          <radialGradient id="ng6" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#c4b5fd" stop-opacity="0.3"/><stop offset="100%" stop-color="#c4b5fd" stop-opacity="0"/></radialGradient>
+          <radialGradient id="ng7" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#ef4444" stop-opacity="0.3"/><stop offset="100%" stop-color="#ef4444" stop-opacity="0"/></radialGradient>
+          <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M 40 0 L 0 0 0 40" fill="none" stroke="rgba(100,116,139,0.05)" stroke-width="1"/></pattern>
+        </defs>
+        <rect width="1000" height="320" fill="url(#grid)"/>
+        <!-- Main curved path -->
+        <path id="mainPath" d="M 50,160 C 110,160 120,80 190,80 S 270,160 340,160 S 420,240 490,240 S 570,160 640,160 S 720,80 790,80 S 870,160 950,160" fill="none" stroke="url(#pathGrad)" stroke-width="36" stroke-linecap="round" opacity="0.35"/>
+        <path id="mainPathLine" d="M 50,160 C 110,160 120,80 190,80 S 270,160 340,160 S 420,240 490,240 S 570,160 640,160 S 720,80 790,80 S 870,160 950,160" fill="none" stroke="url(#pathGrad)" stroke-width="2" stroke-linecap="round" opacity="0.7"/>
+        <!-- Node glows -->
+        <circle cx="50" cy="160" r="35" fill="url(#ng1)"/><circle cx="190" cy="80" r="35" fill="url(#ng2)"/>
+        <circle cx="340" cy="160" r="35" fill="url(#ng3)"/><circle cx="490" cy="240" r="35" fill="url(#ng4)"/>
+        <circle cx="640" cy="160" r="35" fill="url(#ng5)"/><circle cx="790" cy="80" r="35" fill="url(#ng6)"/>
+        <circle cx="950" cy="160" r="35" fill="url(#ng7)"/>
+        <!-- Node circles -->
+        <circle cx="50" cy="160" r="18" fill="#0f1923" stroke="#06b6d4" stroke-width="2" filter="url(#glow)"/>
+        <circle cx="190" cy="80" r="18" fill="#0f1923" stroke="#3b82f6" stroke-width="2" filter="url(#glow)"/>
+        <circle cx="340" cy="160" r="18" fill="#0f1923" stroke="#8b5cf6" stroke-width="2" filter="url(#glow)"/>
+        <circle cx="490" cy="240" r="18" fill="#0f1923" stroke="#f59e0b" stroke-width="2" filter="url(#glow)"/>
+        <circle cx="640" cy="160" r="18" fill="#0f1923" stroke="#10b981" stroke-width="2" filter="url(#glow)"/>
+        <circle cx="790" cy="80" r="18" fill="#0f1923" stroke="#c4b5fd" stroke-width="2" filter="url(#glow)"/>
+        <circle cx="950" cy="160" r="18" fill="#0f1923" stroke="#ef4444" stroke-width="2" filter="url(#glow)"/>
+        <!-- Node numbers -->
+        <text x="50" y="165" text-anchor="middle" fill="#67e8f9" font-size="12" font-weight="800">80</text>
+        <text x="190" y="85" text-anchor="middle" fill="#93c5fd" font-size="12" font-weight="800">80</text>
+        <text x="340" y="165" text-anchor="middle" fill="#c4b5fd" font-size="12" font-weight="800">36</text>
+        <text x="490" y="245" text-anchor="middle" fill="#fcd34d" font-size="12" font-weight="800">13</text>
+        <text x="640" y="165" text-anchor="middle" fill="#6ee7b7" font-size="12" font-weight="800">3</text>
+        <text x="790" y="85" text-anchor="middle" fill="#c4b5fd" font-size="10" font-weight="800">adj</text>
+        <text x="950" y="165" text-anchor="middle" fill="#fca5a5" font-size="12" font-weight="800">1</text>
+        <!-- Node labels -->
+        <text x="50" y="200" text-anchor="middle" fill="#67e8f9" font-size="9" font-weight="700">RAW DATA</text>
+        <text x="190" y="55" text-anchor="middle" fill="#93c5fd" font-size="9" font-weight="700">CLEANED</text>
+        <text x="340" y="200" text-anchor="middle" fill="#c4b5fd" font-size="9" font-weight="700">INDICATORS</text>
+        <text x="490" y="275" text-anchor="middle" fill="#fcd34d" font-size="9" font-weight="700">DOMAINS</text>
+        <text x="640" y="200" text-anchor="middle" fill="#6ee7b7" font-size="9" font-weight="700">PHASES</text>
+        <text x="790" y="55" text-anchor="middle" fill="#c4b5fd" font-size="9" font-weight="700">REINFORCE</text>
+        <text x="950" y="200" text-anchor="middle" fill="#fca5a5" font-size="9" font-weight="700">COMPOSITE</text>
+        <g id="particles"></g>
+      </svg>
+    </div>
+  </div>
+
+  <!-- Summary counts -->
+  <div class="section">
+    <div class="section-title" style="color:#67e8f9">Variable Inventory</div>
+    <div class="section-subtitle">The total number of data points flowing through the pipeline at each level of aggregation.</div>
+    <div class="count-grid" id="pipeline-counts"></div>
+  </div>
+
+  <!-- Visual pipeline flow -->
+  <div class="section">
+    <div class="section-title" style="color:#67e8f9">Processing Pipeline</div>
+    <div class="section-subtitle">Click any stage to see what happens at that step. Data flows left to right, from raw sources to the final composite score.</div>
+    <div class="card">
+      <div class="pipeline-flow" id="pipeline-flow"></div>
+      <div id="pipeline-detail-panel"></div>
+    </div>
+  </div>
+
+  <!-- Full variable tree -->
+  <div class="section">
+    <div class="section-title" style="color:#67e8f9">Complete Variable Tree</div>
+    <div class="section-subtitle">Every variable in the index, organized by phase, domain, and indicator. Subindicator components shown where applicable.</div>
+    <div class="card">
+      <div id="variable-tree"></div>
+    </div>
+  </div>
+
+  <!-- Data sources -->
+  <div class="section">
+    <div class="section-title" style="color:#67e8f9">Data Sources</div>
+    <div class="section-subtitle">The primary international databases feeding the index.</div>
+    <div id="data-sources-grid"></div>
+  </div>
+
+  <!-- Processing timeline -->
+  <div class="section">
+    <div class="section-title" style="color:#67e8f9">Processing Steps: Raw to Visualization</div>
+    <div class="section-subtitle">The seven-stage transformation pipeline that every data point passes through.</div>
+    <div class="card">
+      <div class="proc-timeline" id="proc-timeline"></div>
+    </div>
+  </div>
+
+<div class="phase-nav-footer"><button class="btn-phase-nav" onclick="showPage('reinforcement')">&larr; Data &amp; Rankings</button><div></div></div>
+</div>
+
 <!-- Country Modal -->
 <div class="modal-overlay" id="country-modal" onclick="if(event.target===this)closeModal()">
   <div class="modal" id="modal-content"></div>
 </div>
 
 <script>
-let DATA = null;
+// DATA is loaded by flsri-data.js via script tag in <head>
 const plotlyLayout = {
   paper_bgcolor: 'rgba(0,0,0,0)',
   plot_bgcolor: 'rgba(0,0,0,0)',
@@ -1536,21 +1826,389 @@ function hexToRgb(hex) {
   return result ? [parseInt(result[1], 16), parseInt(result[2], 16), parseInt(result[3], 16)] : [0, 0, 0];
 }
 
-// Load data and initialize
-// Data loaded from external file
-fetch('flsri-data.json')
-  .then(r => r.json())
-  .then(d => { DATA = d; buildDashboard(); document.getElementById('loading').style.display = 'none'; })
-  .catch(e => { console.error('Failed to load data:', e); document.getElementById('loading').innerHTML = '<div style="color:#ef4444">Failed to load data. Make sure flsri-data.json is in the same folder.</div>'; });if (!DATA) {
-  fetch('data.json')
-    .then(r => r.json())
-    .then(d => { DATA = d; buildDashboard(); document.getElementById('loading').style.display = 'none'; })
-    .catch(err => {
-      document.getElementById('loading').innerHTML = '<div style="color:#ef4444;text-align:center"><h2>No data found</h2><p style="color:var(--text-secondary);margin-top:1rem">Run: python3 refresh_data.py</p></div>';
+// ===== DATA PIPELINE PAGE =====
+function buildPipelinePage() {
+  const meta = DATA.indicatorMetadata;
+  const domains = DATA.domainArchitecture;
+  const agg = DATA.aggregationMethodology;
+
+  // --- Count subindicator/raw variables from scoring formulas ---
+  const subIndicatorMap = {
+    '1.1.1': ['Deaths from disasters (z-scored)', 'People affected by disasters (z-scored)'],
+    '1.1.2': ['Conflict intensity (ln-normalized)', 'Civilian casualty ratio', 'Conflict geographic spread (ln-normalized)'],
+    '1.1.3': ['ND-GAIN vulnerability sub-index'],
+    '1.2.1': ['IDP coordinate locations', 'IDP population counts', 'National population (denominator)'],
+    '1.2.2': ['Missing Migrants deaths count', 'Estimated migrant flow volume'],
+    '1.3.1': ['Youth unemployment rate', 'NEET rate (not in education, employment, or training)'],
+    '1.3.2': ['Child labor prevalence rate (ILO)'],
+    '1.3.3': ['Gini coefficient (World Bank)'],
+    '1.3.4': ['Lower secondary completion rate'],
+    '1.3.5': ['Remittances received (% of GDP)'],
+    '1.5.1': ['WGI Rule of Law score (-2.5 to +2.5)'],
+    '1.5.2': ['National ID coverage rate', 'Birth registration rate', 'Formal financial account ownership'],
+    '1.5.3': ['Social protection coverage rate', 'Social protection deficit (fallback)'],
+    '1.5.4': ['Emigration policy restrictiveness index (MIGPOL)'],
+    '1.5.5': ['GSI government response milestones (freedom)'],
+    '2.1.2': ['Firms expected to give gifts to public officials (%)'],
+    '2.1.3': ['ILO labor inspectors per capita (inverted)', 'ITUC rights index (rescaled)'],
+    '2.1.4': ['US TIP Report tier assignment'],
+    '2.2.1': ['UNCTAD Liner Shipping Connectivity Index (quarterly)'],
+    '2.3.1': ['Informal employment share: Total', 'Informal employment share: Agriculture', 'Informal employment share: Industry', 'Informal employment share: Services'],
+    '2.3.2': ['Temporary/contract worker prevalence (Enterprise Survey)'],
+    '2.3.3': ['Agriculture employment share', 'Construction employment share', 'Domestic work employment share', 'Sector forced-labor prevalence weights'],
+    '2.3.4': ['UNCTAD HHI merchandise concentration index'],
+    '2.3.5': ['GDP per worker (labor productivity)'],
+    '2.4.1': ['GITOC Criminality score', 'GITOC Resilience score'],
+    '2.4.2': ['GITOC Private Sector Actors score (1-8.5 scale)'],
+    '2.4.3': ['GSI M4223: Laws prohibiting confiscation', 'GSI M4224NEG: Document confiscation protections'],
+    '2.4.4': ['GITOC Criminal Authority sub-dimension (CA1)'],
+    '2.5.1': ['Findex informal borrowing rate', 'Findex savings informality', 'IMF household debt-to-GDP'],
+    '2.5.2': ['Henley Passport Index score (inverted)'],
+    '3.1.1': ['Basel AML Index composite (multi-dimensional)'],
+    '3.2.1': ['Mobile money account penetration', 'Digital payment adoption rate', 'Prepaid card share'],
+    '3.3.1': ['Findex: Wages received in cash only', 'Findex: Utility payments in cash only', 'Findex: Transfer payments in cash only'],
+    '3.4.1': ['Bank branches per 100k adults', 'ATMs per 100k adults'],
+    '3.4.2': ['Findex formal remittance channel rate', 'Findex informal remittance channel rate'],
+    '3.4.3': ['Findex formal credit access rate', 'Enterprise Survey credit constraint rate'],
+  };
+
+  // Count totals
+  let totalRawVars = 0;
+  Object.values(subIndicatorMap).forEach(arr => totalRawVars += arr.length);
+  const totalIndicators = meta.length;
+  const totalDomains = domains.length;
+  const totalPhases = 3;
+  const totalComposites = 4; // R_adj, COMPOSITE INDEX, COMPOSITE RANK, Reinforcement Effect
+  const totalDomainScores = domains.length;
+
+  // Build counts
+  document.getElementById('pipeline-counts').innerHTML = `
+    <div class="count-card" style="--accent:#06b6d4"><div style="position:absolute;top:0;left:0;right:0;height:3px;background:#06b6d4"></div><div class="count-num" style="color:#67e8f9">${totalRawVars}</div><div class="count-lbl">Raw Input Variables</div></div>
+    <div class="count-card"><div style="position:absolute;top:0;left:0;right:0;height:3px;background:#3b82f6"></div><div class="count-num" style="color:#93c5fd">${totalIndicators}</div><div class="count-lbl">Indicators</div></div>
+    <div class="count-card"><div style="position:absolute;top:0;left:0;right:0;height:3px;background:#8b5cf6"></div><div class="count-num" style="color:#c4b5fd">${totalDomains}</div><div class="count-lbl">Domains</div></div>
+    <div class="count-card"><div style="position:absolute;top:0;left:0;right:0;height:3px;background:#f59e0b"></div><div class="count-num" style="color:#fcd34d">${totalPhases}</div><div class="count-lbl">Phases</div></div>
+    <div class="count-card"><div style="position:absolute;top:0;left:0;right:0;height:3px;background:#10b981"></div><div class="count-num" style="color:#6ee7b7">${totalComposites}</div><div class="count-lbl">Composite Scores</div></div>
+    <div class="count-card"><div style="position:absolute;top:0;left:0;right:0;height:3px;background:#ef4444"></div><div class="count-num" style="color:#fca5a5">195</div><div class="count-lbl">Countries</div></div>
+  `;
+
+  // Build pipeline flow with custom SVG icons
+  const svgIcons = {
+    raw: `<svg viewBox="0 0 32 32" fill="none" stroke="#67e8f9" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="16" cy="8" rx="10" ry="4"/><path d="M6 8v16c0 2.2 4.5 4 10 4s10-1.8 10-4V8"/><path d="M6 16c0 2.2 4.5 4 10 4s10-1.8 10-4"/><line x1="2" y1="4" x2="6" y2="8" opacity="0.5"/><line x1="3" y1="10" x2="6" y2="12" opacity="0.5"/></svg>`,
+    clean: `<svg viewBox="0 0 32 32" fill="none" stroke="#93c5fd" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h24l-8 10v8l-8 2V16z"/><line x1="8" y1="10" x2="24" y2="10" opacity="0.4"/></svg>`,
+    norm: `<svg viewBox="0 0 32 32" fill="none" stroke="#c4b5fd" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="6" width="24" height="20" rx="2"/><line x1="4" y1="22" x2="28" y2="22"/><rect x="7" y="14" width="3" height="8" rx="0.5" fill="#c4b5fd" opacity="0.3"/><rect x="12" y="10" width="3" height="12" rx="0.5" fill="#c4b5fd" opacity="0.4"/><rect x="17" y="16" width="3" height="6" rx="0.5" fill="#c4b5fd" opacity="0.3"/><rect x="22" y="12" width="3" height="10" rx="0.5" fill="#c4b5fd" opacity="0.4"/><text x="16" y="9" text-anchor="middle" font-size="5" fill="#c4b5fd" opacity="0.6" stroke="none">0 — 1</text></svg>`,
+    agg: `<svg viewBox="0 0 32 32" fill="none" stroke="#fcd34d" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="8" r="4" opacity="0.6"/><circle cx="24" cy="8" r="4" opacity="0.6"/><circle cx="8" cy="24" r="4" opacity="0.6"/><circle cx="24" cy="24" r="4" opacity="0.6"/><line x1="10" y1="10" x2="14" y2="14" opacity="0.4"/><line x1="22" y1="10" x2="18" y2="14" opacity="0.4"/><line x1="10" y1="22" x2="14" y2="18" opacity="0.4"/><line x1="22" y1="22" x2="18" y2="18" opacity="0.4"/><circle cx="16" cy="16" r="5" fill="rgba(245,158,11,0.15)" stroke="#fcd34d" stroke-width="2"/></svg>`,
+    phase: `<svg viewBox="0 0 32 32" fill="none" stroke-width="2.5" stroke-linecap="round"><path d="M16 6 A10 10 0 0 1 26 16" stroke="#ef4444" opacity="0.7"/><path d="M26 16 A10 10 0 0 1 16 26" stroke="#f59e0b" opacity="0.7"/><path d="M16 26 A10 10 0 0 1 6 16" stroke="#10b981" opacity="0.7"/><path d="M6 16 A10 10 0 0 1 16 6" stroke="#6ee7b7" opacity="0.3"/><circle cx="16" cy="6" r="2.5" fill="#ef4444"/><circle cx="26" cy="16" r="2.5" fill="#f59e0b"/><circle cx="16" cy="26" r="2.5" fill="#10b981"/></svg>`,
+    reinforce: `<svg viewBox="0 0 32 32" fill="none" stroke="#c4b5fd" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M16 4 C24 4 28 10 28 16 C28 22 24 28 16 28 C8 28 4 22 4 16 C4 12 6 8 10 6"/><polygon points="10,2 14,6 10,8" fill="#c4b5fd" stroke="none" opacity="0.7"/><circle cx="16" cy="16" r="3" fill="rgba(139,92,246,0.2)" stroke="#c4b5fd"/></svg>`,
+    composite: `<svg viewBox="0 0 32 32" fill="none" stroke="#fca5a5" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polygon points="16,2 20,12 30,12 22,19 25,30 16,23 7,30 10,19 2,12 12,12" fill="rgba(239,68,68,0.15)"/><circle cx="16" cy="16" r="4" fill="rgba(239,68,68,0.3)" stroke="#fca5a5" stroke-width="1.5"/></svg>`,
+  };
+
+  const stages = [
+    { svg: svgIcons.raw, title: 'Raw Data', count: totalRawVars, label: 'variables', color: '#06b6d4', key: 'raw' },
+    { svg: svgIcons.clean, title: 'Cleaning', count: totalRawVars, label: 'cleaned', color: '#3b82f6', key: 'clean' },
+    { svg: svgIcons.norm, title: 'Normalized', count: totalIndicators, label: 'indicators', color: '#8b5cf6', key: 'norm' },
+    { svg: svgIcons.agg, title: 'Domains', count: totalDomains, label: 'aggregated', color: '#f59e0b', key: 'agg' },
+    { svg: svgIcons.phase, title: 'Phases', count: totalPhases, label: 'lifecycle', color: '#10b981', key: 'phase' },
+    { svg: svgIcons.reinforce, title: 'Reinforce', count: '&#8635;', label: 'feedback', color: '#c4b5fd', key: 'reinforce' },
+    { svg: svgIcons.composite, title: 'FLSRI', count: '1', label: 'composite', color: '#ef4444', key: 'composite' },
+  ];
+
+  let flowHTML = '';
+  stages.forEach((s, i) => {
+    if (i > 0) flowHTML += '<div class="pipeline-arrow">&#8594;</div>';
+    flowHTML += `
+      <div class="pipeline-stage" onclick="showPipelineDetail('${s.key}')" id="ps-${s.key}">
+        <div class="pipeline-stage-icon" style="border-color:${s.color};background:${s.color}10">${s.svg}</div>
+        <div class="pipeline-stage-count" style="color:${s.color}">${s.count}</div>
+        <div class="pipeline-stage-title" style="color:${s.color}">${s.title}</div>
+        <div class="pipeline-stage-label">${s.label}</div>
+      </div>`;
+  });
+  document.getElementById('pipeline-flow').innerHTML = flowHTML;
+
+  // Build variable tree
+  const phaseColors = { 1: '#ef4444', 2: '#f59e0b', 3: '#10b981' };
+  const phaseNames = { 1: 'Recruitment', 2: 'Exploitation', 3: 'Monetization' };
+  const phaseLightColors = { 1: '#fca5a5', 2: '#fcd34d', 3: '#6ee7b7' };
+
+  let treeHTML = '';
+  [1, 2, 3].forEach(phase => {
+    const phaseMeta = meta.filter(m => m.Phase === phase);
+    const phaseDomains = domains.filter(d => d.Phase === phase);
+    const phaseRawCount = phaseMeta.reduce((sum, m) => sum + (subIndicatorMap[m['Indicator Code']] || []).length, 0);
+
+    treeHTML += `<div class="var-tree-phase">
+      <div class="var-tree-phase-header" style="color:${phaseLightColors[phase]}">
+        <span style="width:10px;height:10px;border-radius:50%;background:${phaseColors[phase]};display:inline-block"></span>
+        Phase ${phase}: ${phaseNames[phase]}
+        <span style="font-size:0.75rem;color:var(--text-muted);font-weight:400;margin-left:auto">${phaseMeta.length} indicators &middot; ${phaseRawCount} raw variables &middot; ${phaseDomains.length} domains</span>
+      </div>`;
+
+    phaseDomains.forEach(dom => {
+      const domIndicators = phaseMeta.filter(m => m['Domain Code'] === dom['Domain Code']);
+      const domRawCount = domIndicators.reduce((sum, m) => sum + (subIndicatorMap[m['Indicator Code']] || []).length, 0);
+
+      treeHTML += `<div class="var-tree-domain">
+        <div class="var-tree-domain-header">
+          <span style="color:${phaseLightColors[phase]}">&#9670;</span>
+          ${dom['Domain Name']}
+          <span style="font-size:0.7rem;color:var(--text-muted);margin-left:auto">${domIndicators.length} ind. &middot; ${domRawCount} vars</span>
+        </div>`;
+
+      domIndicators.forEach(ind => {
+        const subs = subIndicatorMap[ind['Indicator Code']] || [];
+        treeHTML += `<div class="var-tree-indicator">
+          <div class="var-tree-ind-code">${ind['Indicator Code']}</div>
+          <div>
+            <div class="var-tree-ind-name">${ind['Indicator Name']}</div>
+            <div class="var-tree-ind-source">${ind['Primary Data Source']}</div>
+          </div>
+        </div>`;
+
+        if (subs.length > 1) {
+          treeHTML += '<div class="var-tree-subs">';
+          subs.forEach(sub => {
+            treeHTML += `<div class="var-tree-sub"><span class="var-tree-sub-dot" style="background:${phaseColors[phase]}40;border:1px solid ${phaseColors[phase]}"></span>${sub}</div>`;
+          });
+          treeHTML += '</div>';
+        }
+      });
+
+      treeHTML += '</div>';
     });
-} else {
+
+    treeHTML += '</div>';
+  });
+  document.getElementById('variable-tree').innerHTML = treeHTML;
+
+  // Build data sources grid
+  const sourceMap = {};
+  meta.forEach(m => {
+    const src = m['Primary Data Source'];
+    if (!sourceMap[src]) sourceMap[src] = [];
+    sourceMap[src].push(m['Indicator Code']);
+  });
+  let srcHTML = '<div class="source-grid">';
+  Object.entries(sourceMap).sort((a, b) => b[1].length - a[1].length).forEach(([src, inds]) => {
+    srcHTML += `<div class="source-card">
+      <div class="source-card-name">${src}</div>
+      <div class="source-card-indicators">${inds.length} indicator${inds.length > 1 ? 's' : ''}: ${inds.join(', ')}</div>
+    </div>`;
+  });
+  srcHTML += '</div>';
+  document.getElementById('data-sources-grid').innerHTML = srcHTML;
+
+  // Build processing timeline
+  const procSteps = [
+    { title: '1. Data Acquisition', desc: `${totalRawVars} raw variables are collected from 20+ international databases including World Bank, ILO, UNODC, EM-DAT, ACLED, ND-GAIN, GITOC, Basel AML Index, and others. Each source provides country-level measurements for 185-195 countries.`, formula: null },
+    { title: '2. Cleaning & Standardization', desc: 'Raw data is cleaned for consistency: missing values flagged, temporal alignment applied (latest available year per indicator), outliers identified, and units standardized. Logged transformations applied to heavily right-skewed distributions (e.g., conflict intensity, disaster deaths).', formula: 'x_clean = ln(x + 1) for skewed variables' },
+    { title: '3. Composite Sub-Indicator Construction', desc: `Where indicators draw from multiple raw variables, sub-indicators are combined. Methods include weighted averages (e.g., Natural Disaster = 0.5 × deaths + 0.5 × affected), PCA extraction (e.g., Informal Risk Exposure: PC1 explains 93.35% of variance), and deficit inversions (e.g., Rule of Law: (2.5 − WGI) / 5).`, formula: '20 of 36 indicators are composites of 2+ raw variables' },
+    { title: '4. Normalization to [0, 1]', desc: `All ${totalIndicators} indicators are rescaled to a common 0-1 range where higher values = higher risk. Most use within-year min-max normalization. Some use natural scales (Gini) or global min-max across years.`, formula: 'x_norm = (x − min) / (max − min)' },
+    { title: '5. Domain Aggregation', desc: `Normalized indicators are averaged into ${totalDomains} thematic domains using equal-weighted arithmetic means. Missing indicators handled via pairwise available method. Formative measurement model: each indicator captures something conceptually unique (VIF < 5).`, formula: 'D = (1/n) × Σ(indicators)' },
+    { title: '6. Phase Aggregation', desc: `Domain scores are averaged into ${totalPhases} phase scores (Recruitment, Exploitation, Monetization). Equal-weighted arithmetic mean of constituent domains within each phase.`, formula: 'P = (1/d) × Σ(domains)' },
+    { title: '7. Reinforcement & Composite', desc: 'The self-reinforcing trafficking loop is modeled: Exploitation × Monetization jointly modify Recruitment risk. The geometric mean of adjusted phases produces the final composite index. This penalizes imbalance — risk must exist across all phases to score high.', formula: 'R_adj = R × max(0.50, (E×M)^0.2)&nbsp;&nbsp;→&nbsp;&nbsp;FLSRI = (R_adj × E × M)^(1/3)' },
+  ];
+  document.getElementById('proc-timeline').innerHTML = procSteps.map(s => `
+    <div class="proc-step">
+      <h4>${s.title}</h4>
+      <p>${s.desc}</p>
+      ${s.formula ? `<div class="formula-box">${s.formula}</div>` : ''}
+    </div>
+  `).join('');
+
+  // Show first pipeline detail by default
+  showPipelineDetail('raw');
+
+  // Initialize particle animation
+  initParticleAnimation();
+}
+
+function initParticleAnimation() {
+  const svg = document.getElementById('pipeline-svg');
+  if (!svg) return;
+  const particleGroup = document.getElementById('particles');
+  const mainPath = document.getElementById('mainPath');
+  if (!mainPath) return;
+  const pathLength = mainPath.getTotalLength();
+
+  let particles = [];
+  let paused = false;
+  const speed = 1;
+
+  const stageColors = [
+    { pos: 0,    color: [6, 182, 212] },
+    { pos: 0.15, color: [59, 130, 246] },
+    { pos: 0.30, color: [139, 92, 246] },
+    { pos: 0.50, color: [245, 158, 11] },
+    { pos: 0.68, color: [16, 185, 129] },
+    { pos: 0.83, color: [196, 181, 253] },
+    { pos: 1.0,  color: [239, 68, 68] },
+  ];
+
+  function getColorAtProgress(p) {
+    let i = 0;
+    while (i < stageColors.length - 1 && stageColors[i + 1].pos < p) i++;
+    if (i >= stageColors.length - 1) return stageColors[stageColors.length - 1].color;
+    const seg = stageColors[i], next = stageColors[i + 1];
+    const t = (p - seg.pos) / (next.pos - seg.pos);
+    return seg.color.map((c, j) => Math.round(c + (next.color[j] - c) * t));
+  }
+
+  function spawnParticle() {
+    const el = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+    const size = 1.5 + Math.random() * 2.5;
+    el.setAttribute('r', size);
+    if (size > 3) el.setAttribute('filter', 'url(#glow)');
+    particleGroup.appendChild(el);
+    particles.push({
+      el, progress: 0,
+      speed: (0.0008 + Math.random() * 0.0012) * speed,
+      offset: (Math.random() - 0.5) * 14,
+      size,
+    });
+  }
+
+  // Seed initial particles
+  for (let i = 0; i < 25; i++) {
+    spawnParticle();
+    particles[particles.length - 1].progress = Math.random();
+  }
+
+  function animate() {
+    // Only animate when pipeline page is visible
+    const pipelinePage = document.getElementById('page-pipeline');
+    if (!pipelinePage || !pipelinePage.classList.contains('active')) {
+      requestAnimationFrame(animate);
+      return;
+    }
+
+    if (Math.random() < 0.1) spawnParticle();
+
+    particles.forEach(p => {
+      p.progress += p.speed;
+      if (p.progress > 1) { p.el.remove(); p.dead = true; return; }
+
+      const point = mainPath.getPointAtLength(p.progress * pathLength);
+      const point2 = mainPath.getPointAtLength(Math.min(p.progress * pathLength + 1, pathLength));
+      const dx = point2.x - point.x, dy = point2.y - point.y;
+      const len = Math.sqrt(dx * dx + dy * dy) || 1;
+      const nx = -dy / len, ny = dx / len;
+
+      p.el.setAttribute('cx', point.x + nx * p.offset);
+      p.el.setAttribute('cy', point.y + ny * p.offset);
+
+      const [r, g, b] = getColorAtProgress(p.progress);
+      p.el.setAttribute('fill', `rgb(${r},${g},${b})`);
+
+      let opacity = 0.7;
+      if (p.progress < 0.05) opacity = p.progress / 0.05 * 0.7;
+      if (p.progress > 0.92) opacity = (1 - p.progress) / 0.08 * 0.7;
+      p.el.setAttribute('opacity', opacity);
+    });
+
+    particles = particles.filter(p => !p.dead);
+    requestAnimationFrame(animate);
+  }
+  requestAnimationFrame(animate);
+}
+
+function showPipelineDetail(key) {
+  const meta = DATA.indicatorMetadata;
+  const domains = DATA.domainArchitecture;
+
+  document.querySelectorAll('.pipeline-stage').forEach(el => el.classList.remove('ps-active'));
+  const activeEl = document.getElementById('ps-' + key);
+  if (activeEl) activeEl.classList.add('ps-active');
+
+  const subIndicatorMap = {
+    '1.1.1': 2, '1.1.2': 3, '1.1.3': 1, '1.2.1': 3, '1.2.2': 2,
+    '1.3.1': 2, '1.3.2': 1, '1.3.3': 1, '1.3.4': 1, '1.3.5': 1,
+    '1.5.1': 1, '1.5.2': 3, '1.5.3': 2, '1.5.4': 1, '1.5.5': 1,
+    '2.1.2': 1, '2.1.3': 2, '2.1.4': 1, '2.2.1': 1, '2.3.1': 4,
+    '2.3.2': 1, '2.3.3': 4, '2.3.4': 1, '2.3.5': 1, '2.4.1': 2,
+    '2.4.2': 1, '2.4.3': 2, '2.4.4': 1, '2.5.1': 3, '2.5.2': 1,
+    '3.1.1': 1, '3.2.1': 3, '3.3.1': 3, '3.4.1': 2, '3.4.2': 2, '3.4.3': 2,
+  };
+  let totalRaw = 0;
+  Object.values(subIndicatorMap).forEach(n => totalRaw += n);
+
+  const details = {
+    raw: {
+      title: 'Stage 1: Raw Data Collection',
+      content: `<p style="color:var(--text-secondary);margin-bottom:1rem">${totalRaw} raw variables are pulled from 20+ authoritative international databases. These include survey data, administrative records, geospatial datasets, and composite indices from organizations like the World Bank, ILO, UNODC, and GITOC.</p>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:0.75rem">
+          <div class="stat-card"><div class="stat-value" style="font-size:1.3rem;color:#fca5a5">${meta.filter(m=>m.Phase===1).reduce((s,m)=>s+(subIndicatorMap[m['Indicator Code']]||1),0)}</div><div class="stat-label">Recruitment vars</div></div>
+          <div class="stat-card"><div class="stat-value" style="font-size:1.3rem;color:#fcd34d">${meta.filter(m=>m.Phase===2).reduce((s,m)=>s+(subIndicatorMap[m['Indicator Code']]||1),0)}</div><div class="stat-label">Exploitation vars</div></div>
+          <div class="stat-card"><div class="stat-value" style="font-size:1.3rem;color:#6ee7b7">${meta.filter(m=>m.Phase===3).reduce((s,m)=>s+(subIndicatorMap[m['Indicator Code']]||1),0)}</div><div class="stat-label">Monetization vars</div></div>
+        </div>`
+    },
+    clean: {
+      title: 'Stage 2: Cleaning & Standardization',
+      content: `<p style="color:var(--text-secondary);margin-bottom:1rem">Raw variables are cleaned for temporal consistency, outlier treatment, and unit standardization. Key operations include log-transformation of skewed distributions, temporal alignment to latest available year, and flagging of missing data patterns.</p>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.75rem">
+          <div class="stat-card"><div class="stat-value" style="font-size:1.3rem;color:#93c5fd">~12</div><div class="stat-label">Log-transformed variables</div></div>
+          <div class="stat-card"><div class="stat-value" style="font-size:1.3rem;color:#93c5fd">195</div><div class="stat-label">Countries in sample</div></div>
+        </div>`
+    },
+    norm: {
+      title: 'Stage 3: Normalization',
+      content: `<p style="color:var(--text-secondary);margin-bottom:1rem">All ${meta.length} indicators are rescaled to a common [0, 1] range where higher = higher structural risk. Methods vary by indicator type.</p>
+        <table class="data-table" style="margin-top:0.5rem"><thead><tr><th>Method</th><th>Count</th><th>Description</th></tr></thead><tbody>
+          <tr><td>Min-Max (within year)</td><td>~28</td><td>Standard rescaling to observed range</td></tr>
+          <tr><td>Min-Max (global)</td><td>~3</td><td>Rescaled across all years for trend consistency</td></tr>
+          <tr><td>Natural scale</td><td>~2</td><td>Already 0-1 (e.g., Gini / 100)</td></tr>
+          <tr><td>Deficit inversion</td><td>~3</td><td>Inverted so higher = worse (e.g., Rule of Law)</td></tr>
+        </tbody></table>`
+    },
+    agg: {
+      title: 'Stage 4: Domain Aggregation',
+      content: `<p style="color:var(--text-secondary);margin-bottom:1rem">${meta.length} indicators aggregate into ${domains.length} thematic domains. Equal-weighted arithmetic mean with pairwise available missing data handling.</p>
+        <table class="data-table" style="margin-top:0.5rem"><thead><tr><th>Domain</th><th>Phase</th><th>Indicators</th></tr></thead><tbody>
+          ${domains.map(d => `<tr><td>${d['Domain Name']}</td><td style="color:${d.Phase===1?'#fca5a5':d.Phase===2?'#fcd34d':'#6ee7b7'}">${d['Phase Name']}</td><td>${d['Indicator Count']}</td></tr>`).join('')}
+        </tbody></table>`
+    },
+    phase: {
+      title: 'Stage 5: Phase Scores',
+      content: `<p style="color:var(--text-secondary);margin-bottom:1rem">Domain scores are averaged into 3 phase scores. Each phase captures a distinct stage of the trafficking lifecycle.</p>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:0.75rem">
+          <div class="stat-card"><div style="position:absolute;top:0;left:0;right:0;height:3px;background:#ef4444"></div><div class="stat-value" style="font-size:1.3rem;color:#fca5a5">P1</div><div class="stat-label">Recruitment<br><span style="font-size:0.7rem">${domains.filter(d=>d.Phase===1).length} domains → 1 score</span></div></div>
+          <div class="stat-card"><div style="position:absolute;top:0;left:0;right:0;height:3px;background:#f59e0b"></div><div class="stat-value" style="font-size:1.3rem;color:#fcd34d">P2</div><div class="stat-label">Exploitation<br><span style="font-size:0.7rem">${domains.filter(d=>d.Phase===2).length} domains → 1 score</span></div></div>
+          <div class="stat-card"><div style="position:absolute;top:0;left:0;right:0;height:3px;background:#10b981"></div><div class="stat-value" style="font-size:1.3rem;color:#6ee7b7">P3</div><div class="stat-label">Monetization<br><span style="font-size:0.7rem">${domains.filter(d=>d.Phase===3).length} domains → 1 score</span></div></div>
+        </div>`
+    },
+    reinforce: {
+      title: 'Stage 6: Reinforcement Adjustment',
+      content: `<p style="color:var(--text-secondary);margin-bottom:1rem">The self-reinforcing loop: Exploitation and Monetization jointly modify Recruitment. Countries where both P2 and P3 are high see amplified recruitment risk; countries where either is low see dampened risk.</p>
+        <div class="formula-box" style="display:block;text-align:center;padding:1rem;margin:1rem 0;font-size:0.95rem">R_adj = R × max(0.50, (E × M)^0.2)</div>
+        <p style="color:var(--text-muted);font-size:0.8rem">The exponent 0.2 is calibrated so that the reinforcement effect modulates (not dominates) the recruitment signal. The floor of 0.50 prevents total suppression.</p>`
+    },
+    composite: {
+      title: 'Stage 7: Final Composite Index',
+      content: `<p style="color:var(--text-secondary);margin-bottom:1rem">The geometric mean of the three adjusted phase scores produces the final FLSRI composite. Geometric mean penalizes imbalance: a country must score high across all phases to rank highly. Floors of 0.05 prevent zero-multiplication.</p>
+        <div class="formula-box" style="display:block;text-align:center;padding:1rem;margin:1rem 0;font-size:0.95rem">FLSRI = (max(0.05, R_adj) × max(0.05, E) × max(0.05, M))^(1/3)</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;margin-top:1rem">
+          <div class="stat-card"><div class="stat-value" style="font-size:1.3rem;color:#ef4444">195</div><div class="stat-label">Countries scored & ranked</div></div>
+          <div class="stat-card"><div class="stat-value" style="font-size:1.3rem;color:#ef4444">1</div><div class="stat-label">Final composite per country</div></div>
+        </div>`
+    },
+  };
+
+  const detail = details[key];
+  document.getElementById('pipeline-detail-panel').innerHTML = `
+    <div class="pipeline-detail">
+      <h3 style="margin-bottom:0.75rem;color:#67e8f9">${detail.title}</h3>
+      ${detail.content}
+    </div>
+  `;
+}
+
+// Data is loaded via <script src="flsri-data.js"> in the HTML head
+// Initialize once DOM is ready
+if (DATA) {
   buildDashboard();
+  buildPipelinePage();
   document.getElementById('loading').style.display = 'none';
+} else {
+  document.getElementById('loading').innerHTML = '<div style="color:#ef4444;text-align:center;padding:2rem"><h2>No data found</h2><p style="color:var(--text-secondary);margin-top:1rem">Make sure flsri-data.js is in the same folder as index.html.</p></div>';
 }
 
 // Keyboard shortcut: Escape closes modal
