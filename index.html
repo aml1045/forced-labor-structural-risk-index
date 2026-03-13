@@ -5,7 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>FLSRI - Forced Labor Structural Risk Index</title>
 <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script src="flsri-data.js"></script>
+<script src="flsri-geo.js"></script>
+<script src="flsri-lisa.js"></script>
 <style>
 :root {
   --bg-dark: #0f1923;
@@ -67,6 +71,7 @@ a { color: var(--accent-blue); text-decoration: none; }
 .nav-link[data-page="exploitation"].active { background: rgba(245,158,11,0.2); color: #fcd34d; }
 .nav-link[data-page="monetization"].active { background: rgba(16,185,129,0.2); color: #6ee7b7; }
 .nav-link[data-page="reinforcement"].active { background: rgba(139,92,246,0.2); color: #c4b5fd; }
+.nav-link[data-page="methodology"].active { background: rgba(59,130,246,0.15); color: #93c5fd; }
 .nav-link[data-page="pipeline"].active { background: rgba(6,182,212,0.2); color: #67e8f9; }
 
 /* Pages */
@@ -415,35 +420,86 @@ a { color: var(--accent-blue); text-decoration: none; }
   font-size: 0.9rem; color: var(--text-muted);
   max-width: 620px; line-height: 1.7; margin-bottom: 0;
 }
-.entry-cards {
-  max-width: 1100px; margin: 0 auto;
-  display: grid; grid-template-columns: repeat(3, 1fr);
-  gap: 1.5rem; padding: 0 2rem 3rem;
+/* Primary CTA - the clear starting point */
+.entry-primary-wrap {
+  max-width: 700px; margin: 0 auto 2rem;
+  padding: 0 2rem;
 }
-.entry-card {
-  background: var(--bg-card); border: 1px solid var(--border);
-  border-radius: 16px; padding: 2rem 1.75rem;
+.entry-card-primary {
+  background: var(--bg-card);
+  border: 2px solid rgba(59,130,246,0.4);
+  border-radius: 20px; padding: 2.5rem;
   cursor: pointer; transition: all 0.3s cubic-bezier(0.4,0,0.2,1);
   position: relative; overflow: hidden;
-  display: flex; flex-direction: column; gap: 0.75rem;
+  text-align: center;
 }
-.entry-card:hover { transform: translateY(-6px); border-color: rgba(255,255,255,0.15); background: var(--bg-card-hover); }
-.entry-card::before {
+.entry-card-primary:hover {
+  transform: translateY(-4px);
+  border-color: rgba(59,130,246,0.7);
+  background: var(--bg-card-hover);
+  box-shadow: 0 12px 40px rgba(59,130,246,0.15);
+}
+.entry-card-primary::before {
   content: ''; position: absolute; top: 0; left: 0; right: 0;
-  height: 3px; opacity: 0; transition: opacity 0.3s;
+  height: 3px; background: var(--accent-blue); opacity: 1;
 }
-.entry-card:hover::before { opacity: 1; }
-.card-learn::before { background: var(--accent-blue); }
+.entry-step-label {
+  display: inline-block;
+  font-size: 0.7rem; font-weight: 700; letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--accent-blue);
+  background: rgba(59,130,246,0.1);
+  padding: 0.3rem 1rem; border-radius: 20px;
+  margin-bottom: 1rem;
+}
+.entry-card-primary h3 { font-size: 1.4rem; font-weight: 800; margin: 0 0 0.5rem; }
+.entry-card-primary p {
+  font-size: 0.95rem; color: var(--text-secondary);
+  margin: 0 auto 1.25rem; line-height: 1.7; max-width: 500px;
+}
+.entry-cta-primary {
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  font-size: 0.9rem; font-weight: 700; color: #fff;
+  background: var(--accent-blue);
+  padding: 0.75rem 2rem; border-radius: 10px;
+  transition: all 0.2s;
+}
+.entry-card-primary:hover .entry-cta-primary {
+  background: #2563eb; transform: translateX(4px);
+}
+
+/* Secondary navigation cards */
+.entry-cards-secondary {
+  max-width: 700px; margin: 0 auto;
+  display: grid; grid-template-columns: repeat(2, 1fr);
+  gap: 1rem; padding: 0 2rem 3rem;
+}
+.entry-card-sm {
+  background: var(--bg-card); border: 1px solid var(--border);
+  border-radius: 12px; padding: 1.25rem 1.5rem;
+  cursor: pointer; transition: all 0.3s cubic-bezier(0.4,0,0.2,1);
+  position: relative; overflow: hidden;
+  display: flex; flex-direction: column; gap: 0.4rem;
+}
+.entry-card-sm:hover {
+  transform: translateY(-3px);
+  border-color: rgba(255,255,255,0.15);
+  background: var(--bg-card-hover);
+}
+.entry-card-sm::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0;
+  height: 2px; opacity: 0; transition: opacity 0.3s;
+}
+.entry-card-sm:hover::before { opacity: 1; }
 .card-explore::before { background: var(--gradient-reinforce); }
 .card-data::before { background: var(--gradient-exploit); }
-.entry-icon { font-size: 1.5rem; opacity: 0.9; }
-.entry-card h3 { font-size: 1.1rem; font-weight: 700; margin: 0; }
-.entry-card p { font-size: 0.85rem; color: var(--text-secondary); margin: 0; flex-grow: 1; line-height: 1.6; }
-.entry-cta {
-  font-size: 0.8rem; font-weight: 600; color: var(--accent-blue);
-  margin-top: 0.5rem; transition: transform 0.2s;
+.entry-card-sm h3 { font-size: 0.95rem; font-weight: 700; margin: 0; }
+.entry-card-sm p { font-size: 0.8rem; color: var(--text-muted); margin: 0; line-height: 1.5; }
+.entry-cta-sm {
+  font-size: 0.75rem; font-weight: 600; color: var(--text-secondary);
+  margin-top: 0.35rem; transition: all 0.2s;
 }
-.entry-card:hover .entry-cta { transform: translateX(4px); }
+.entry-card-sm:hover .entry-cta-sm { color: var(--text-primary); transform: translateX(4px); }
 .landing-footer {
   text-align: center; padding: 2rem;
   color: var(--text-muted); font-size: 0.8rem;
@@ -584,10 +640,83 @@ a { color: var(--accent-blue); text-decoration: none; }
 .btn-phase-nav.btn-next:hover { background: rgba(59,130,246,0.2); }
 .btn-phase-nav:disabled { opacity: 0.3; cursor: default; }
 
+/* ===== FRAMEWORK SUB-NAV ===== */
+.fw-subnav {
+  display: flex; align-items: center; gap: 0.5rem;
+  padding: 0.6rem 2rem;
+  background: rgba(15,25,35,0.95);
+  border-bottom: 1px solid var(--border);
+  overflow-x: auto;
+  max-width: 100%;
+}
+.fw-subnav-link {
+  padding: 0.6rem 1.2rem;
+  font-size: 0.8rem; font-weight: 600;
+  color: var(--text-muted);
+  cursor: pointer; transition: all 0.25s;
+  white-space: nowrap;
+  border-radius: 6px;
+  border: 1px solid transparent;
+  letter-spacing: 0.3px;
+}
+.fw-subnav-link:hover {
+  color: var(--text-secondary);
+  background: rgba(255,255,255,0.04);
+}
+.fw-subnav-link.active {
+  border-color: currentColor;
+}
+.fw-subnav-link[data-section="overview"] { color: var(--text-secondary); }
+.fw-subnav-link[data-section="overview"].active { color: var(--accent-blue); background: rgba(59,130,246,0.1); border-color: rgba(59,130,246,0.3); }
+.fw-subnav-link[data-section="recruitment"] { color: rgba(252,165,165,0.5); }
+.fw-subnav-link[data-section="recruitment"].active { color: #fca5a5; background: rgba(239,68,68,0.1); border-color: rgba(239,68,68,0.3); }
+.fw-subnav-link[data-section="exploitation"] { color: rgba(252,211,77,0.5); }
+.fw-subnav-link[data-section="exploitation"].active { color: #fcd34d; background: rgba(245,158,11,0.1); border-color: rgba(245,158,11,0.3); }
+.fw-subnav-link[data-section="monetization"] { color: rgba(110,231,183,0.5); }
+.fw-subnav-link[data-section="monetization"].active { color: #6ee7b7; background: rgba(16,185,129,0.1); border-color: rgba(16,185,129,0.3); }
+.fw-subnav-link[data-section="reinforcement"] { color: rgba(196,181,253,0.5); }
+.fw-subnav-link[data-section="reinforcement"].active { color: #c4b5fd; background: rgba(139,92,246,0.1); border-color: rgba(139,92,246,0.3); }
+
+/* Arrow connectors between phase tabs */
+.fw-subnav-arrow {
+  color: var(--text-muted); opacity: 0.3;
+  font-size: 0.75rem; user-select: none;
+}
+
+.fw-subsection { display: none; }
+.fw-subsection.active { display: block; }
+
+/* ===== DATA PAGE SUB-NAV ===== */
+.data-subnav {
+  display: flex; align-items: center; gap: 0;
+  padding: 0 2rem;
+  background: var(--bg-card);
+  border-bottom: 1px solid var(--border);
+  overflow-x: auto;
+  max-width: 1400px; margin: 0 auto;
+}
+.data-subnav-link {
+  padding: 0.85rem 1.25rem;
+  font-size: 0.85rem; font-weight: 500;
+  color: var(--text-muted);
+  cursor: pointer; transition: all 0.2s;
+  white-space: nowrap;
+  border-bottom: 2px solid transparent;
+  position: relative;
+}
+.data-subnav-link:hover { color: var(--text-secondary); }
+.data-subnav-link.active {
+  color: var(--accent-blue);
+  border-bottom-color: var(--accent-blue);
+}
+.data-subsection { display: none; }
+.data-subsection.active { display: block; }
+
 /* Responsive additions */
 @media (max-width: 900px) {
-  .entry-cards { grid-template-columns: 1fr; }
+  .entry-cards-secondary { grid-template-columns: 1fr; }
   .hero-minimal h1 { font-size: 2.2rem; }
+  .entry-card-primary { padding: 2rem 1.5rem; }
   .fw-grid-2, .compare-grid, .phase-def-grid { grid-template-columns: 1fr; }
   .fw-loop-visual { flex-direction: column; }
   .fw-loop-arrow { transform: rotate(90deg); }
@@ -770,6 +899,152 @@ a { color: var(--accent-blue); text-decoration: none; }
   .source-grid { grid-template-columns: 1fr; }
 }
 
+/* ===== LISA Cluster Map ===== */
+.lisa-layout { display: grid; grid-template-columns: 1fr 340px; height: 650px; border-radius: 10px; overflow: hidden; border: 1px solid var(--border); }
+.lisa-map-wrap { position: relative; overflow: hidden; }
+.lisa-map { position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: var(--bg-dark); }
+.lisa-map-legend {
+  position: absolute; bottom: 16px; left: 16px; z-index: 800;
+  background: rgba(15,25,35,0.92); border: 1px solid var(--border); border-radius: 8px; padding: 10px 14px;
+  backdrop-filter: blur(8px);
+}
+.lisa-legend-title { font-size: 10px; text-transform: uppercase; letter-spacing: 0.7px; color: var(--text-muted); font-weight: 600; margin-bottom: 6px; }
+.lisa-legend-row { display: flex; align-items: center; gap: 8px; margin: 3px 0; font-size: 11.5px; color: var(--text-secondary); }
+.lisa-legend-dot { width: 10px; height: 10px; border-radius: 3px; flex-shrink: 0; }
+.lisa-moran-badge {
+  position: absolute; top: 16px; left: 16px; z-index: 800;
+  background: rgba(15,25,35,0.92); border: 1px solid var(--border); border-radius: 8px; padding: 8px 14px;
+  backdrop-filter: blur(8px);
+}
+.lisa-moran-val { font-size: 14px; font-weight: 700; color: var(--accent-blue); font-variant-numeric: tabular-nums; }
+.lisa-moran-lbl { font-size: 9.5px; color: var(--text-muted); }
+
+.lisa-panel { background: var(--bg-card); border-left: 1px solid var(--border); overflow-y: auto; }
+.lisa-section { padding: 14px 16px; border-bottom: 1px solid var(--border); }
+.lisa-stitle { font-size: 10px; text-transform: uppercase; letter-spacing: 0.7px; color: var(--text-muted); font-weight: 600; margin-bottom: 8px; }
+
+.lisa-phase-tabs { display: flex; gap: 2px; flex-wrap: wrap; background: rgba(255,255,255,0.03); border-radius: 7px; padding: 2px; }
+.lisa-phase-tab {
+  padding: 6px 10px; font-size: 11px; font-weight: 500; border-radius: 5px; cursor: pointer;
+  color: var(--text-muted); border: 1px solid transparent; transition: all 0.15s; white-space: nowrap;
+}
+.lisa-phase-tab:hover { color: var(--text-primary); background: rgba(255,255,255,0.04); }
+.lisa-phase-tab.active { color: #fff; background: rgba(59,130,246,0.15); border-color: rgba(59,130,246,0.3); }
+
+.lisa-ct-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5px; }
+.lisa-ct-btn {
+  padding: 9px; border-radius: 7px; cursor: pointer; border: 1px solid var(--border);
+  transition: all 0.12s; text-align: center;
+}
+.lisa-ct-btn:hover { border-color: rgba(100,160,240,0.3); }
+.lisa-ct-btn.active { border-width: 2px; }
+.lisa-ct-label { font-size: 10.5px; font-weight: 600; }
+.lisa-ct-count { font-size: 18px; font-weight: 700; margin: 1px 0; }
+.lisa-ct-desc { font-size: 9px; color: var(--text-secondary); line-height: 1.2; }
+.lisa-ct-hh { background: rgba(239,68,68,0.12); }
+.lisa-ct-hh.active { border-color: #ef4444; }
+.lisa-ct-hh .lisa-ct-label, .lisa-ct-hh .lisa-ct-count { color: #ef4444; }
+.lisa-ct-ll { background: rgba(59,130,246,0.12); }
+.lisa-ct-ll.active { border-color: #3b82f6; }
+.lisa-ct-ll .lisa-ct-label, .lisa-ct-ll .lisa-ct-count { color: #3b82f6; }
+.lisa-ct-hl { background: rgba(245,158,11,0.12); }
+.lisa-ct-hl.active { border-color: #f59e0b; }
+.lisa-ct-hl .lisa-ct-label, .lisa-ct-hl .lisa-ct-count { color: #f59e0b; }
+.lisa-ct-lh { background: rgba(16,185,129,0.12); }
+.lisa-ct-lh.active { border-color: #10b981; }
+.lisa-ct-lh .lisa-ct-label, .lisa-ct-lh .lisa-ct-count { color: #10b981; }
+
+.lisa-list { max-height: 260px; overflow-y: auto; margin-top: 6px; }
+.lisa-list-item {
+  display: flex; align-items: center; padding: 6px 8px; margin: 1px 0; border-radius: 5px;
+  cursor: pointer; transition: background 0.1s; gap: 8px; font-size: 12px;
+}
+.lisa-list-item:hover { background: rgba(255,255,255,0.04); }
+.lisa-li-rank { font-size: 9.5px; color: var(--text-muted); width: 16px; text-align: right; flex-shrink: 0; }
+.lisa-li-name { flex: 1; font-weight: 500; }
+.lisa-li-score { font-weight: 600; font-variant-numeric: tabular-nums; font-size: 11px; }
+.lisa-li-bar { width: 50px; height: 4px; background: rgba(255,255,255,0.06); border-radius: 2px; overflow: hidden; flex-shrink: 0; }
+.lisa-li-bar-fill { height: 100%; border-radius: 2px; }
+.lisa-li-gap { font-size: 9.5px; font-variant-numeric: tabular-nums; width: 40px; text-align: right; }
+.lisa-gap-pos { color: #ef4444; }
+.lisa-gap-neg { color: #10b981; }
+
+/* Country detail panel */
+.lisa-detail { display: none; }
+.lisa-detail.vis { display: block; }
+.lisa-detail-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; }
+.lisa-detail-name { font-size: 15px; font-weight: 600; }
+.lisa-detail-close { cursor: pointer; color: var(--text-muted); font-size: 16px; padding: 2px 5px; border-radius: 4px; }
+.lisa-detail-close:hover { background: rgba(255,255,255,0.06); color: var(--text-primary); }
+.lisa-detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-bottom: 12px; }
+.lisa-detail-stat { background: rgba(255,255,255,0.03); border-radius: 5px; padding: 7px 9px; }
+.lisa-ds-lbl { font-size: 9px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.3px; }
+.lisa-ds-val { font-size: 14px; font-weight: 600; margin-top: 1px; font-variant-numeric: tabular-nums; }
+.lisa-bar-row { display: flex; align-items: center; margin: 4px 0; font-size: 11px; }
+.lisa-bar-lbl { width: 80px; color: var(--text-secondary); font-size: 10.5px; flex-shrink: 0; }
+.lisa-bar-track { flex: 1; height: 4px; background: rgba(255,255,255,0.06); border-radius: 2px; overflow: hidden; margin: 0 7px; }
+.lisa-bar-fill { height: 100%; border-radius: 2px; }
+.lisa-bar-val { width: 36px; text-align: right; font-weight: 600; font-variant-numeric: tabular-nums; font-size: 10.5px; }
+.lisa-nb-item { display: flex; justify-content: space-between; padding: 4px 0; border-bottom: 1px solid rgba(255,255,255,0.03); font-size: 11.5px; }
+.lisa-nb-name { color: var(--text-secondary); }
+.lisa-nb-score { font-weight: 600; font-variant-numeric: tabular-nums; }
+
+/* ===== Regional Analysis (Areas of Interest) ===== */
+.region-layout { display: grid; grid-template-columns: 1fr 360px; height: 650px; border-radius: 10px; overflow: hidden; border: 1px solid var(--border); }
+.region-panel { background: var(--bg-card); border-left: 1px solid var(--border); overflow-y: auto; padding: 14px 16px; }
+.region-card {
+  background: rgba(255,255,255,0.02); border: 1px solid var(--border); border-radius: 8px;
+  padding: 12px; margin-bottom: 8px; cursor: pointer; transition: all 0.12s;
+}
+.region-card:hover { border-color: rgba(100,160,240,0.3); background: rgba(255,255,255,0.04); }
+.region-card.active { border-color: rgba(59,130,246,0.4); background: rgba(59,130,246,0.06); }
+.rc-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
+.rc-name { font-size: 13px; font-weight: 600; }
+.rc-n { font-size: 10px; color: var(--text-muted); }
+.rc-stats { display: flex; gap: 12px; margin-bottom: 6px; }
+.rc-stat-val { font-size: 14px; font-weight: 700; font-variant-numeric: tabular-nums; }
+.rc-stat-lbl { font-size: 9px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.3px; }
+.rc-lisa-bar { display: flex; gap: 2px; height: 6px; border-radius: 3px; overflow: hidden; }
+.rc-lisa-seg { height: 100%; }
+
+/* Leaflet overrides for dark theme */
+.leaflet-container { background: var(--bg-dark) !important; }
+.leaflet-control-zoom a { background: var(--bg-card) !important; color: var(--text-primary) !important; border-color: var(--border) !important; }
+.leaflet-control-attribution { display: none !important; }
+.leaflet-tooltip { background: rgba(15,25,35,0.95) !important; color: var(--text-primary) !important; border: 1px solid var(--border) !important; font-size: 12px !important; border-radius: 6px !important; padding: 6px 10px !important; }
+.leaflet-tooltip-top:before, .leaflet-tooltip-bottom:before, .leaflet-tooltip-left:before, .leaflet-tooltip-right:before { border-top-color: rgba(15,25,35,0.95) !important; }
+
+@media (max-width: 1100px) {
+  .lisa-layout, .region-layout { grid-template-columns: 1fr; height: auto; }
+  .lisa-layout .lisa-map-wrap, .region-layout .lisa-map-wrap { height: 450px; }
+}
+
+/* ===== Simulation Page Styles ===== */
+.sim-country-select{display:flex;gap:1rem;align-items:center;flex-wrap:wrap;margin-bottom:1.5rem}
+.sim-country-select select{background:var(--bg-card);color:var(--text-primary);border:1px solid var(--border);border-radius:8px;padding:.5rem 1rem;font-size:.95rem;min-width:240px}
+.sim-country-select button{background:var(--accent-blue);color:#fff;border:none;border-radius:8px;padding:.5rem 1.2rem;cursor:pointer;font-size:.85rem}
+.sim-country-select button:hover{opacity:.85}
+.sim-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem}
+@media(max-width:900px){.sim-grid{grid-template-columns:1fr}}
+.sim-phase-card{background:var(--bg-card);border:1px solid var(--border);border-radius:12px;padding:1.25rem;display:flex;flex-direction:column;gap:.75rem}
+.sim-phase-card h3{margin:0;font-size:1rem;display:flex;align-items:center;gap:.5rem}
+.sim-phase-dot{width:10px;height:10px;border-radius:50%;display:inline-block}
+.sim-indicator-row{display:flex;align-items:center;gap:.75rem}
+.sim-indicator-row label{flex:1;font-size:.82rem;color:var(--text-secondary);min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.sim-indicator-row input[type=range]{flex:1.2;accent-color:var(--accent-blue);height:6px}
+.sim-indicator-row .sim-val{width:42px;text-align:right;font-size:.82rem;font-variant-numeric:tabular-nums;color:var(--text-primary)}
+.sim-domain-score{font-size:.8rem;color:var(--text-muted);text-align:right;padding-top:.25rem;border-top:1px solid var(--border)}
+.sim-composite-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-top:1rem}
+.sim-comp-box{background:var(--bg-card);border:1px solid var(--border);border-radius:10px;padding:1rem;text-align:center}
+.sim-comp-box .sim-comp-label{font-size:.75rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:.05em}
+.sim-comp-box .sim-comp-val{font-size:1.6rem;font-weight:700;margin-top:.25rem}
+.sim-comp-box .sim-comp-orig{font-size:.7rem;color:var(--text-muted);margin-top:.15rem}
+.sim-arrow{font-size:.75rem;margin-left:.35rem}
+.sim-arrow.up{color:#ef4444}
+.sim-arrow.down{color:#10b981}
+.sim-arrow.same{color:var(--text-muted)}
+@media(max-width:700px){.sim-composite-strip{grid-template-columns:1fr 1fr}}
+
 </style>
 </head>
 <body>
@@ -782,8 +1057,7 @@ a { color: var(--accent-blue); text-decoration: none; }
   <div class="nav-right">
     <div class="nav-link" data-page="landing" onclick="showPage('landing')">Home</div>
     <div class="nav-link" data-page="framework" onclick="showPage('framework')">Framework</div>
-    <div class="nav-link" data-page="reinforcement" onclick="showPage('reinforcement')">Data &amp; Rankings</div>
-    <div class="nav-link" data-page="pipeline" onclick="showPage('pipeline')">Data Pipeline</div>
+    <div class="nav-link" data-page="data" onclick="showPage('data')">Data</div>
   </div>
 </nav>
 
@@ -796,81 +1070,113 @@ a { color: var(--accent-blue); text-decoration: none; }
     <p class="hero-context">Forced labor is not random. It emerges where vulnerable populations converge with weak institutional protection and economic incentives for exploitation. This index measures those structural conditions.</p>
   </div>
 
-  <div class="entry-cards">
-    <div class="entry-card card-learn" onclick="showPage('framework')">
-      <div class="entry-icon">&#9670;</div>
+  <div class="entry-primary-wrap">
+    <div class="entry-card-primary" onclick="showPage('framework')">
+      <div class="entry-step-label">Recommended Starting Point</div>
       <h3>Learn the Framework</h3>
-      <p>What is the FLSRI and how does the trafficking loop work?</p>
-      <div class="entry-cta">Start Here &rarr;</div>
-    </div>
-    <div class="entry-card card-explore" onclick="showPage('recruitment')">
-      <div class="entry-icon">&#9654;</div>
-      <h3>Explore the Loop</h3>
-      <p>Move through the three phases of trafficking and see the data.</p>
-      <div class="entry-cta">Begin Journey &rarr;</div>
-    </div>
-    <div class="entry-card card-data" onclick="showPage('reinforcement')">
-      <div class="entry-icon">&#9632;</div>
-      <h3>See the Data</h3>
-      <p>Global rankings, country profiles, and composite scores.</p>
-      <div class="entry-cta">Browse Data &rarr;</div>
+      <p>Understand how this index works &mdash; the theory, the three phases, and how structural conditions are measured across 195 countries.</p>
+      <div class="entry-cta-primary">Start Here &rarr;</div>
     </div>
   </div>
 
-  <div class="landing-footer">195 countries &middot; 36 indicators &middot; ~80 raw variables &middot; 3 phases &middot; 1 self-reinforcing loop</div>
+  <div class="entry-cards-secondary">
+    <div class="entry-card-sm card-explore" onclick="showFrameworkSection('recruitment')">
+      <h3>Explore the Phases</h3>
+      <p>Walk through each phase and see domain-level data.</p>
+      <div class="entry-cta-sm">Begin with Phase 1 &rarr;</div>
+    </div>
+    <div class="entry-card-sm card-data" onclick="showPage('data')">
+      <h3>See the Data</h3>
+      <p>Global rankings, country profiles, and composite scores.</p>
+      <div class="entry-cta-sm">Browse Rankings &rarr;</div>
+    </div>
+  </div>
+
+  <div class="landing-footer">195 countries &middot; 36 indicators &middot; ~64 raw variables &middot; 3 phases &middot; 1 self-reinforcing loop</div>
 </div>
 
 <!-- ========== FRAMEWORK PAGE ========== -->
 <div class="page" id="page-framework">
-  <div class="framework-hero">
-    <h1>The Framework</h1>
-    <p>Human trafficking is not random violence. It is a structural system enabled by specific, measurable conditions.</p>
+  <!-- Framework sub-navigation -->
+  <div class="fw-subnav" id="fw-subnav">
+    <div class="fw-subnav-link active" data-section="overview" onclick="showFrameworkSection('overview')">Overview</div>
+    <div class="fw-subnav-arrow">&rarr;</div>
+    <div class="fw-subnav-link" data-section="recruitment" onclick="showFrameworkSection('recruitment')">Phase 1: Recruitment</div>
+    <div class="fw-subnav-arrow">&rarr;</div>
+    <div class="fw-subnav-link" data-section="exploitation" onclick="showFrameworkSection('exploitation')">Phase 2: Exploitation</div>
+    <div class="fw-subnav-arrow">&rarr;</div>
+    <div class="fw-subnav-link" data-section="monetization" onclick="showFrameworkSection('monetization')">Phase 3: Monetization</div>
+    <div class="fw-subnav-arrow">&#8631;</div>
+    <div class="fw-subnav-link" data-section="reinforcement" onclick="showFrameworkSection('reinforcement')">Reinforcement</div>
   </div>
 
+  <!-- ===== FRAMEWORK SUB: Overview ===== -->
+  <div class="fw-subsection active" id="fw-overview">
+  <div class="framework-hero">
+    <h1>The Framework</h1>
+    <p>The theoretical architecture behind the Forced Labor Structural Risk Index.</p>
+  </div>
+
+  <!-- Section 1: The Economic System -->
   <section class="fw-section">
     <div class="fw-container">
       <div class="fw-grid-2">
         <div class="fw-text">
-          <h2>What is Forced Labor?</h2>
-          <p>Forced labor occurs when people are coerced into work through threat, deception, or exploitation of vulnerability. Human trafficking is the mechanism: recruiters identify vulnerable people, move them into exploitative situations, extract labor value, and retain proceeds.</p>
-          <p>The ILO estimates 28 million people are in forced labor globally. But raw numbers obscure the real question: <strong style="color:var(--text-primary)">what structural conditions enable trafficking to persist at scale?</strong></p>
+          <h2>An Economic System</h2>
+          <p>Forced labor is not isolated criminal violence. It is an economic system operated by trafficking networks and transnational criminal organizations. These enterprises recruit workers, extract labor under coercion, and convert the proceeds into financial assets&mdash;generating an estimated $236 billion in illegal profits annually.</p>
+          <p>At that scale, this is one of the most profitable illicit economies in the world. It persists not because enforcement is absent, but because <strong style="color:var(--text-primary)">structural conditions across entire countries create the environment in which these operations are rational, low-risk, and self-sustaining.</strong></p>
         </div>
         <div class="fw-stat-box">
-          <div class="fw-stat-large">28M</div>
-          <div class="fw-stat-label">People in forced labor</div>
-          <div class="fw-stat-sub">ILO Global Estimate, 2021</div>
+          <div class="fw-stat-large">$236B</div>
+          <div class="fw-stat-label">Annual illegal profits</div>
+          <div class="fw-stat-sub">ILO Global Estimate, 2024</div>
+          <div style="margin-top:1.25rem;padding-top:1.25rem;border-top:1px solid var(--border)">
+            <div class="fw-stat-large" style="font-size:2.2rem">28M</div>
+            <div class="fw-stat-label" style="font-size:0.85rem">People in forced labor</div>
+            <div class="fw-stat-sub">ILO Global Estimate, 2021</div>
+          </div>
         </div>
       </div>
     </div>
   </section>
 
+  <!-- Section 2: Theoretical Foundation - RAT -->
   <section class="fw-section">
     <div class="fw-container">
-      <h2>Why Structural Analysis?</h2>
-      <p>Criminal interventions alone cannot end trafficking. Traffickers replace arrested operatives; victims are re-victimized. Prevention requires understanding the structural conditions that make trafficking possible.</p>
+      <h2>Theoretical Foundation</h2>
+      <p>The FLSRI is grounded in Routine Activity Theory (Cohen &amp; Felson, 1979), which holds that crime occurs when three elements converge in time and space: a motivated offender, a suitable target, and the absence of a capable guardian. Applied to trafficking systems:</p>
       <div class="compare-grid">
-        <div class="compare-card">
-          <div class="compare-title">Behavioral Approach</div>
-          <div class="compare-item">Focus on individual traffickers</div>
-          <div class="compare-item">Action: arrest, prosecute, convict</div>
-          <div class="compare-item">Limitation: operatives are replaceable</div>
-          <div class="compare-result caution">Necessary but insufficient</div>
+        <div class="compare-card" style="border-left:3px solid var(--accent-recruit)">
+          <div class="compare-title" style="color:#fca5a5">Suitable Targets</div>
+          <div class="compare-item">Populations made vulnerable by displacement, economic precarity, or institutional exclusion</div>
+          <div class="compare-item">Measured through Phase 1: structural conditions that generate exposed, recruitable populations</div>
         </div>
-        <div class="compare-card">
-          <div class="compare-title">Structural Approach</div>
-          <div class="compare-item">Focus on systemic conditions</div>
-          <div class="compare-item">Action: reduce vulnerability, strengthen institutions</div>
-          <div class="compare-item">Strength: addresses root causes</div>
-          <div class="compare-result positive">Required for prevention</div>
+        <div class="compare-card" style="border-left:3px solid var(--accent-exploit)">
+          <div class="compare-title" style="color:#fcd34d">Absence of Guardians</div>
+          <div class="compare-item">Weak enforcement, geographic concealment, and institutional gaps that fail to detect or intervene</div>
+          <div class="compare-item">Measured through Phase 2: conditions that enable sustained coercion without institutional interruption</div>
+        </div>
+      </div>
+      <div class="compare-grid" style="margin-top:1rem">
+        <div class="compare-card" style="border-left:3px solid var(--accent-monetize)">
+          <div class="compare-title" style="color:#6ee7b7">Motivated Offenders</div>
+          <div class="compare-item">Trafficking networks that operate as rational economic enterprises, sustained by financial infrastructure that conceals proceeds</div>
+          <div class="compare-item">Measured through Phase 3: conditions that enable value extraction and reinvestment</div>
+        </div>
+        <div class="compare-card" style="border-left:3px solid var(--accent-reinforce)">
+          <div class="compare-title" style="color:#c4b5fd">The Structural Insight</div>
+          <div class="compare-item">Trafficking persists where all three conditions co-exist. Arresting individual offenders does not alter the structural conditions&mdash;operatives are replaced</div>
+          <div class="compare-result positive">The FLSRI measures the environment, not the actors</div>
         </div>
       </div>
     </div>
   </section>
 
+  <!-- Section 3: The Self-Reinforcing Loop (kept) -->
   <section class="fw-section">
     <div class="fw-container">
       <h2>The Self-Reinforcing Loop</h2>
-      <p>Trafficking is not linear. It is a cycle that perpetuates itself. Each phase creates the conditions for the next.</p>
+      <p>Trafficking is not linear. It is a cycle operated by criminal enterprises that perpetuates itself. Proceeds from monetization corrupt institutions and regenerate the structural conditions that supply the next cycle of victims.</p>
       <div class="fw-loop-visual">
         <div class="fw-loop-stage" style="border-color:#ef4444">
           <div class="fw-loop-num" style="color:#fca5a5">1</div>
@@ -881,35 +1187,36 @@ a { color: var(--accent-blue); text-decoration: none; }
         <div class="fw-loop-stage" style="border-color:#f59e0b">
           <div class="fw-loop-num" style="color:#fcd34d">2</div>
           <div class="fw-loop-title" style="color:#fcd34d">Exploitation</div>
-          <div class="fw-loop-desc">Weak enforcement and high-risk sectors enable sustained forced labor.</div>
+          <div class="fw-loop-desc">Weak enforcement and high-risk sectors enable sustained coercion.</div>
         </div>
         <div class="fw-loop-arrow">&rarr;</div>
         <div class="fw-loop-stage" style="border-color:#10b981">
           <div class="fw-loop-num" style="color:#6ee7b7">3</div>
           <div class="fw-loop-title" style="color:#6ee7b7">Monetization</div>
-          <div class="fw-loop-desc">Financial opacity lets traffickers retain and reinvest proceeds.</div>
+          <div class="fw-loop-desc">Financial opacity lets trafficking networks retain and reinvest proceeds.</div>
         </div>
         <div class="fw-loop-arrow">&#8631;</div>
         <div class="fw-loop-stage" style="border-color:#8b5cf6">
           <div class="fw-loop-num" style="color:#c4b5fd">&#8635;</div>
           <div class="fw-loop-title" style="color:#c4b5fd">Reinforcement</div>
-          <div class="fw-loop-desc">Profits corrupt institutions, perpetuating recruitment conditions.</div>
+          <div class="fw-loop-desc">Profits corrupt institutions and regenerate recruitment conditions.</div>
         </div>
       </div>
     </div>
   </section>
 
+  <!-- Section 4: The Three Phases (kept, slightly trimmed) -->
   <section class="fw-section">
     <div class="fw-container">
       <h2>The Three Phases</h2>
-      <p>The FLSRI measures structural risk across three interconnected phases of the trafficking lifecycle.</p>
+      <p>The FLSRI measures structural risk across three interconnected phases of the trafficking lifecycle. Each phase maps to a component of routine activity theory.</p>
       <div class="phase-def-grid">
         <div class="phase-def-card recruit-def">
           <h3>Phase 1: Recruitment</h3>
           <div class="phase-def-subtitle">Where traffickers gain access to victims</div>
           <p>Structural conditions that generate exposed, immobile, or coercible populations.</p>
           <div class="phase-mech">
-            <strong>Key Mechanisms</strong>
+            <strong>Domains</strong>
             <ul class="phase-mech-list">
               <li>Structural Disruption</li>
               <li>Displacement &amp; Transit</li>
@@ -922,9 +1229,9 @@ a { color: var(--accent-blue); text-decoration: none; }
         <div class="phase-def-card exploit-def">
           <h3>Phase 2: Exploitation</h3>
           <div class="phase-def-subtitle">Where labor is extracted under coercion</div>
-          <p>Conditions that suppress resistance and enable sustained control of trafficked workers.</p>
+          <p>Conditions that suppress resistance and enable sustained control of workers.</p>
           <div class="phase-mech">
-            <strong>Key Mechanisms</strong>
+            <strong>Domains</strong>
             <ul class="phase-mech-list">
               <li>Enforcement Capacity</li>
               <li>Concealment Geography</li>
@@ -938,9 +1245,9 @@ a { color: var(--accent-blue); text-decoration: none; }
         <div class="phase-def-card monetize-def">
           <h3>Phase 3: Monetization</h3>
           <div class="phase-def-subtitle">Where proceeds are retained and reinvested</div>
-          <p>Structural conditions that enable value extraction and financial concealment.</p>
+          <p>Conditions that enable financial concealment by trafficking enterprises.</p>
           <div class="phase-mech">
-            <strong>Key Mechanisms</strong>
+            <strong>Domains</strong>
             <ul class="phase-mech-list">
               <li>Financial Architecture Opacity</li>
               <li>Laundering Capacity</li>
@@ -954,23 +1261,10 @@ a { color: var(--accent-blue); text-decoration: none; }
     </div>
   </section>
 
-  <section class="fw-section">
-    <div class="fw-container">
-      <h2>The Composite Index</h2>
-      <p>The FLSRI combines all three phases into a single structural risk score. Because trafficking requires conditions across all phases, the final score penalizes imbalance&mdash;a country cannot score high unless risk exists throughout the loop.</p>
-      <div class="card" id="methodology-steps"></div>
-    </div>
-  </section>
+  </div><!-- /fw-subsection overview -->
 
-  <section class="fw-cta">
-    <h2>Ready to explore the data?</h2>
-    <button class="btn-primary" onclick="showPage('recruitment')">Begin the Journey &rarr;</button>
-  </section>
-</div>
-
-<!-- ========== RECRUITMENT PAGE ========== -->
-<div class="page" id="page-recruitment">
-  <div class="breadcrumb-trail"><div class="bc-item " onclick="showPage('landing')">Home</div><div class="bc-arrow">&#9654;</div><div class="bc-item " onclick="showPage('framework')">Framework</div><div class="bc-arrow">&#9654;</div><div class="bc-item bc-active" onclick="showPage('recruitment')">Phase 1: Recruitment</div><div class="bc-arrow">&#9654;</div><div class="bc-item bc-future" onclick="showPage('exploitation')">Phase 2: Exploitation</div><div class="bc-arrow">&#9654;</div><div class="bc-item bc-future" onclick="showPage('monetization')">Phase 3: Monetization</div><div class="bc-arrow">&#9654;</div><div class="bc-item bc-future" onclick="showPage('reinforcement')">Composite & Rankings</div></div>
+  <!-- ===== FRAMEWORK SUB: Recruitment ===== -->
+  <div class="fw-subsection" id="fw-recruitment">
   <div class="phase-hero recruit">
     <h2 style="color:#fca5a5">Phase 1: Recruitment</h2>
     <p id="recruit-definition"></p>
@@ -1004,12 +1298,11 @@ a { color: var(--accent-blue); text-decoration: none; }
     <div class="section-subtitle">Each indicator captures a distinct structural mechanism. Click a domain to expand and see the indicators, their data sources, and theoretical rationale.</div>
     <div id="recruit-indicators"></div>
   </div>
-<div class="phase-nav-footer"><button class="btn-phase-nav" onclick="showPage('framework')">&larr; Framework</button><button class="btn-phase-nav btn-next" onclick="showPage('exploitation')">Phase 2: Exploitation &rarr;</button></div>
-</div>
+<div class="phase-nav-footer"><button class="btn-phase-nav" onclick="showFrameworkSection('overview')">&larr; Overview</button><button class="btn-phase-nav btn-next" onclick="showFrameworkSection('exploitation')">Phase 2: Exploitation &rarr;</button></div>
+  </div><!-- /fw-recruitment -->
 
-<!-- ========== EXPLOITATION PAGE ========== -->
-<div class="page" id="page-exploitation">
-  <div class="breadcrumb-trail"><div class="bc-item " onclick="showPage('landing')">Home</div><div class="bc-arrow">&#9654;</div><div class="bc-item " onclick="showPage('framework')">Framework</div><div class="bc-arrow">&#9654;</div><div class="bc-item " onclick="showPage('recruitment')">Phase 1: Recruitment</div><div class="bc-arrow">&#9654;</div><div class="bc-item bc-active" onclick="showPage('exploitation')">Phase 2: Exploitation</div><div class="bc-arrow">&#9654;</div><div class="bc-item bc-future" onclick="showPage('monetization')">Phase 3: Monetization</div><div class="bc-arrow">&#9654;</div><div class="bc-item bc-future" onclick="showPage('reinforcement')">Composite & Rankings</div></div>
+  <!-- ===== FRAMEWORK SUB: Exploitation ===== -->
+  <div class="fw-subsection" id="fw-exploitation">
   <div class="phase-hero exploit">
     <h2 style="color:#fcd34d">Phase 2: Exploitation</h2>
     <p id="exploit-definition"></p>
@@ -1042,12 +1335,11 @@ a { color: var(--accent-blue); text-decoration: none; }
     <div class="section-title" style="color:#fcd34d">Indicator Details</div>
     <div id="exploit-indicators"></div>
   </div>
-<div class="phase-nav-footer"><button class="btn-phase-nav" onclick="showPage('recruitment')">&larr; Phase 1: Recruitment</button><button class="btn-phase-nav btn-next" onclick="showPage('monetization')">Phase 3: Monetization &rarr;</button></div>
-</div>
+<div class="phase-nav-footer"><button class="btn-phase-nav" onclick="showFrameworkSection('recruitment')">&larr; Phase 1: Recruitment</button><button class="btn-phase-nav btn-next" onclick="showFrameworkSection('monetization')">Phase 3: Monetization &rarr;</button></div>
+  </div><!-- /fw-exploitation -->
 
-<!-- ========== MONETIZATION PAGE ========== -->
-<div class="page" id="page-monetization">
-  <div class="breadcrumb-trail"><div class="bc-item " onclick="showPage('landing')">Home</div><div class="bc-arrow">&#9654;</div><div class="bc-item " onclick="showPage('framework')">Framework</div><div class="bc-arrow">&#9654;</div><div class="bc-item " onclick="showPage('recruitment')">Phase 1: Recruitment</div><div class="bc-arrow">&#9654;</div><div class="bc-item " onclick="showPage('exploitation')">Phase 2: Exploitation</div><div class="bc-arrow">&#9654;</div><div class="bc-item bc-active" onclick="showPage('monetization')">Phase 3: Monetization</div><div class="bc-arrow">&#9654;</div><div class="bc-item bc-future" onclick="showPage('reinforcement')">Composite & Rankings</div></div>
+  <!-- ===== FRAMEWORK SUB: Monetization ===== -->
+  <div class="fw-subsection" id="fw-monetization">
   <div class="phase-hero monetize">
     <h2 style="color:#6ee7b7">Phase 3: Monetization</h2>
     <p id="monetize-definition"></p>
@@ -1080,17 +1372,15 @@ a { color: var(--accent-blue); text-decoration: none; }
     <div class="section-title" style="color:#6ee7b7">Indicator Details</div>
     <div id="monetize-indicators"></div>
   </div>
-<div class="phase-nav-footer"><button class="btn-phase-nav" onclick="showPage('exploitation')">&larr; Phase 2: Exploitation</button><button class="btn-phase-nav btn-next" onclick="showPage('reinforcement')">Composite & Rankings &rarr;</button></div>
-</div>
+<div class="phase-nav-footer"><button class="btn-phase-nav" onclick="showFrameworkSection('exploitation')">&larr; Phase 2: Exploitation</button><button class="btn-phase-nav btn-next" onclick="showFrameworkSection('reinforcement')">Reinforcement &rarr;</button></div>
+  </div><!-- /fw-monetization -->
 
-<!-- ========== REINFORCEMENT & COMPOSITE PAGE ========== -->
-<div class="page" id="page-reinforcement">
-  <div class="breadcrumb-trail"><div class="bc-item " onclick="showPage('landing')">Home</div><div class="bc-arrow">&#9654;</div><div class="bc-item " onclick="showPage('framework')">Framework</div><div class="bc-arrow">&#9654;</div><div class="bc-item " onclick="showPage('recruitment')">Phase 1: Recruitment</div><div class="bc-arrow">&#9654;</div><div class="bc-item " onclick="showPage('exploitation')">Phase 2: Exploitation</div><div class="bc-arrow">&#9654;</div><div class="bc-item " onclick="showPage('monetization')">Phase 3: Monetization</div><div class="bc-arrow">&#9654;</div><div class="bc-item bc-active" onclick="showPage('reinforcement')">Composite & Rankings</div></div>
+  <!-- ===== FRAMEWORK SUB: Reinforcement ===== -->
+  <div class="fw-subsection" id="fw-reinforcement">
   <div class="phase-hero reinforce">
-    <h2 style="color:#c4b5fd">The Reinforcement Loop &amp; Composite Index</h2>
-    <p>The trafficking lifecycle is a self-reinforcing loop. Exploitation and monetization infrastructure regenerate the structural conditions that enable recruitment. This page shows how the feedback mechanism works and the final composite scores.</p>
+    <h2 style="color:#c4b5fd">Reinforcement</h2>
+    <p>How proceeds and institutional capture regenerate the structural conditions that supply the next cycle of victims. The feedback mechanism that closes the loop.</p>
   </div>
-
   <div class="section">
     <div class="section-title" style="color:#c4b5fd">The Self-Reinforcing Loop</div>
     <div class="card">
@@ -1126,11 +1416,33 @@ a { color: var(--accent-blue); text-decoration: none; }
       </div>
     </div>
   </div>
-
   <div class="section">
     <div class="section-title" style="color:#c4b5fd">Reinforcement Effect by Country</div>
-    <div class="section-subtitle">The reinforcement effect shows how much exploitation and monetization conditions amplify or dampen recruitment risk. More negative values = greater dampening.</div>
-    <div class="card" style="padding:0.5rem"><div id="chart-reinforcement" style="height:400px"></div></div>
+    <div class="section-subtitle">The reinforcement effect shows how much conditions in Phases 2 and 3 amplify or dampen the base recruitment risk. More negative values = greater dampening.</div>
+    <div class="card" style="padding:0.5rem"><div id="chart-reinforcement-fw" style="height:400px"></div></div>
+  </div>
+  <div class="phase-nav-footer"><button class="btn-phase-nav" onclick="showFrameworkSection('monetization')">&larr; Phase 3: Monetization</button><button class="btn-phase-nav btn-next" onclick="showPage('data')">Explore the Data &rarr;</button></div>
+  </div><!-- /fw-reinforcement -->
+
+</div><!-- /page-framework -->
+
+<!-- ========== DATA PAGE (unified) ========== -->
+<div class="page" id="page-data">
+  <!-- Data sub-navigation -->
+  <div class="data-subnav">
+    <div class="data-subnav-link active" onclick="showDataSection('composite')">Composite Index</div>
+    <div class="data-subnav-link" onclick="showDataSection('map')">Explore the Map</div>
+    <div class="data-subnav-link" onclick="showDataSection('areas')">Areas of Interest</div>
+    <div class="data-subnav-link" onclick="showDataSection('simulation')">Simulation</div>
+    <div class="data-subnav-link" onclick="showDataSection('methodology')">Methodology</div>
+    <div class="data-subnav-link" onclick="showDataSection('pipeline')">Data Pipeline</div>
+  </div>
+
+  <!-- ===== SUB: Composite Index ===== -->
+  <div class="data-subsection active" id="data-composite">
+  <div class="phase-hero reinforce" style="padding-top:2rem">
+    <h2 style="color:var(--accent-blue)">Composite Index &amp; Country Profiles</h2>
+    <p>Composite risk scores, country comparisons, and full rankings across all 195 countries.</p>
   </div>
 
   <div class="section">
@@ -1167,11 +1479,140 @@ a { color: var(--accent-blue); text-decoration: none; }
       <div class="table-wrap" style="max-height:600px" id="full-rankings-table"></div>
     </div>
   </div>
-<div class="phase-nav-footer"><button class="btn-phase-nav" onclick="showPage('monetization')">&larr; Phase 3: Monetization</button><div></div></div>
-</div>
+  </div><!-- /data-composite -->
 
-<!-- ========== DATA PIPELINE PAGE ========== -->
-<div class="page" id="page-pipeline">
+  <!-- ===== SUB: Explore the Map (LISA Clusters) ===== -->
+  <div class="data-subsection" id="data-map">
+    <div class="section" style="padding-top:2rem">
+      <div class="section-title">Spatial Cluster Analysis</div>
+      <div class="section-subtitle">Local Indicators of Spatial Association (LISA) identify statistically significant clusters where countries and their neighbors share similar risk profiles. Moran's I measures global spatial autocorrelation.</div>
+
+      <!-- Phase tabs -->
+      <div class="lisa-phase-tabs" id="lisaPhaseTabs" style="margin-bottom:1rem">
+        <div class="lisa-phase-tab active" data-phase="composite" onclick="lisaSwitchPhase('composite')">Composite</div>
+        <div class="lisa-phase-tab" data-phase="recruitment" onclick="lisaSwitchPhase('recruitment')">Recruitment</div>
+        <div class="lisa-phase-tab" data-phase="exploitation" onclick="lisaSwitchPhase('exploitation')">Exploitation</div>
+        <div class="lisa-phase-tab" data-phase="monetization" onclick="lisaSwitchPhase('monetization')">Monetization</div>
+        <div class="lisa-phase-tab" data-phase="mc_spatial" onclick="lisaSwitchPhase('mc_spatial')">Spatial Exp.</div>
+        <div class="lisa-phase-tab" data-phase="mc_structural" onclick="lisaSwitchPhase('mc_structural')">Struct. Vuln.</div>
+        <div class="lisa-phase-tab" data-phase="mc_guardianship" onclick="lisaSwitchPhase('mc_guardianship')">Guardianship</div>
+      </div>
+
+      <div class="lisa-layout">
+        <!-- Map -->
+        <div class="lisa-map-wrap">
+          <div id="lisa-map" class="lisa-map"></div>
+          <div class="lisa-map-legend">
+            <div class="lisa-legend-title">LISA Cluster Type</div>
+            <div class="lisa-legend-row"><div class="lisa-legend-dot" style="background:#ef4444"></div><b>High-High</b> — risk corridor</div>
+            <div class="lisa-legend-row"><div class="lisa-legend-dot" style="background:#3b82f6"></div><b>Low-Low</b> — protected zone</div>
+            <div class="lisa-legend-row"><div class="lisa-legend-dot" style="background:#f59e0b"></div><b>High-Low</b> — isolated risk</div>
+            <div class="lisa-legend-row"><div class="lisa-legend-dot" style="background:#10b981"></div><b>Low-High</b> — neighborhood anomaly</div>
+            <div class="lisa-legend-row"><div class="lisa-legend-dot" style="background:#2a3448"></div>Not significant</div>
+          </div>
+          <div class="lisa-moran-badge">
+            <div class="lisa-moran-val" id="lisaMoranVal">I = 0.675</div>
+            <div class="lisa-moran-lbl">Global Moran's I (p &lt; 0.001)</div>
+          </div>
+        </div>
+
+        <!-- Right panel -->
+        <div class="lisa-panel">
+          <!-- Cluster type selector -->
+          <div class="lisa-section" id="lisaSectionClusters">
+            <div class="lisa-stitle">Cluster Classification</div>
+            <div class="lisa-ct-grid">
+              <div class="lisa-ct-btn lisa-ct-hh active" onclick="lisaSelectCT('HH')">
+                <div class="lisa-ct-label">HIGH-HIGH</div>
+                <div class="lisa-ct-count" id="lisaCountHH">40</div>
+                <div class="lisa-ct-desc">Risk corridor</div>
+              </div>
+              <div class="lisa-ct-btn lisa-ct-ll" onclick="lisaSelectCT('LL')">
+                <div class="lisa-ct-label">LOW-LOW</div>
+                <div class="lisa-ct-count" id="lisaCountLL">26</div>
+                <div class="lisa-ct-desc">Protected zone</div>
+              </div>
+              <div class="lisa-ct-btn lisa-ct-hl" onclick="lisaSelectCT('HL')">
+                <div class="lisa-ct-label">HIGH-LOW</div>
+                <div class="lisa-ct-count" id="lisaCountHL">1</div>
+                <div class="lisa-ct-desc">Isolated risk</div>
+              </div>
+              <div class="lisa-ct-btn lisa-ct-lh" onclick="lisaSelectCT('LH')">
+                <div class="lisa-ct-label">LOW-HIGH</div>
+                <div class="lisa-ct-count" id="lisaCountLH">2</div>
+                <div class="lisa-ct-desc">Anomaly</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Country list -->
+          <div class="lisa-section">
+            <div class="lisa-stitle">Countries in Cluster</div>
+            <div class="lisa-list" id="lisaCountryList"></div>
+          </div>
+
+          <!-- Country detail (hidden by default) -->
+          <div class="lisa-section lisa-detail" id="lisaDetail">
+            <div class="lisa-detail-header">
+              <div class="lisa-detail-name" id="lisaDetailName"></div>
+              <div class="lisa-detail-close" onclick="lisaCloseDetail()">&#10005;</div>
+            </div>
+            <div class="lisa-detail-grid" id="lisaDetailStats"></div>
+            <div class="lisa-stitle" style="margin-top:10px">Phase Breakdown</div>
+            <div id="lisaDetailBars"></div>
+            <div class="lisa-stitle" style="margin-top:10px">Neighbors</div>
+            <div id="lisaDetailNeighbors"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== SUB: Areas of Interest (Regional Analysis) ===== -->
+  <div class="data-subsection" id="data-areas">
+    <div class="section" style="padding-top:2rem">
+      <div class="section-title">Regional Analysis</div>
+      <div class="section-subtitle">Aggregated risk profiles by geographic region. Each region card shows mean composite score, dominant cluster type, and LISA cluster distribution. Click a region to zoom in and see its countries.</div>
+
+      <div class="region-layout" style="margin-top:1rem">
+        <div class="lisa-map-wrap">
+          <div id="region-map" class="lisa-map"></div>
+        </div>
+        <div class="region-panel" id="regionPanel"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== SUB: Simulation ===== -->
+  <div class="data-subsection" id="data-simulation">
+    <div class="section" style="padding-top:2rem">
+      <div class="section-title">Simulation</div>
+      <div class="section-subtitle" style="color:var(--text-muted)">Adjust indicator values to model intervention impacts on composite risk scores.</div>
+      <div class="sim-country-select">
+        <select id="simCountryPicker"><option value="">Select a country…</option></select>
+        <button onclick="simReset()">Reset to Baseline</button>
+      </div>
+      <div class="sim-composite-strip" id="simCompositeStrip">
+        <div class="sim-comp-box"><div class="sim-comp-label">Recruitment</div><div class="sim-comp-val" id="simPhaseR">—</div><div class="sim-comp-orig" id="simOrigR"></div></div>
+        <div class="sim-comp-box"><div class="sim-comp-label">Exploitation</div><div class="sim-comp-val" id="simPhaseE">—</div><div class="sim-comp-orig" id="simOrigE"></div></div>
+        <div class="sim-comp-box"><div class="sim-comp-label">Monetization</div><div class="sim-comp-val" id="simPhaseM">—</div><div class="sim-comp-orig" id="simOrigM"></div></div>
+        <div class="sim-comp-box"><div class="sim-comp-label">FLSRI Composite</div><div class="sim-comp-val" id="simComposite">—</div><div class="sim-comp-orig" id="simOrigC"></div></div>
+      </div>
+      <div class="sim-grid" id="simGrid"></div>
+    </div>
+  </div>
+
+  <!-- ===== SUB: Methodology ===== -->
+  <div class="data-subsection" id="data-methodology">
+    <div class="section" style="padding-top:2rem">
+      <div class="section-title">Methodology</div>
+      <div class="section-subtitle">How the FLSRI was designed, constructed, and validated.</div>
+      <div class="card" id="methodology-steps"></div>
+    </div>
+  </div>
+
+  <!-- ===== SUB: Data Pipeline ===== -->
+  <div class="data-subsection" id="data-pipeline">
   <div class="pipeline-hero">
     <h2>Data Pipeline</h2>
     <p>How raw numbers from 20+ global data sources become the structural risk scores you see in this dashboard. Every variable, every transformation, every step.</p>
@@ -1215,8 +1656,8 @@ a { color: var(--accent-blue); text-decoration: none; }
         <circle cx="790" cy="80" r="18" fill="#0f1923" stroke="#c4b5fd" stroke-width="2" filter="url(#glow)"/>
         <circle cx="950" cy="160" r="18" fill="#0f1923" stroke="#ef4444" stroke-width="2" filter="url(#glow)"/>
         <!-- Node numbers -->
-        <text x="50" y="165" text-anchor="middle" fill="#67e8f9" font-size="12" font-weight="800">80</text>
-        <text x="190" y="85" text-anchor="middle" fill="#93c5fd" font-size="12" font-weight="800">80</text>
+        <text x="50" y="165" text-anchor="middle" fill="#67e8f9" font-size="12" font-weight="800">64</text>
+        <text x="190" y="85" text-anchor="middle" fill="#93c5fd" font-size="12" font-weight="800">64</text>
         <text x="340" y="165" text-anchor="middle" fill="#c4b5fd" font-size="12" font-weight="800">36</text>
         <text x="490" y="245" text-anchor="middle" fill="#fcd34d" font-size="12" font-weight="800">13</text>
         <text x="640" y="165" text-anchor="middle" fill="#6ee7b7" font-size="12" font-weight="800">3</text>
@@ -1277,8 +1718,9 @@ a { color: var(--accent-blue); text-decoration: none; }
     </div>
   </div>
 
-<div class="phase-nav-footer"><button class="btn-phase-nav" onclick="showPage('reinforcement')">&larr; Data &amp; Rankings</button><div></div></div>
-</div>
+  </div><!-- /data-pipeline -->
+
+</div><!-- /page-data -->
 
 <!-- Country Modal -->
 <div class="modal-overlay" id="country-modal" onclick="if(event.target===this)closeModal()">
@@ -1298,20 +1740,106 @@ const plotlyLayout = {
 const plotlyConfig = { responsive: true, displayModeBar: false };
 
 // Page navigation
+// Route legacy page names to new structure
+const PAGE_REMAP = {
+  'reinforcement': 'data',
+  'pipeline': 'data',
+  'methodology': 'data',
+  'recruitment': 'framework',
+  'exploitation': 'framework',
+  'monetization': 'framework',
+};
+const PAGE_TO_DATASUB = {
+  'reinforcement': 'composite',
+  'pipeline': 'pipeline',
+  'methodology': 'methodology',
+};
+const PAGE_TO_FWSUB = {
+  'recruitment': 'recruitment',
+  'exploitation': 'exploitation',
+  'monetization': 'monetization',
+};
+
 function showPage(page) {
+  const dataSub = PAGE_TO_DATASUB[page];
+  const fwSub = PAGE_TO_FWSUB[page];
+  const actualPage = PAGE_REMAP[page] || page;
+
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
-  document.getElementById('page-' + page).classList.add('active');
-  const navLink = document.querySelector(`.nav-link[data-page="${page}"]`);
+  const pageEl = document.getElementById('page-' + actualPage);
+  if (pageEl) pageEl.classList.add('active');
+  const navLink = document.querySelector(`.nav-link[data-page="${actualPage}"]`);
   if (navLink) navLink.classList.add('active');
+
+  // Route to correct sub-section
+  if (dataSub) showDataSection(dataSub);
+  if (fwSub) showFrameworkSection(fwSub);
+
   // Hide nav on landing page, show elsewhere
   const nav = document.getElementById('main-nav');
-  if (page === 'landing') {
+  if (actualPage === 'landing') {
     nav.style.transform = 'translateY(-100%)';
   } else {
     nav.style.transform = 'translateY(0)';
   }
   window.scrollTo(0, 0);
+}
+
+// Framework sub-section navigation
+function showFrameworkSection(section) {
+  // Make sure we're on the framework page
+  const fwPage = document.getElementById('page-framework');
+  if (!fwPage.classList.contains('active')) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    fwPage.classList.add('active');
+    document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+    const navLink = document.querySelector('.nav-link[data-page="framework"]');
+    if (navLink) navLink.classList.add('active');
+    const nav = document.getElementById('main-nav');
+    nav.style.transform = 'translateY(0)';
+  }
+
+  // Switch sub-sections
+  document.querySelectorAll('.fw-subsection').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.fw-subnav-link').forEach(l => l.classList.remove('active'));
+  const sub = document.getElementById('fw-' + section);
+  if (sub) sub.classList.add('active');
+  const link = document.querySelector(`.fw-subnav-link[data-section="${section}"]`);
+  if (link) link.classList.add('active');
+
+  // Resize Plotly charts that were hidden
+  setTimeout(() => {
+    if (sub) sub.querySelectorAll('[id^="chart-"], [id^="map-"]').forEach(el => {
+      if (el.data) Plotly.Plots.resize(el);
+    });
+  }, 100);
+
+  window.scrollTo(0, 0);
+}
+
+// Data page sub-section navigation
+function showDataSection(section) {
+  document.querySelectorAll('.data-subsection').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.data-subnav-link').forEach(l => l.classList.remove('active'));
+  const sub = document.getElementById('data-' + section);
+  if (sub) sub.classList.add('active');
+  // Find matching subnav link
+  const links = document.querySelectorAll('.data-subnav-link');
+  const sectionMap = { composite: 0, map: 1, areas: 2, simulation: 3, methodology: 4, pipeline: 5 };
+  if (sectionMap[section] !== undefined && links[sectionMap[section]]) {
+    links[sectionMap[section]].classList.add('active');
+  }
+  // Resize any Plotly charts that were hidden
+  setTimeout(() => {
+    const sub = document.getElementById('data-' + section);
+    if (sub) sub.querySelectorAll('[id^="chart-"], [id^="map-"]').forEach(el => {
+      if (el.data) Plotly.Plots.resize(el);
+    });
+    // Invalidate Leaflet maps when switching to map/areas tabs
+    if (section === 'map' && window.lisaMap) window.lisaMap.invalidateSize();
+    if (section === 'areas' && window.regionMap) window.regionMap.invalidateSize();
+  }, 150);
 }
 
 // Color scale for scores
@@ -1629,7 +2157,7 @@ function buildReinforcementPage(countries, sorted) {
   // Reinforcement effect chart
   const withEffect = countries.filter(c => c['Reinforcement Effect'] != null)
     .sort((a, b) => a['Reinforcement Effect'] - b['Reinforcement Effect']);
-  Plotly.newPlot('chart-reinforcement', [{
+  Plotly.newPlot('chart-reinforcement-fw', [{
     x: withEffect.map(c => c.ISO3),
     y: withEffect.map(c => c['Reinforcement Effect']),
     type: 'bar',
@@ -2018,6 +2546,9 @@ function buildPipelinePage() {
   // Show first pipeline detail by default
   showPipelineDetail('raw');
 
+  // Initialize simulation page
+  simInit();
+
   // Initialize particle animation
   initParticleAnimation();
 }
@@ -2075,8 +2606,8 @@ function initParticleAnimation() {
 
   function animate() {
     // Only animate when pipeline page is visible
-    const pipelinePage = document.getElementById('page-pipeline');
-    if (!pipelinePage || !pipelinePage.classList.contains('active')) {
+    const pipelineSub = document.getElementById('data-pipeline');
+    if (!pipelineSub || !pipelineSub.classList.contains('active')) {
       requestAnimationFrame(animate);
       return;
     }
@@ -2201,11 +2732,316 @@ function showPipelineDetail(key) {
   `;
 }
 
+// ===== LISA CLUSTER MAP FUNCTIONS =====
+let lisaCurrentPhase = 'composite';
+let lisaCurrentCT = 'HH';
+let lisaGeoLayer = null;
+
+const LISA_COLORS = { 1: '#ef4444', 2: '#10b981', 3: '#3b82f6', 4: '#f59e0b', 0: '#2a3448' };
+const LISA_LABELS = { 1: 'HH', 2: 'LH', 3: 'LL', 4: 'HL', 0: 'NS' };
+const LISA_SCORE_KEYS = {
+  composite: 'composite', recruitment: 'recruitment', exploitation: 'exploitation',
+  monetization: 'monetization', mc_spatial: 'mc_spatial', mc_structural: 'mc_structural', mc_guardianship: 'mc_guardianship'
+};
+
+function initLisaMap() {
+  if (typeof GEO_DATA === 'undefined' || typeof LISA_CLUSTERS === 'undefined') { console.error('LISA data not loaded'); return; }
+  window.lisaMap = L.map('lisa-map', {
+    center: [20, 0], zoom: 2, minZoom: 2, maxZoom: 7,
+    zoomControl: true, attributionControl: false,
+    worldCopyJump: true
+  });
+
+  lisaGeoLayer = L.geoJSON(GEO_DATA, {
+    style: function(feature) {
+      const props = feature.properties;
+      const lisaObj = props.lisa ? props.lisa[lisaCurrentPhase] : null;
+      const q = (lisaObj && lisaObj.sig) ? lisaObj.q : 0;
+      return {
+        fillColor: LISA_COLORS[q] || LISA_COLORS[0],
+        fillOpacity: q ? 0.7 : 0.15,
+        weight: 0.8,
+        color: '#1a2736',
+        opacity: 1
+      };
+    },
+    onEachFeature: function(feature, layer) {
+      const p = feature.properties;
+      const sk = LISA_SCORE_KEYS[lisaCurrentPhase];
+      const score = p[sk];
+      const lisaObj = p.lisa ? p.lisa[lisaCurrentPhase] : null;
+      const q = (lisaObj && lisaObj.sig) ? lisaObj.q : 0;
+      const clLabel = LISA_LABELS[q] || 'NS';
+      layer.bindTooltip(
+        `<b>${p.name}</b><br>${sk}: ${score != null ? score.toFixed(3) : 'N/A'}<br>Cluster: ${clLabel}`,
+        { sticky: true, className: 'lisa-tooltip' }
+      );
+      layer.on('click', function() { lisaShowDetail(p); });
+    }
+  }).addTo(window.lisaMap);
+
+  lisaUpdateCounts();
+  lisaUpdateList();
+
+  // Force Leaflet to recalculate container size (needed when map inits in a tab)
+  setTimeout(function() {
+    window.lisaMap.invalidateSize();
+    window.lisaMap.setView([20, 0], 2);
+  }, 300);
+}
+
+function lisaUpdateMap() {
+  if (!lisaGeoLayer) return;
+  lisaGeoLayer.setStyle(function(feature) {
+    const lisaObj = feature.properties.lisa ? feature.properties.lisa[lisaCurrentPhase] : null;
+    const q = (lisaObj && lisaObj.sig) ? lisaObj.q : 0;
+    return {
+      fillColor: LISA_COLORS[q] || LISA_COLORS[0],
+      fillOpacity: q ? 0.7 : 0.15,
+      weight: 0.8, color: '#1a2736', opacity: 1
+    };
+  });
+  // Rebind tooltips with new phase
+  lisaGeoLayer.eachLayer(function(layer) {
+    const p = layer.feature.properties;
+    const sk = LISA_SCORE_KEYS[lisaCurrentPhase];
+    const score = p[sk];
+    const lisaObj = p.lisa ? p.lisa[lisaCurrentPhase] : null;
+    const q = (lisaObj && lisaObj.sig) ? lisaObj.q : 0;
+    layer.setTooltipContent(
+      `<b>${p.name}</b><br>${sk}: ${score != null ? score.toFixed(3) : 'N/A'}<br>Cluster: ${LISA_LABELS[q] || 'NS'}`
+    );
+  });
+}
+
+function lisaSwitchPhase(phase) {
+  lisaCurrentPhase = phase;
+  document.querySelectorAll('.lisa-phase-tab').forEach(t => t.classList.remove('active'));
+  const tab = document.querySelector(`.lisa-phase-tab[data-phase="${phase}"]`);
+  if (tab) tab.classList.add('active');
+  const m = LISA_MORAN[phase];
+  if (m) document.getElementById('lisaMoranVal').textContent = `I = ${m.I.toFixed(3)}`;
+  lisaUpdateCounts();
+  lisaUpdateMap();
+  lisaUpdateList();
+}
+
+function lisaUpdateCounts() {
+  const cl = LISA_CLUSTERS[lisaCurrentPhase] || {};
+  document.getElementById('lisaCountHH').textContent = (cl.HH || []).length;
+  document.getElementById('lisaCountLL').textContent = (cl.LL || []).length;
+  document.getElementById('lisaCountHL').textContent = (cl.HL || []).length;
+  document.getElementById('lisaCountLH').textContent = (cl.LH || []).length;
+}
+
+function lisaSelectCT(type) {
+  lisaCurrentCT = type;
+  document.querySelectorAll('.lisa-ct-btn').forEach(b => b.classList.remove('active'));
+  document.querySelector('.lisa-ct-' + type.toLowerCase()).classList.add('active');
+  lisaUpdateList();
+}
+
+function lisaUpdateList() {
+  const items = (LISA_CLUSTERS[lisaCurrentPhase] || {})[lisaCurrentCT] || [];
+  const container = document.getElementById('lisaCountryList');
+  if (items.length === 0) {
+    container.innerHTML = '<div style="padding:12px;text-align:center;color:var(--text-muted);font-size:12px">No countries in this cluster</div>';
+    return;
+  }
+  const ctColors = { HH: '#ef4444', LL: '#3b82f6', HL: '#f59e0b', LH: '#10b981' };
+  const color = ctColors[lisaCurrentCT] || '#3b82f6';
+  container.innerHTML = items.map((c, i) => {
+    const gap = c.gap != null ? c.gap : (c.score - (c.nb_mean || 0));
+    const gapClass = gap >= 0 ? 'lisa-gap-pos' : 'lisa-gap-neg';
+    return `<div class="lisa-list-item" onclick="lisaZoomTo('${c.iso}')">
+      <div class="lisa-li-rank">${i + 1}</div>
+      <div class="lisa-li-name">${c.name}</div>
+      <div class="lisa-li-score" style="color:${color}">${c.score.toFixed(3)}</div>
+      <div class="lisa-li-bar"><div class="lisa-li-bar-fill" style="width:${(c.score * 100).toFixed(0)}%;background:${color}"></div></div>
+      <div class="lisa-li-gap ${gapClass}">${gap >= 0 ? '+' : ''}${gap.toFixed(3)}</div>
+    </div>`;
+  }).join('');
+}
+
+function lisaZoomTo(iso) {
+  if (!lisaGeoLayer) return;
+  lisaGeoLayer.eachLayer(function(layer) {
+    if (layer.feature.properties.iso === iso) {
+      window.lisaMap.fitBounds(layer.getBounds(), { maxZoom: 5, padding: [20, 20] });
+      lisaShowDetail(layer.feature.properties);
+    }
+  });
+}
+
+function lisaShowDetail(props) {
+  const detail = document.getElementById('lisaDetail');
+  detail.classList.add('vis');
+  document.getElementById('lisaDetailName').textContent = props.name;
+
+  const sk = LISA_SCORE_KEYS[lisaCurrentPhase];
+  const score = props[sk];
+  const lisaObj = props.lisa ? props.lisa[lisaCurrentPhase] : null;
+  const q = (lisaObj && lisaObj.sig) ? lisaObj.q : 0;
+  const rank = props.rank;
+
+  document.getElementById('lisaDetailStats').innerHTML = `
+    <div class="lisa-detail-stat"><div class="lisa-ds-lbl">Score</div><div class="lisa-ds-val">${score != null ? score.toFixed(3) : 'N/A'}</div></div>
+    <div class="lisa-detail-stat"><div class="lisa-ds-lbl">Rank</div><div class="lisa-ds-val">#${rank || 'N/A'}</div></div>
+    <div class="lisa-detail-stat"><div class="lisa-ds-lbl">Cluster</div><div class="lisa-ds-val">${LISA_LABELS[q] || 'NS'}</div></div>
+    <div class="lisa-detail-stat"><div class="lisa-ds-lbl">Region</div><div class="lisa-ds-val" style="font-size:11px">${props.region || 'N/A'}</div></div>
+  `;
+
+  const phases = [
+    { key: 'recruitment', label: 'Recruitment', color: '#ef4444' },
+    { key: 'exploitation', label: 'Exploitation', color: '#f59e0b' },
+    { key: 'monetization', label: 'Monetization', color: '#10b981' },
+  ];
+  document.getElementById('lisaDetailBars').innerHTML = phases.map(p => {
+    const v = props[p.key];
+    return `<div class="lisa-bar-row">
+      <div class="lisa-bar-lbl">${p.label}</div>
+      <div class="lisa-bar-track"><div class="lisa-bar-fill" style="width:${((v||0)*100).toFixed(0)}%;background:${p.color}"></div></div>
+      <div class="lisa-bar-val" style="color:${p.color}">${v != null ? v.toFixed(3) : '—'}</div>
+    </div>`;
+  }).join('');
+
+  // Neighbors from cluster data
+  const clItems = (LISA_CLUSTERS[lisaCurrentPhase] || {})[lisaCurrentCT] || [];
+  const country = clItems.find(c => c.iso === props.iso);
+  const neighbors = country && country.neighbors ? country.neighbors : [];
+  document.getElementById('lisaDetailNeighbors').innerHTML = neighbors.length > 0
+    ? neighbors.map(n => `<div class="lisa-nb-item"><span class="lisa-nb-name">${n.name}</span><span class="lisa-nb-score">${n.score.toFixed(3)}</span></div>`).join('')
+    : '<div style="font-size:11px;color:var(--text-muted)">No neighbor data available</div>';
+}
+
+function lisaCloseDetail() {
+  document.getElementById('lisaDetail').classList.remove('vis');
+}
+
+// ===== REGIONAL ANALYSIS FUNCTIONS =====
+let regionGeoLayer = null;
+
+function initRegionMap() {
+  if (typeof GEO_DATA === 'undefined' || typeof LISA_REGIONS === 'undefined') { console.error('Region data not loaded'); return; }
+  window.regionMap = L.map('region-map', {
+    center: [20, 0], zoom: 2, minZoom: 2, maxZoom: 7,
+    zoomControl: true, attributionControl: false, worldCopyJump: true
+  });
+
+  // Color countries by region
+  const regionList = LISA_REGION_ORDER || Object.keys(LISA_REGIONS);
+  const regionHues = {};
+  regionList.forEach((r, i) => { regionHues[r] = (i * 360 / regionList.length); });
+
+  regionGeoLayer = L.geoJSON(GEO_DATA, {
+    style: function(feature) {
+      const region = feature.properties.region;
+      const hue = regionHues[region] != null ? regionHues[region] : 0;
+      return {
+        fillColor: `hsl(${hue}, 55%, 45%)`,
+        fillOpacity: 0.5,
+        weight: 0.8, color: '#1a2736', opacity: 1
+      };
+    },
+    onEachFeature: function(feature, layer) {
+      const p = feature.properties;
+      layer.bindTooltip(`<b>${p.name}</b><br>Region: ${p.region}<br>Composite: ${p.composite != null ? p.composite.toFixed(3) : 'N/A'}`, { sticky: true });
+    }
+  }).addTo(window.regionMap);
+
+  buildRegionCards();
+
+  // Force Leaflet to recalculate container size
+  setTimeout(function() {
+    window.regionMap.invalidateSize();
+    window.regionMap.setView([20, 0], 2);
+  }, 300);
+}
+
+function buildRegionCards() {
+  const container = document.getElementById('regionPanel');
+  const regionList = LISA_REGION_ORDER || Object.keys(LISA_REGIONS);
+  const ctColors = { HH: '#ef4444', LL: '#3b82f6', HL: '#f59e0b', LH: '#10b981', NS: '#2a3448' };
+
+  container.innerHTML = regionList.map(rName => {
+    const reg = LISA_REGIONS[rName];
+    if (!reg) return '';
+    const countries = reg.countries || [];
+    const n = reg.n || countries.length;
+    const mean = countries.length > 0 ? countries.reduce((s, c) => s + (c.composite || c.score || 0), 0) / countries.length : 0;
+
+    // Count LISA types for this region from cluster data
+    const cl = LISA_CLUSTERS.composite || {};
+    const lisaCounts = { HH: 0, LL: 0, HL: 0, LH: 0 };
+    const regionIsos = new Set(countries.map(c => c.iso));
+    Object.entries(cl).forEach(([type, items]) => {
+      if (lisaCounts[type] !== undefined) {
+        lisaCounts[type] = items.filter(c => regionIsos.has(c.iso)).length;
+      }
+    });
+    const totalLisa = Object.values(lisaCounts).reduce((a, b) => a + b, 0);
+    const nsCount = n - totalLisa;
+
+    // LISA bar
+    const lisaBar = Object.entries(lisaCounts).map(([type, count]) => {
+      if (count === 0) return '';
+      const pct = (count / n * 100).toFixed(1);
+      return `<div class="rc-lisa-seg" style="width:${pct}%;background:${ctColors[type]}"></div>`;
+    }).join('') + (nsCount > 0 ? `<div class="rc-lisa-seg" style="width:${(nsCount/n*100).toFixed(1)}%;background:${ctColors.NS}"></div>` : '');
+
+    // Dominant cluster
+    const dominant = Object.entries(lisaCounts).sort((a, b) => b[1] - a[1])[0];
+    const domLabel = dominant[1] > 0 ? dominant[0] : 'NS';
+
+    return `<div class="region-card" onclick="regionZoomTo('${rName}')">
+      <div class="rc-header"><div class="rc-name">${rName}</div><div class="rc-n">${n} countries</div></div>
+      <div class="rc-stats">
+        <div><div class="rc-stat-val">${mean.toFixed(3)}</div><div class="rc-stat-lbl">Mean Composite</div></div>
+        <div><div class="rc-stat-val" style="color:${ctColors[domLabel]}">${domLabel}</div><div class="rc-stat-lbl">Dominant Cluster</div></div>
+        <div><div class="rc-stat-val">${lisaCounts.HH}</div><div class="rc-stat-lbl">High-High</div></div>
+      </div>
+      <div class="rc-lisa-bar">${lisaBar}</div>
+    </div>`;
+  }).join('');
+}
+
+function regionZoomTo(regionName) {
+  if (!regionGeoLayer || !window.regionMap) return;
+  const bounds = [];
+  regionGeoLayer.eachLayer(function(layer) {
+    if (layer.feature.properties.region === regionName) {
+      bounds.push(layer.getBounds());
+    }
+  });
+  if (bounds.length > 0) {
+    let combined = bounds[0];
+    bounds.slice(1).forEach(b => combined.extend(b));
+    window.regionMap.fitBounds(combined, { padding: [30, 30] });
+  }
+  // Highlight active card
+  document.querySelectorAll('.region-card').forEach(c => c.classList.remove('active'));
+  event.currentTarget.classList.add('active');
+}
+
 // Data is loaded via <script src="flsri-data.js"> in the HTML head
 // Initialize once DOM is ready
 if (DATA) {
   buildDashboard();
   buildPipelinePage();
+  // LISA and Region maps init lazily on first tab visit
+  let lisaInited = false, regionInited = false;
+  const origShowDataSection = showDataSection;
+  showDataSection = function(section) {
+    origShowDataSection(section);
+    if (section === 'map' && !lisaInited) {
+      lisaInited = true;
+      setTimeout(initLisaMap, 200);
+    }
+    if (section === 'areas' && !regionInited) {
+      regionInited = true;
+      setTimeout(initRegionMap, 200);
+    }
+  };
   document.getElementById('loading').style.display = 'none';
 } else {
   document.getElementById('loading').innerHTML = '<div style="color:#ef4444;text-align:center;padding:2rem"><h2>No data found</h2><p style="color:var(--text-secondary);margin-top:1rem">Make sure flsri-data.js is in the same folder as index.html.</p></div>';
@@ -2213,6 +3049,163 @@ if (DATA) {
 
 // Keyboard shortcut: Escape closes modal
 document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+/* ============================================================
+   SIMULATION ENGINE
+   ============================================================ */
+var SIM = { country: null, baseline: {}, current: {} };
+
+function simInit() {
+  var picker = document.getElementById('simCountryPicker');
+  if (!picker || !DATA || !DATA.countries) return;
+  var sorted = DATA.countries.slice().sort(function(a,b){ return (a.ISO3||'').localeCompare(b.ISO3||''); });
+  sorted.forEach(function(c) {
+    var o = document.createElement('option');
+    o.value = c.ISO3;
+    o.textContent = c.ISO3;
+    picker.appendChild(o);
+  });
+  picker.addEventListener('change', function(){ simSelectCountry(this.value); });
+}
+
+function simSelectCountry(iso) {
+  if (!iso) return;
+  var c = DATA.countries.find(function(x){ return x.ISO3 === iso; });
+  if (!c) return;
+  SIM.country = c;
+  SIM.baseline = {};
+  SIM.current = {};
+  var meta = DATA.indicatorMetadata || [];
+  meta.forEach(function(m) {
+    var colKey = m['Column in Index'] || m['Indicator Code'] || m.code;
+    var val = c[colKey];
+    if (val != null && !isNaN(val)) {
+      SIM.baseline[colKey] = val;
+      SIM.current[colKey] = val;
+    }
+  });
+  simBuildSliders();
+  simRecalculate();
+}
+
+function simBuildSliders() {
+  var grid = document.getElementById('simGrid');
+  if (!grid) return;
+  grid.innerHTML = '';
+  var domains = DATA.domainArchitecture || [];
+  var meta = DATA.indicatorMetadata || [];
+  domains.forEach(function(d) {
+    var dCode = d['Domain Code'] || d.code;
+    var dName = d['Domain Name'] || d.name || dCode;
+    var phaseName = d['Phase Name'] || d.Phase || d.phase || '';
+    var phaseColor = phaseName === 'Recruitment' ? 'var(--accent-recruit)' :
+                     phaseName === 'Exploitation' ? 'var(--accent-exploit)' :
+                     phaseName === 'Monetization' ? 'var(--accent-monetize)' : 'var(--accent-blue)';
+    var indicators = meta.filter(function(m){ return String(m['Domain Code'] || m.domain) === String(dCode); });
+    var hasAny = indicators.some(function(m){ var colKey = m['Column in Index'] || m['Indicator Code'] || m.code; return SIM.baseline[colKey] != null; });
+    if (!hasAny) return;
+    var card = document.createElement('div');
+    card.className = 'sim-phase-card';
+    card.innerHTML = '<h3><span class="sim-phase-dot" style="background:'+phaseColor+'"></span>'+dName+'</h3>';
+    indicators.forEach(function(m) {
+      var colKey = m['Column in Index'] || m['Indicator Code'] || m.code;
+      var iName = m['Indicator Name'] || m.name || colKey;
+      var val = SIM.baseline[colKey];
+      if (val == null) return;
+      var safeId = colKey.replace(/[^a-zA-Z0-9]/g, '_');
+      var row = document.createElement('div');
+      row.className = 'sim-indicator-row';
+      row.innerHTML = '<label title="'+iName+'">'+iName+'</label>' +
+        '<input type="range" min="0" max="1" step="0.001" value="'+val.toFixed(4)+'" data-code="'+colKey+'" oninput="simSliderChanged(this)">' +
+        '<span class="sim-val" id="sv-'+safeId+'">'+val.toFixed(2)+'</span>';
+      card.appendChild(row);
+    });
+    var scoreDiv = document.createElement('div');
+    scoreDiv.className = 'sim-domain-score';
+    scoreDiv.id = 'sd-' + String(dCode).replace(/[^a-zA-Z0-9]/g, '_');
+    scoreDiv.textContent = 'Domain score: —';
+    card.appendChild(scoreDiv);
+    grid.appendChild(card);
+  });
+}
+
+function simSliderChanged(el) {
+  var colKey = el.getAttribute('data-code');
+  var val = parseFloat(el.value);
+  SIM.current[colKey] = val;
+  var safeId = colKey.replace(/[^a-zA-Z0-9]/g, '_');
+  var span = document.getElementById('sv-' + safeId);
+  if (span) span.textContent = val.toFixed(2);
+  simRecalculate();
+}
+
+function simRecalculate() {
+  var domains = DATA.domainArchitecture || [];
+  var meta = DATA.indicatorMetadata || [];
+  var domainScores = {};
+  domains.forEach(function(d) {
+    var dCode = d['Domain Code'] || d.code;
+    var indicators = meta.filter(function(m){ return String(m['Domain Code'] || m.domain) === String(dCode); });
+    var sum = 0, count = 0;
+    indicators.forEach(function(m) {
+      var colKey = m['Column in Index'] || m['Indicator Code'] || m.code;
+      var val = SIM.current[colKey];
+      if (val != null && !isNaN(val)) { sum += val; count++; }
+    });
+    domainScores[dCode] = count > 0 ? sum / count : null;
+    var safeId = String(dCode).replace(/[^a-zA-Z0-9]/g, '_');
+    simUpdateCard(safeId, domainScores[dCode]);
+  });
+  var phases = { Recruitment: [], Exploitation: [], Monetization: [] };
+  domains.forEach(function(d) {
+    var dCode = d['Domain Code'] || d.code;
+    var phaseName = d['Phase Name'] || d.Phase || d.phase || '';
+    if (phases[phaseName] && domainScores[dCode] != null) phases[phaseName].push(domainScores[dCode]);
+  });
+  var R = phases.Recruitment.length > 0 ? phases.Recruitment.reduce(function(a,b){return a+b;},0) / phases.Recruitment.length : null;
+  var E = phases.Exploitation.length > 0 ? phases.Exploitation.reduce(function(a,b){return a+b;},0) / phases.Exploitation.length : null;
+  var M = phases.Monetization.length > 0 ? phases.Monetization.reduce(function(a,b){return a+b;},0) / phases.Monetization.length : null;
+  var Radj = null;
+  if (R != null && E != null && M != null) {
+    Radj = R * Math.max(0.50, Math.pow(E * M, 0.2));
+  }
+  var composite = null;
+  if (Radj != null && E != null && M != null) {
+    composite = Math.pow(Math.max(0.05, Radj) * Math.max(0.05, E) * Math.max(0.05, M), 1/3);
+  }
+  simUpdateComposite('R', R, SIM.country ? SIM.country['RECRUITMENT'] : null);
+  simUpdateComposite('E', E, SIM.country ? SIM.country['EXPLOITATION'] : null);
+  simUpdateComposite('M', M, SIM.country ? SIM.country['MONETIZATION'] : null);
+  simUpdateComposite('C', composite, SIM.country ? SIM.country['COMPOSITE INDEX'] : null);
+}
+
+function simUpdateCard(dCode, score) {
+  var el = document.getElementById('sd-' + dCode);
+  if (!el) return;
+  el.textContent = 'Domain score: ' + (score != null ? score.toFixed(2) : '—');
+}
+
+function simUpdateComposite(key, val, orig) {
+  var elVal = key === 'C' ? document.getElementById('simComposite') : document.getElementById('simPhase' + key);
+  var elOrig = document.getElementById('simOrig' + key);
+  if (!elVal) return;
+  if (val == null) { elVal.textContent = '—'; if(elOrig) elOrig.innerHTML = ''; return; }
+  elVal.textContent = val.toFixed(2);
+  if (orig != null && elOrig) {
+    var diff = val - orig;
+    var cls = diff > 0.005 ? 'up' : diff < -0.005 ? 'down' : 'same';
+    var arrow = diff > 0.005 ? '▲' : diff < -0.005 ? '▼' : '—';
+    elOrig.innerHTML = 'Baseline: ' + orig.toFixed(2) + ' <span class="sim-arrow '+cls+'">' + arrow + ' ' + Math.abs(diff).toFixed(2) + '</span>';
+  }
+}
+
+function simUpdateDomains() { /* included in simRecalculate */ }
+
+function simReset() {
+  if (!SIM.country) return;
+  simSelectCountry(SIM.country.ISO3);
+}
+
 </script>
 </body>
 </html>
