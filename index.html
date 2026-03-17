@@ -989,23 +989,6 @@ a { color: var(--accent-blue); text-decoration: none; }
 .lisa-nb-name { color: var(--text-secondary); }
 .lisa-nb-score { font-weight: 600; font-variant-numeric: tabular-nums; }
 
-/* ===== Regional Analysis (Areas of Interest) ===== */
-.region-layout { display: grid; grid-template-columns: 1fr 360px; height: 650px; border-radius: 10px; overflow: hidden; border: 1px solid var(--border); }
-.region-panel { background: var(--bg-card); border-left: 1px solid var(--border); overflow-y: auto; padding: 14px 16px; }
-.region-card {
-  background: rgba(255,255,255,0.02); border: 1px solid var(--border); border-radius: 8px;
-  padding: 12px; margin-bottom: 8px; cursor: pointer; transition: all 0.12s;
-}
-.region-card:hover { border-color: rgba(100,160,240,0.3); background: rgba(255,255,255,0.04); }
-.region-card.active { border-color: rgba(59,130,246,0.4); background: rgba(59,130,246,0.06); }
-.rc-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
-.rc-name { font-size: 13px; font-weight: 600; }
-.rc-n { font-size: 10px; color: var(--text-muted); }
-.rc-stats { display: flex; gap: 12px; margin-bottom: 6px; }
-.rc-stat-val { font-size: 14px; font-weight: 700; font-variant-numeric: tabular-nums; }
-.rc-stat-lbl { font-size: 9px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.3px; }
-.rc-lisa-bar { display: flex; gap: 2px; height: 6px; border-radius: 3px; overflow: hidden; }
-.rc-lisa-seg { height: 100%; }
 
 /* Leaflet overrides for dark theme */
 .leaflet-container { background: var(--bg-dark) !important; }
@@ -1015,8 +998,8 @@ a { color: var(--accent-blue); text-decoration: none; }
 .leaflet-tooltip-top:before, .leaflet-tooltip-bottom:before, .leaflet-tooltip-left:before, .leaflet-tooltip-right:before { border-top-color: rgba(15,25,35,0.95) !important; }
 
 @media (max-width: 1100px) {
-  .lisa-layout, .region-layout { grid-template-columns: 1fr; height: auto; }
-  .lisa-layout .lisa-map-wrap, .region-layout .lisa-map-wrap { height: 450px; }
+  .lisa-layout { grid-template-columns: 1fr; height: auto; }
+  .lisa-layout .lisa-map-wrap { height: 450px; }
 }
 
 /* ===== Simulation Page Styles ===== */
@@ -1092,7 +1075,7 @@ a { color: var(--accent-blue); text-decoration: none; }
     </div>
   </div>
 
-  <div class="landing-footer">195 countries &middot; 36 indicators &middot; ~64 raw variables &middot; 3 phases &middot; 1 self-reinforcing loop</div>
+  <div class="landing-footer">195 countries &middot; 37 indicators &middot; ~62 raw variables &middot; 3 phases &middot; 1 self-reinforcing loop</div>
 </div>
 
 <!-- ========== FRAMEWORK PAGE ========== -->
@@ -1165,7 +1148,7 @@ a { color: var(--accent-blue); text-decoration: none; }
         </div>
         <div class="compare-card" style="border-left:3px solid var(--accent-reinforce)">
           <div class="compare-title" style="color:#c4b5fd">The Structural Insight</div>
-          <div class="compare-item">Trafficking persists where all three conditions co-exist. Arresting individual offenders does not alter the structural conditions&mdash;operatives are replaced</div>
+          <div class="compare-item">Trafficking persists where all three conditions co-exist. Eeforcement alone cannot alter the structural conditions while the enabling environment persists.</div>
           <div class="compare-result positive">The FLSRI measures the environment, not the actors</div>
         </div>
       </div>
@@ -1219,12 +1202,12 @@ a { color: var(--accent-blue); text-decoration: none; }
             <strong>Domains</strong>
             <ul class="phase-mech-list">
               <li>Structural Disruption</li>
-              <li>Displacement &amp; Transit</li>
+              <li>Mobility Pressure</li>
               <li>Reduced Bargaining Power</li>
               <li>Institutional Protection Deficit</li>
             </ul>
           </div>
-          <div class="phase-comp">4 domains &middot; 15 indicators</div>
+          <div class="phase-comp">4 domains &middot; 17 indicators</div>
         </div>
         <div class="phase-def-card exploit-def">
           <h3>Phase 2: Exploitation</h3>
@@ -1234,13 +1217,13 @@ a { color: var(--accent-blue); text-decoration: none; }
             <strong>Domains</strong>
             <ul class="phase-mech-list">
               <li>Enforcement Capacity</li>
-              <li>Concealment Geography</li>
+              <li>Geographic Isolation &amp; Access Barriers</li>
               <li>Sector Exposure</li>
               <li>Institutional Coercion Enablement</li>
               <li>Structural Entrapment</li>
             </ul>
           </div>
-          <div class="phase-comp">5 domains &middot; 15 indicators</div>
+          <div class="phase-comp">5 domains &middot; 14 indicators</div>
         </div>
         <div class="phase-def-card monetize-def">
           <h3>Phase 3: Monetization</h3>
@@ -1432,7 +1415,6 @@ a { color: var(--accent-blue); text-decoration: none; }
   <div class="data-subnav">
     <div class="data-subnav-link active" onclick="showDataSection('composite')">Composite Index</div>
     <div class="data-subnav-link" onclick="showDataSection('map')">Explore the Map</div>
-    <div class="data-subnav-link" onclick="showDataSection('areas')">Areas of Interest</div>
     <div class="data-subnav-link" onclick="showDataSection('simulation')">Simulation</div>
     <div class="data-subnav-link" onclick="showDataSection('methodology')">Methodology</div>
     <div class="data-subnav-link" onclick="showDataSection('pipeline')">Data Pipeline</div>
@@ -1511,7 +1493,7 @@ a { color: var(--accent-blue); text-decoration: none; }
             <div class="lisa-legend-row"><div class="lisa-legend-dot" style="background:#2a3448"></div>Not significant</div>
           </div>
           <div class="lisa-moran-badge">
-            <div class="lisa-moran-val" id="lisaMoranVal">I = 0.675</div>
+            <div class="lisa-moran-val" id="lisaMoranVal">I = 0.483</div>
             <div class="lisa-moran-lbl">Global Moran's I (p &lt; 0.001)</div>
           </div>
         </div>
@@ -1568,20 +1550,6 @@ a { color: var(--accent-blue); text-decoration: none; }
     </div>
   </div>
 
-  <!-- ===== SUB: Areas of Interest (Regional Analysis) ===== -->
-  <div class="data-subsection" id="data-areas">
-    <div class="section" style="padding-top:2rem">
-      <div class="section-title">Regional Analysis</div>
-      <div class="section-subtitle">Aggregated risk profiles by geographic region. Each region card shows mean composite score, dominant cluster type, and LISA cluster distribution. Click a region to zoom in and see its countries.</div>
-
-      <div class="region-layout" style="margin-top:1rem">
-        <div class="lisa-map-wrap">
-          <div id="region-map" class="lisa-map"></div>
-        </div>
-        <div class="region-panel" id="regionPanel"></div>
-      </div>
-    </div>
-  </div>
 
   <!-- ===== SUB: Simulation ===== -->
   <div class="data-subsection" id="data-simulation">
@@ -1826,7 +1794,7 @@ function showDataSection(section) {
   if (sub) sub.classList.add('active');
   // Find matching subnav link
   const links = document.querySelectorAll('.data-subnav-link');
-  const sectionMap = { composite: 0, map: 1, areas: 2, simulation: 3, methodology: 4, pipeline: 5 };
+  const sectionMap = { composite: 0, map: 1, simulation: 2, methodology: 3, pipeline: 4 };
   if (sectionMap[section] !== undefined && links[sectionMap[section]]) {
     links[sectionMap[section]].classList.add('active');
   }
@@ -1836,9 +1804,8 @@ function showDataSection(section) {
     if (sub) sub.querySelectorAll('[id^="chart-"], [id^="map-"]').forEach(el => {
       if (el.data) Plotly.Plots.resize(el);
     });
-    // Invalidate Leaflet maps when switching to map/areas tabs
+    // Invalidate Leaflet map when switching to map tab
     if (section === 'map' && window.lisaMap) window.lisaMap.invalidateSize();
-    if (section === 'areas' && window.regionMap) window.regionMap.invalidateSize();
   }, 150);
 }
 
@@ -1892,7 +1859,7 @@ function buildSummaryStats(countries) {
 
   document.getElementById('summary-stats').innerHTML = `
     <div class="stat-card"><div class="stat-value" style="color:var(--accent-blue)">195</div><div class="stat-label">Countries Assessed</div></div>
-    <div class="stat-card"><div class="stat-value" style="color:var(--accent-blue)">36</div><div class="stat-label">Indicators</div></div>
+    <div class="stat-card"><div class="stat-value" style="color:var(--accent-blue)">37</div><div class="stat-label">Indicators</div></div>
     <div class="stat-card"><div class="stat-value" style="color:var(--accent-blue)">13</div><div class="stat-label">Risk Domains</div></div>
     <div class="stat-card"><div class="stat-value" style="color:var(--accent-blue)">3</div><div class="stat-label">Trafficking Phases</div></div>
   `;
@@ -1936,10 +1903,10 @@ function buildPhaseCards() {
   const phases = [
     { cls: 'recruit', num: '1', title: 'Recruitment', page: 'recruitment',
       desc: 'Where traffickers gain access to victims. Structural conditions that generate exposed, immobile, or coercible populations.',
-      color: '#fca5a5', domains: '4 domains, 15 indicators' },
+      color: '#fca5a5', domains: '4 domains, 17 indicators' },
     { cls: 'exploit', num: '2', title: 'Exploitation', page: 'exploitation',
       desc: 'Where labor is extracted under coercion. Conditions that suppress resistance and enable sustained control.',
-      color: '#fcd34d', domains: '5 domains, 15 indicators' },
+      color: '#fcd34d', domains: '5 domains, 14 indicators' },
     { cls: 'monetize', num: '3', title: 'Monetization', page: 'monetization',
       desc: 'Where proceeds are retained and reinvested. Conditions that enable value extraction from trafficking operations.',
       color: '#6ee7b7', domains: '4 domains, 6 indicators' },
@@ -1957,11 +1924,11 @@ function buildPhaseCards() {
 
 function buildMethodologySteps() {
   const steps = [
-    { title: 'Indicator Normalization', desc: 'All 36 indicators are pre-normalized to [0, 1] where higher values indicate higher structural risk. Most use within-year min-max rescaling.', formula: 'x_norm = (x - min) / (max - min)' },
-    { title: 'Domain Aggregation', desc: 'Indicators are grouped into 13 thematic domains. Each domain score is the equal-weighted arithmetic mean of its constituent indicators (pairwise available).', formula: 'D = (1/n) x Sum(indicators)' },
-    { title: 'Phase Aggregation', desc: 'Domains are grouped into 3 phases. Each phase score is the equal-weighted arithmetic mean of its domain scores.', formula: 'P = (1/d) x Sum(domains)' },
-    { title: 'Reinforcement Adjustment', desc: 'Exploitation and monetization jointly modify recruitment risk. A geometric interaction captures the self-reinforcing trafficking loop.', formula: 'R_adj = R x max(0.50, (E x M)^0.2)' },
-    { title: 'Composite Index', desc: 'The geometric mean of adjusted phase scores produces the final composite. This penalizes imbalance: risk must exist across all phases to score high.', formula: 'FLSRI = (R_adj x E x M)^(1/3)' },
+    { title: 'Indicator Normalization', desc: 'All 37 indicators are pre-normalized to [0, 1] where higher values indicate higher structural risk. Most use within-year min-max rescaling.', formula: 'x_norm = (x - min) / (max - min)' },
+    { title: 'Domain Aggregation', desc: 'Indicators are grouped into 13 thematic domains. Most domains use equal-weighted arithmetic mean. Domain 1.3 (Reduced Bargaining Power) uses a core-amplifier model where Child Labor and Inequality amplify the core indicators.', formula: 'D1.3_adj = mean(core) × (1 + 0.2 × mean(amplifiers))' },
+    { title: 'Phase Aggregation', desc: 'Domains are grouped into 3 phases. Each phase score is the equal-weighted arithmetic mean of its domain scores.', formula: 'P = (1/d) × Sum(domains)' },
+    { title: 'Reinforcement Adjustment', desc: 'Exploitation and monetization jointly modify recruitment risk. A geometric interaction captures the self-reinforcing trafficking loop.', formula: 'R_adj = P1 × max(0.50, (P2 × P3)^0.2)' },
+    { title: 'Composite Index', desc: 'The geometric mean of adjusted phase scores produces the final composite, with a floor of 0.05 per phase. This penalizes imbalance: risk must exist across all phases to score high.', formula: 'FLSRI = (max(0.05, R_adj) × max(0.05, P2) × max(0.05, P3))^(1/3)' },
   ];
 
   document.getElementById('methodology-steps').innerHTML = steps.map((s, i) => `
@@ -1990,7 +1957,7 @@ function buildTop20(sorted) {
       <td>${scoreBadge(c['RECRUITMENT'])}</td>
       <td>${scoreBadge(c['EXPLOITATION'])}</td>
       <td>${scoreBadge(c['MONETIZATION'])}</td>
-      <td>${(c['Reinforcement Effect'] || 0).toFixed(4)}</td>
+      <td>${((c['RECRUITMENT (adjusted)'] || 0) - (c['RECRUITMENT'] || 0)).toFixed(4)}</td>
     </tr>`;
   });
   html += '</tbody></table>';
@@ -2121,7 +2088,7 @@ function buildPhasePage(pageId, phaseCol, phaseNum, color, lightColor) {
       <span class="domain-code">${d['Domain Code']} | ${d['Mechanism Class']} | ${d['Indicator Count']} indicators</span></div>
       <span class="chevron">&#9654;</span>
     </div><div class="domain-body">
-      <p style="font-size:0.85rem;color:var(--text-secondary);margin-bottom:1rem">${d['Domain Description']}</p>
+      <p style="font-size:0.85rem;color:var(--text-secondary);margin-bottom:1rem">${d['Description']}</p>
     </div></div>`;
   });
   document.getElementById(prefix + '-domains').innerHTML = domHtml;
@@ -2155,19 +2122,20 @@ function buildPhasePage(pageId, phaseCol, phaseNum, color, lightColor) {
 // === REINFORCEMENT PAGE ===
 function buildReinforcementPage(countries, sorted) {
   // Reinforcement effect chart
-  const withEffect = countries.filter(c => c['Reinforcement Effect'] != null)
-    .sort((a, b) => a['Reinforcement Effect'] - b['Reinforcement Effect']);
+  const withEffect = countries.filter(c => c['RECRUITMENT (adjusted)'] != null && c['RECRUITMENT'] != null)
+    .map(c => ({...c, _reEffect: c['RECRUITMENT (adjusted)'] - c['RECRUITMENT']}))
+    .sort((a, b) => a._reEffect - b._reEffect);
   Plotly.newPlot('chart-reinforcement-fw', [{
     x: withEffect.map(c => c.ISO3),
-    y: withEffect.map(c => c['Reinforcement Effect']),
+    y: withEffect.map(c => c._reEffect),
     type: 'bar',
     marker: {
-      color: withEffect.map(c => c['Reinforcement Effect'] < -0.1 ? '#8b5cf6' : c['Reinforcement Effect'] < -0.05 ? '#a78bfa' : '#c4b5fd'),
+      color: withEffect.map(c => c._reEffect < -0.1 ? '#8b5cf6' : c._reEffect < -0.05 ? '#a78bfa' : '#c4b5fd'),
     },
     hovertemplate: '%{x}: %{y:.4f}<extra></extra>',
   }], {
     ...plotlyLayout,
-    yaxis: { ...plotlyLayout.yaxis, title: 'Reinforcement Effect' },
+    yaxis: { ...plotlyLayout.yaxis, title: 'Reinforcement Effect (R_adj − R)' },
     xaxis: { ...plotlyLayout.xaxis, showticklabels: false, title: 'Countries (sorted by effect)' },
     margin: { ...plotlyLayout.margin, b: 60 },
   }, plotlyConfig);
@@ -2230,9 +2198,9 @@ function updateRadar() {
   if (!c) return;
 
   const domainCols = [
-    'R: Structural Disruption', 'R: Displacement & Transit',
+    'R: Structural Disruption', 'R: Mobility Pressure',
     'R: Reduced Bargaining Power', 'R: Institutional Protection Deficit',
-    'E: Enforcement Capacity', 'E: Concealment Geography',
+    'E: Enforcement Capacity', 'E: Geographic Isolation & Access Barriers',
     'E: Sector Exposure', 'E: Institutional Coercion Enablement',
     'E: Structural Entrapment',
     'M: Financial Architecture Opacity', 'M: Laundering Capacity',
@@ -2270,7 +2238,7 @@ function updateRadar() {
       <div class="stat-card"><div class="stat-value" style="font-size:1.3rem;color:#fca5a5">${(c['RECRUITMENT'] || 0).toFixed(4)}</div><div class="stat-label">Recruitment</div></div>
       <div class="stat-card"><div class="stat-value" style="font-size:1.3rem;color:#fcd34d">${(c['EXPLOITATION'] || 0).toFixed(4)}</div><div class="stat-label">Exploitation</div></div>
       <div class="stat-card"><div class="stat-value" style="font-size:1.3rem;color:#6ee7b7">${(c['MONETIZATION'] || 0).toFixed(4)}</div><div class="stat-label">Monetization</div></div>
-      <div class="stat-card"><div class="stat-value" style="font-size:1.3rem;color:#a78bfa">${(c['Reinforcement Effect'] || 0).toFixed(4)}</div><div class="stat-label">Reinforcement</div></div>
+      <div class="stat-card"><div class="stat-value" style="font-size:1.3rem;color:#a78bfa">${(c['RECRUITMENT (adjusted)'] || 0).toFixed(4)}</div><div class="stat-label">R (adjusted)</div></div>
     </div>
   `;
 }
@@ -2288,7 +2256,7 @@ function buildFullRankings(sorted) {
       <td>${scoreBadge(c['RECRUITMENT (adjusted)'])}</td>
       <td>${scoreBadge(c['EXPLOITATION'])}</td>
       <td>${scoreBadge(c['MONETIZATION'])}</td>
-      <td>${(c['Reinforcement Effect'] || 0).toFixed(4)}</td>
+      <td>${((c['RECRUITMENT (adjusted)'] || 0) - (c['RECRUITMENT'] || 0)).toFixed(4)}</td>
     </tr>`;
   });
   html += '</tbody></table>';
@@ -2326,14 +2294,37 @@ function openCountryModal(iso) {
     </tr>`;
   });
 
+  // Missingness bars
+  const missData = [
+    { label: 'Composite', key: 'miss_composite', color: '#c4b5fd' },
+    { label: 'Recruitment', key: 'miss_p1', color: '#fca5a5' },
+    { label: 'Exploitation', key: 'miss_p2', color: '#fcd34d' },
+    { label: 'Monetization', key: 'miss_p3', color: '#6ee7b7' },
+  ];
+  const missHTML = missData.map(m => {
+    const pct = c[m.key] != null ? (c[m.key] * 100).toFixed(0) : '?';
+    const avail = c[m.key] != null ? ((1 - c[m.key]) * 100).toFixed(0) : '?';
+    return `<div style="display:flex;align-items:center;gap:6px;margin-bottom:4px">
+      <span style="width:80px;font-size:0.7rem;color:var(--text-muted);text-align:right">${m.label}</span>
+      <div style="flex:1;height:10px;background:rgba(255,255,255,0.05);border-radius:5px;overflow:hidden;position:relative">
+        <div style="width:${avail}%;height:100%;background:${m.color};opacity:0.6;border-radius:5px"></div>
+      </div>
+      <span style="width:40px;font-size:0.65rem;color:${parseInt(pct) > 30 ? '#f87171' : 'var(--text-muted)'}">${pct}% miss</span>
+    </div>`;
+  }).join('');
+
   document.getElementById('modal-content').innerHTML = `
     <button class="modal-close" onclick="closeModal()">&times;</button>
     <h2 style="margin-bottom:0.5rem">${iso}</h2>
-    <div style="display:flex;gap:1rem;flex-wrap:wrap;margin-bottom:1.5rem">
+    <div style="display:flex;gap:1rem;flex-wrap:wrap;margin-bottom:1rem">
       <div class="stat-card" style="flex:1;min-width:120px"><div class="stat-value" style="font-size:1.5rem;color:#c4b5fd">${(c['COMPOSITE INDEX'] || 0).toFixed(4)}</div><div class="stat-label">Composite (Rank ${c['COMPOSITE RANK'] || 'N/A'})</div></div>
       <div class="stat-card" style="flex:1;min-width:100px"><div class="stat-value" style="font-size:1.3rem;color:#fca5a5">${(c['RECRUITMENT'] || 0).toFixed(4)}</div><div class="stat-label">Recruitment</div></div>
       <div class="stat-card" style="flex:1;min-width:100px"><div class="stat-value" style="font-size:1.3rem;color:#fcd34d">${(c['EXPLOITATION'] || 0).toFixed(4)}</div><div class="stat-label">Exploitation</div></div>
       <div class="stat-card" style="flex:1;min-width:100px"><div class="stat-value" style="font-size:1.3rem;color:#6ee7b7">${(c['MONETIZATION'] || 0).toFixed(4)}</div><div class="stat-label">Monetization</div></div>
+    </div>
+    <div style="margin-bottom:1.5rem;padding:0.75rem;background:rgba(255,255,255,0.02);border-radius:8px;border:1px solid rgba(255,255,255,0.06)">
+      <div style="font-size:0.75rem;color:var(--text-muted);margin-bottom:6px;font-weight:600">Data Coverage</div>
+      ${missHTML}
     </div>
     <h3 style="margin-bottom:0.75rem;font-size:1rem">All Indicator Scores</h3>
     <div class="table-wrap" style="max-height:400px">
@@ -2364,30 +2355,31 @@ function buildPipelinePage() {
   const subIndicatorMap = {
     '1.1.1': ['Deaths from disasters (z-scored)', 'People affected by disasters (z-scored)'],
     '1.1.2': ['Conflict intensity (ln-normalized)', 'Civilian casualty ratio', 'Conflict geographic spread (ln-normalized)'],
-    '1.1.3': ['ND-GAIN vulnerability sub-index'],
-    '1.2.1': ['IDP coordinate locations', 'IDP population counts', 'National population (denominator)'],
-    '1.2.2': ['Missing Migrants deaths count', 'Estimated migrant flow volume'],
+    '1.2.1': ['IDPs per capita (normalized)', 'IDP growth rate', 'Conflict-share of displacement'],
+    '1.2.2': ['Refugee hosting burden per capita'],
+    '1.2.3': ['Refugee origin pressure per capita'],
+    '1.2.4': ['Irregular migration pressure index'],
+    '1.2.5': ['Stateless population burden per capita'],
     '1.3.1': ['Youth unemployment rate', 'NEET rate (not in education, employment, or training)'],
     '1.3.2': ['Child labor prevalence rate (ILO)'],
     '1.3.3': ['Gini coefficient (World Bank)'],
-    '1.3.4': ['Lower secondary completion rate'],
+    '1.3.4': ['Lower secondary completion rate (deficit)'],
     '1.3.5': ['Remittances received (% of GDP)'],
-    '1.5.1': ['WGI Rule of Law score (-2.5 to +2.5)'],
-    '1.5.2': ['National ID coverage rate', 'Birth registration rate', 'Formal financial account ownership'],
-    '1.5.3': ['Social protection coverage rate', 'Social protection deficit (fallback)'],
-    '1.5.4': ['Emigration policy restrictiveness index (MIGPOL)'],
-    '1.5.5': ['GSI government response milestones (freedom)'],
-    '2.1.2': ['Firms expected to give gifts to public officials (%)'],
-    '2.1.3': ['ILO labor inspectors per capita (inverted)', 'ITUC rights index (rescaled)'],
-    '2.1.4': ['US TIP Report tier assignment'],
-    '2.2.1': ['UNCTAD Liner Shipping Connectivity Index (quarterly)'],
+    '1.4.1': ['WGI Rule of Law score (-2.5 to +2.5)'],
+    '1.4.2': ['National ID coverage rate', 'Birth registration rate', 'Formal financial account ownership'],
+    '1.4.3': ['Social protection coverage rate', 'Social protection deficit (fallback)'],
+    '1.4.4': ['Emigration policy restrictiveness index (MIGPOL)'],
+    '1.4.5': ['GSI government response milestones (freedom)'],
+    '2.1.1': ['Firms expected to give gifts to public officials (%)'],
+    '2.1.2': ['ILO labor inspectors per capita (inverted)', 'ITUC rights index (rescaled)'],
+    '2.2.1': ['Accessibility to nearest city (travel time)'],
     '2.3.1': ['Informal employment share: Total', 'Informal employment share: Agriculture', 'Informal employment share: Industry', 'Informal employment share: Services'],
     '2.3.2': ['Temporary/contract worker prevalence (Enterprise Survey)'],
     '2.3.3': ['Agriculture employment share', 'Construction employment share', 'Domestic work employment share', 'Sector forced-labor prevalence weights'],
     '2.3.4': ['UNCTAD HHI merchandise concentration index'],
     '2.3.5': ['GDP per worker (labor productivity)'],
     '2.4.1': ['GITOC Criminality score', 'GITOC Resilience score'],
-    '2.4.2': ['GITOC Private Sector Actors score (1-8.5 scale)'],
+    '2.4.2': ['Coercive labor control capacity composite'],
     '2.4.3': ['GSI M4223: Laws prohibiting confiscation', 'GSI M4224NEG: Document confiscation protections'],
     '2.4.4': ['GITOC Criminal Authority sub-dimension (CA1)'],
     '2.5.1': ['Findex informal borrowing rate', 'Findex savings informality', 'IMF household debt-to-GDP'],
@@ -2406,7 +2398,7 @@ function buildPipelinePage() {
   const totalIndicators = meta.length;
   const totalDomains = domains.length;
   const totalPhases = 3;
-  const totalComposites = 4; // R_adj, COMPOSITE INDEX, COMPOSITE RANK, Reinforcement Effect
+  const totalComposites = 4; // R_adj, COMPOSITE INDEX, COMPOSITE RANK, FLSRI
   const totalDomainScores = domains.length;
 
   // Build counts
@@ -2529,7 +2521,7 @@ function buildPipelinePage() {
   const procSteps = [
     { title: '1. Data Acquisition', desc: `${totalRawVars} raw variables are collected from 20+ international databases including World Bank, ILO, UNODC, EM-DAT, ACLED, ND-GAIN, GITOC, Basel AML Index, and others. Each source provides country-level measurements for 185-195 countries.`, formula: null },
     { title: '2. Cleaning & Standardization', desc: 'Raw data is cleaned for consistency: missing values flagged, temporal alignment applied (latest available year per indicator), outliers identified, and units standardized. Logged transformations applied to heavily right-skewed distributions (e.g., conflict intensity, disaster deaths).', formula: 'x_clean = ln(x + 1) for skewed variables' },
-    { title: '3. Composite Sub-Indicator Construction', desc: `Where indicators draw from multiple raw variables, sub-indicators are combined. Methods include weighted averages (e.g., Natural Disaster = 0.5 × deaths + 0.5 × affected), PCA extraction (e.g., Informal Risk Exposure: PC1 explains 93.35% of variance), and deficit inversions (e.g., Rule of Law: (2.5 − WGI) / 5).`, formula: '20 of 36 indicators are composites of 2+ raw variables' },
+    { title: '3. Composite Sub-Indicator Construction', desc: `Where indicators draw from multiple raw variables, sub-indicators are combined. Methods include weighted averages (e.g., Natural Disaster = 0.5 × deaths + 0.5 × affected), PCA extraction (e.g., Informal Risk Exposure: PC1 explains 93.35% of variance), and deficit inversions (e.g., Rule of Law: (2.5 − WGI) / 5).`, formula: '20 of 37 indicators are composites of 2+ raw variables' },
     { title: '4. Normalization to [0, 1]', desc: `All ${totalIndicators} indicators are rescaled to a common 0-1 range where higher values = higher risk. Most use within-year min-max normalization. Some use natural scales (Gini) or global min-max across years.`, formula: 'x_norm = (x − min) / (max − min)' },
     { title: '5. Domain Aggregation', desc: `Normalized indicators are averaged into ${totalDomains} thematic domains using equal-weighted arithmetic means. Missing indicators handled via pairwise available method. Formative measurement model: each indicator captures something conceptually unique (VIF < 5).`, formula: 'D = (1/n) × Σ(indicators)' },
     { title: '6. Phase Aggregation', desc: `Domain scores are averaged into ${totalPhases} phase scores (Recruitment, Exploitation, Monetization). Equal-weighted arithmetic mean of constituent domains within each phase.`, formula: 'P = (1/d) × Σ(domains)' },
@@ -2651,10 +2643,11 @@ function showPipelineDetail(key) {
   if (activeEl) activeEl.classList.add('ps-active');
 
   const subIndicatorMap = {
-    '1.1.1': 2, '1.1.2': 3, '1.1.3': 1, '1.2.1': 3, '1.2.2': 2,
+    '1.1.1': 2, '1.1.2': 3,
+    '1.2.1': 3, '1.2.2': 1, '1.2.3': 1, '1.2.4': 1, '1.2.5': 1,
     '1.3.1': 2, '1.3.2': 1, '1.3.3': 1, '1.3.4': 1, '1.3.5': 1,
-    '1.5.1': 1, '1.5.2': 3, '1.5.3': 2, '1.5.4': 1, '1.5.5': 1,
-    '2.1.2': 1, '2.1.3': 2, '2.1.4': 1, '2.2.1': 1, '2.3.1': 4,
+    '1.4.1': 1, '1.4.2': 3, '1.4.3': 2, '1.4.4': 1, '1.4.5': 1,
+    '2.1.1': 1, '2.1.2': 2, '2.2.1': 1, '2.3.1': 4,
     '2.3.2': 1, '2.3.3': 4, '2.3.4': 1, '2.3.5': 1, '2.4.1': 2,
     '2.4.2': 1, '2.4.3': 2, '2.4.4': 1, '2.5.1': 3, '2.5.2': 1,
     '3.1.1': 1, '3.2.1': 3, '3.3.1': 3, '3.4.1': 2, '3.4.2': 2, '3.4.3': 2,
@@ -2682,7 +2675,7 @@ function showPipelineDetail(key) {
     },
     norm: {
       title: 'Stage 3: Normalization',
-      content: `<p style="color:var(--text-secondary);margin-bottom:1rem">All ${meta.length} indicators are rescaled to a common [0, 1] range where higher = higher structural risk. Methods vary by indicator type.</p>
+      content: `<p style="color:var(--text-secondary);margin-bottom:1rem">All ${meta.length} indicators are rescaled to a common [0,&nbsp;1] range where higher = higher structural risk. Methods vary by indicator type.</p>
         <table class="data-table" style="margin-top:0.5rem"><thead><tr><th>Method</th><th>Count</th><th>Description</th></tr></thead><tbody>
           <tr><td>Min-Max (within year)</td><td>~28</td><td>Standard rescaling to observed range</td></tr>
           <tr><td>Min-Max (global)</td><td>~3</td><td>Rescaled across all years for trend consistency</td></tr>
@@ -2756,7 +2749,7 @@ function initLisaMap() {
     style: function(feature) {
       const props = feature.properties;
       const lisaObj = props.lisa ? props.lisa[lisaCurrentPhase] : null;
-      const q = (lisaObj && lisaObj.sig) ? lisaObj.q : 0;
+      const q = (lisaObj && lisaObj.sig < 0.05) ? lisaObj.q : 0;
       return {
         fillColor: LISA_COLORS[q] || LISA_COLORS[0],
         fillOpacity: q ? 0.7 : 0.15,
@@ -2770,7 +2763,7 @@ function initLisaMap() {
       const sk = LISA_SCORE_KEYS[lisaCurrentPhase];
       const score = p[sk];
       const lisaObj = p.lisa ? p.lisa[lisaCurrentPhase] : null;
-      const q = (lisaObj && lisaObj.sig) ? lisaObj.q : 0;
+      const q = (lisaObj && lisaObj.sig < 0.05) ? lisaObj.q : 0;
       const clLabel = LISA_LABELS[q] || 'NS';
       layer.bindTooltip(
         `<b>${p.name}</b><br>${sk}: ${score != null ? score.toFixed(3) : 'N/A'}<br>Cluster: ${clLabel}`,
@@ -2794,7 +2787,7 @@ function lisaUpdateMap() {
   if (!lisaGeoLayer) return;
   lisaGeoLayer.setStyle(function(feature) {
     const lisaObj = feature.properties.lisa ? feature.properties.lisa[lisaCurrentPhase] : null;
-    const q = (lisaObj && lisaObj.sig) ? lisaObj.q : 0;
+    const q = (lisaObj && lisaObj.sig < 0.05) ? lisaObj.q : 0;
     return {
       fillColor: LISA_COLORS[q] || LISA_COLORS[0],
       fillOpacity: q ? 0.7 : 0.15,
@@ -2807,7 +2800,7 @@ function lisaUpdateMap() {
     const sk = LISA_SCORE_KEYS[lisaCurrentPhase];
     const score = p[sk];
     const lisaObj = p.lisa ? p.lisa[lisaCurrentPhase] : null;
-    const q = (lisaObj && lisaObj.sig) ? lisaObj.q : 0;
+    const q = (lisaObj && lisaObj.sig < 0.05) ? lisaObj.q : 0;
     layer.setTooltipContent(
       `<b>${p.name}</b><br>${sk}: ${score != null ? score.toFixed(3) : 'N/A'}<br>Cluster: ${LISA_LABELS[q] || 'NS'}`
     );
@@ -2820,7 +2813,7 @@ function lisaSwitchPhase(phase) {
   const tab = document.querySelector(`.lisa-phase-tab[data-phase="${phase}"]`);
   if (tab) tab.classList.add('active');
   const m = LISA_MORAN[phase];
-  if (m) document.getElementById('lisaMoranVal').textContent = `I = ${m.I.toFixed(3)}`;
+  if (m != null) document.getElementById('lisaMoranVal').textContent = `I = ${(typeof m === 'object' ? m.I : m).toFixed(3)}`;
   lisaUpdateCounts();
   lisaUpdateMap();
   lisaUpdateList();
@@ -2850,15 +2843,21 @@ function lisaUpdateList() {
   }
   const ctColors = { HH: '#ef4444', LL: '#3b82f6', HL: '#f59e0b', LH: '#10b981' };
   const color = ctColors[lisaCurrentCT] || '#3b82f6';
+  const lmk = {composite:'miss_composite',recruitment:'miss_p1',exploitation:'miss_p2',monetization:'miss_p3',mc_spatial:'miss_composite',mc_structural:'miss_composite',mc_guardianship:'miss_composite'}[lisaCurrentPhase] || 'miss_composite';
   container.innerHTML = items.map((c, i) => {
     const gap = c.gap != null ? c.gap : (c.score - (c.nb_mean || 0));
     const gapClass = gap >= 0 ? 'lisa-gap-pos' : 'lisa-gap-neg';
+    const dc = DATA.countries.find(d => d.ISO3 === c.iso);
+    const mv = dc ? dc[lmk] : null;
+    const mp = mv != null ? (mv * 100).toFixed(0) : '?';
+    const mc = mv > 0.3 ? '#f87171' : mv > 0.15 ? '#fbbf24' : '#4ade80';
     return `<div class="lisa-list-item" onclick="lisaZoomTo('${c.iso}')">
       <div class="lisa-li-rank">${i + 1}</div>
       <div class="lisa-li-name">${c.name}</div>
       <div class="lisa-li-score" style="color:${color}">${c.score.toFixed(3)}</div>
       <div class="lisa-li-bar"><div class="lisa-li-bar-fill" style="width:${(c.score * 100).toFixed(0)}%;background:${color}"></div></div>
       <div class="lisa-li-gap ${gapClass}">${gap >= 0 ? '+' : ''}${gap.toFixed(3)}</div>
+      <div style="width:32px;text-align:right;font-size:9px;color:${mc}" title="${mp}% indicators missing">${mp}%</div>
     </div>`;
   }).join('');
 }
@@ -2881,14 +2880,19 @@ function lisaShowDetail(props) {
   const sk = LISA_SCORE_KEYS[lisaCurrentPhase];
   const score = props[sk];
   const lisaObj = props.lisa ? props.lisa[lisaCurrentPhase] : null;
-  const q = (lisaObj && lisaObj.sig) ? lisaObj.q : 0;
+  const q = (lisaObj && lisaObj.sig < 0.05) ? lisaObj.q : 0;
   const rank = props.rank;
+
+  const missKey = {composite:'miss_composite',recruitment:'miss_p1',exploitation:'miss_p2',monetization:'miss_p3',mc_spatial:'miss_composite',mc_structural:'miss_composite',mc_guardianship:'miss_composite'}[lisaCurrentPhase] || 'miss_composite';
+  const missVal = props[missKey];
+  const missPct = missVal != null ? (missVal * 100).toFixed(0) : '?';
+  const missColor = missVal > 0.3 ? '#f87171' : missVal > 0.15 ? '#fbbf24' : '#4ade80';
 
   document.getElementById('lisaDetailStats').innerHTML = `
     <div class="lisa-detail-stat"><div class="lisa-ds-lbl">Score</div><div class="lisa-ds-val">${score != null ? score.toFixed(3) : 'N/A'}</div></div>
     <div class="lisa-detail-stat"><div class="lisa-ds-lbl">Rank</div><div class="lisa-ds-val">#${rank || 'N/A'}</div></div>
     <div class="lisa-detail-stat"><div class="lisa-ds-lbl">Cluster</div><div class="lisa-ds-val">${LISA_LABELS[q] || 'NS'}</div></div>
-    <div class="lisa-detail-stat"><div class="lisa-ds-lbl">Region</div><div class="lisa-ds-val" style="font-size:11px">${props.region || 'N/A'}</div></div>
+    <div class="lisa-detail-stat"><div class="lisa-ds-lbl">Missing</div><div class="lisa-ds-val" style="color:${missColor};font-size:13px" title="% of indicators missing data for this country in the active layer">${missPct}%</div></div>
   `;
 
   const phases = [
@@ -2918,128 +2922,19 @@ function lisaCloseDetail() {
   document.getElementById('lisaDetail').classList.remove('vis');
 }
 
-// ===== REGIONAL ANALYSIS FUNCTIONS =====
-let regionGeoLayer = null;
-
-function initRegionMap() {
-  if (typeof GEO_DATA === 'undefined' || typeof LISA_REGIONS === 'undefined') { console.error('Region data not loaded'); return; }
-  window.regionMap = L.map('region-map', {
-    center: [20, 0], zoom: 2, minZoom: 2, maxZoom: 7,
-    zoomControl: true, attributionControl: false, worldCopyJump: true
-  });
-
-  // Color countries by region
-  const regionList = LISA_REGION_ORDER || Object.keys(LISA_REGIONS);
-  const regionHues = {};
-  regionList.forEach((r, i) => { regionHues[r] = (i * 360 / regionList.length); });
-
-  regionGeoLayer = L.geoJSON(GEO_DATA, {
-    style: function(feature) {
-      const region = feature.properties.region;
-      const hue = regionHues[region] != null ? regionHues[region] : 0;
-      return {
-        fillColor: `hsl(${hue}, 55%, 45%)`,
-        fillOpacity: 0.5,
-        weight: 0.8, color: '#1a2736', opacity: 1
-      };
-    },
-    onEachFeature: function(feature, layer) {
-      const p = feature.properties;
-      layer.bindTooltip(`<b>${p.name}</b><br>Region: ${p.region}<br>Composite: ${p.composite != null ? p.composite.toFixed(3) : 'N/A'}`, { sticky: true });
-    }
-  }).addTo(window.regionMap);
-
-  buildRegionCards();
-
-  // Force Leaflet to recalculate container size
-  setTimeout(function() {
-    window.regionMap.invalidateSize();
-    window.regionMap.setView([20, 0], 2);
-  }, 300);
-}
-
-function buildRegionCards() {
-  const container = document.getElementById('regionPanel');
-  const regionList = LISA_REGION_ORDER || Object.keys(LISA_REGIONS);
-  const ctColors = { HH: '#ef4444', LL: '#3b82f6', HL: '#f59e0b', LH: '#10b981', NS: '#2a3448' };
-
-  container.innerHTML = regionList.map(rName => {
-    const reg = LISA_REGIONS[rName];
-    if (!reg) return '';
-    const countries = reg.countries || [];
-    const n = reg.n || countries.length;
-    const mean = countries.length > 0 ? countries.reduce((s, c) => s + (c.composite || c.score || 0), 0) / countries.length : 0;
-
-    // Count LISA types for this region from cluster data
-    const cl = LISA_CLUSTERS.composite || {};
-    const lisaCounts = { HH: 0, LL: 0, HL: 0, LH: 0 };
-    const regionIsos = new Set(countries.map(c => c.iso));
-    Object.entries(cl).forEach(([type, items]) => {
-      if (lisaCounts[type] !== undefined) {
-        lisaCounts[type] = items.filter(c => regionIsos.has(c.iso)).length;
-      }
-    });
-    const totalLisa = Object.values(lisaCounts).reduce((a, b) => a + b, 0);
-    const nsCount = n - totalLisa;
-
-    // LISA bar
-    const lisaBar = Object.entries(lisaCounts).map(([type, count]) => {
-      if (count === 0) return '';
-      const pct = (count / n * 100).toFixed(1);
-      return `<div class="rc-lisa-seg" style="width:${pct}%;background:${ctColors[type]}"></div>`;
-    }).join('') + (nsCount > 0 ? `<div class="rc-lisa-seg" style="width:${(nsCount/n*100).toFixed(1)}%;background:${ctColors.NS}"></div>` : '');
-
-    // Dominant cluster
-    const dominant = Object.entries(lisaCounts).sort((a, b) => b[1] - a[1])[0];
-    const domLabel = dominant[1] > 0 ? dominant[0] : 'NS';
-
-    return `<div class="region-card" onclick="regionZoomTo('${rName}')">
-      <div class="rc-header"><div class="rc-name">${rName}</div><div class="rc-n">${n} countries</div></div>
-      <div class="rc-stats">
-        <div><div class="rc-stat-val">${mean.toFixed(3)}</div><div class="rc-stat-lbl">Mean Composite</div></div>
-        <div><div class="rc-stat-val" style="color:${ctColors[domLabel]}">${domLabel}</div><div class="rc-stat-lbl">Dominant Cluster</div></div>
-        <div><div class="rc-stat-val">${lisaCounts.HH}</div><div class="rc-stat-lbl">High-High</div></div>
-      </div>
-      <div class="rc-lisa-bar">${lisaBar}</div>
-    </div>`;
-  }).join('');
-}
-
-function regionZoomTo(regionName) {
-  if (!regionGeoLayer || !window.regionMap) return;
-  const bounds = [];
-  regionGeoLayer.eachLayer(function(layer) {
-    if (layer.feature.properties.region === regionName) {
-      bounds.push(layer.getBounds());
-    }
-  });
-  if (bounds.length > 0) {
-    let combined = bounds[0];
-    bounds.slice(1).forEach(b => combined.extend(b));
-    window.regionMap.fitBounds(combined, { padding: [30, 30] });
-  }
-  // Highlight active card
-  document.querySelectorAll('.region-card').forEach(c => c.classList.remove('active'));
-  event.currentTarget.classList.add('active');
-}
-
 // Data is loaded via <script src="flsri-data.js"> in the HTML head
 // Initialize once DOM is ready
 if (DATA) {
   buildDashboard();
   buildPipelinePage();
-  // LISA and Region maps init lazily on first tab visit
-  let lisaInited = false, regionInited = false;
+  // LISA map inits lazily on first tab visit
+  let lisaInited = false;
   const origShowDataSection = showDataSection;
   showDataSection = function(section) {
     origShowDataSection(section);
     if (section === 'map' && !lisaInited) {
       lisaInited = true;
       setTimeout(initLisaMap, 200);
-    }
-    if (section === 'areas' && !regionInited) {
-      regionInited = true;
-      setTimeout(initRegionMap, 200);
     }
   };
   document.getElementById('loading').style.display = 'none';
@@ -3146,13 +3041,29 @@ function simRecalculate() {
   domains.forEach(function(d) {
     var dCode = d['Domain Code'] || d.code;
     var indicators = meta.filter(function(m){ return String(m['Domain Code'] || m.domain) === String(dCode); });
-    var sum = 0, count = 0;
-    indicators.forEach(function(m) {
-      var colKey = m['Column in Index'] || m['Indicator Code'] || m.code;
-      var val = SIM.current[colKey];
-      if (val != null && !isNaN(val)) { sum += val; count++; }
-    });
-    domainScores[dCode] = count > 0 ? sum / count : null;
+    // D1.3 uses core-amplifier model
+    if (String(dCode) === '1.3') {
+      var coreSum = 0, coreCount = 0, ampSum = 0, ampCount = 0;
+      indicators.forEach(function(m) {
+        var colKey = m['Column in Index'] || m['Indicator Code'] || m.code;
+        var val = SIM.current[colKey];
+        if (val != null && !isNaN(val)) {
+          if (m.Role === 'Amplifier') { ampSum += val; ampCount++; }
+          else { coreSum += val; coreCount++; }
+        }
+      });
+      var coreMean = coreCount > 0 ? coreSum / coreCount : null;
+      var ampMean = ampCount > 0 ? ampSum / ampCount : 0;
+      domainScores[dCode] = coreMean != null ? coreMean * (1 + 0.2 * ampMean) : null;
+    } else {
+      var sum = 0, count = 0;
+      indicators.forEach(function(m) {
+        var colKey = m['Column in Index'] || m['Indicator Code'] || m.code;
+        var val = SIM.current[colKey];
+        if (val != null && !isNaN(val)) { sum += val; count++; }
+      });
+      domainScores[dCode] = count > 0 ? sum / count : null;
+    }
     var safeId = String(dCode).replace(/[^a-zA-Z0-9]/g, '_');
     simUpdateCard(safeId, domainScores[dCode]);
   });
