@@ -1040,6 +1040,34 @@ section {
   opacity: 0.4;
   border-right: 1px solid var(--accent);
 }
+
+/* ============================================================================
+   MAP RESET BUTTON — recenter Plotly maps when scroll/zoom drift
+   ============================================================================ */
+.map-reset {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  z-index: 10;
+  padding: 6px 12px;
+  font-family: var(--mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  background: var(--paper);
+  color: var(--ink);
+  border: 1px solid var(--ink);
+  border-radius: 100px;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+  transition: background 0.15s ease, color 0.15s ease, transform 0.15s ease;
+}
+.map-reset:hover {
+  background: var(--ink);
+  color: var(--paper);
+  transform: translateY(-1px);
+}
+.map-reset:active { transform: translateY(0); }
 .fp-phase-track { position: relative; }
 .fp-domain-bar { position: relative; }
 
@@ -1304,7 +1332,10 @@ footer {
   </p>
 
   <div class="composite-grid">
-    <div id="composite-map"></div>
+    <div style="position:relative">
+      <div id="composite-map"></div>
+      <button class="map-reset" onclick="window.__flsri_resetMap('composite-map')" title="Recenter map">↺ Reset view</button>
+    </div>
     <div class="ranking-list">
       <div class="ranking-header">
         <h3 id="ranking-title">Highest structural risk</h3>
@@ -1619,7 +1650,10 @@ footer {
     </div>
 
     <div class="spatial-clusters-panel">
-      <div id="lisa-map" style="height:520px;background:var(--paper-soft);border:1px solid var(--rule);margin-bottom:1.5rem"></div>
+      <div style="position:relative;margin-bottom:1.5rem">
+        <div id="lisa-map" style="height:520px;background:var(--paper-soft);border:1px solid var(--rule)"></div>
+        <button class="map-reset" onclick="window.__flsri_resetMap('lisa-map')" title="Recenter map">↺ Reset view</button>
+      </div>
 
       <div class="cluster-types">
         <div class="cluster-type" data-type="HH">
@@ -2636,6 +2670,20 @@ footer {
     document.getElementById('profile').scrollIntoView({ behavior: 'smooth', block: 'start' });
   };
   function selectCountry(iso) { window.__flsri_selectCountry(iso); }
+
+  // Reset a Plotly map's geo projection to its default centered view.
+  // Fixes weird drift when scroll-zoom interactions throw off the projection.
+  window.__flsri_resetMap = function (elId) {
+    const el = document.getElementById(elId);
+    if (!el || typeof Plotly === 'undefined') return;
+    Plotly.relayout(el, {
+      'geo.projection.scale': 1,
+      'geo.projection.rotation.lon': 0,
+      'geo.projection.rotation.lat': 0,
+      'geo.center.lon': 0,
+      'geo.center.lat': 20,
+    }).then(() => Plotly.Plots.resize(el));
+  };
 
   // ---------------------------------------------------------------------------
   // Nav fade-in + active section tracking
