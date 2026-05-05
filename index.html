@@ -1397,6 +1397,36 @@ a:hover { border-bottom-color: var(--accent); }
     <div class="nav-link" data-page="landing" onclick="showPage('landing')">Home</div>
     <div class="nav-link" data-page="framework" onclick="showPage('framework')">Framework</div>
     <div class="nav-link" data-page="data" onclick="showPage('data')">Data</div>
+    <a href="index-v2.html" class="nav-link" id="nav-v2-btn" style="
+      margin-left: 1rem;
+      padding: 9px 18px;
+      background: #b6844a;
+      color: #1a1410 !important;
+      border: none;
+      border-radius: 100px;
+      font-family: 'IBM Plex Mono', ui-monospace, monospace;
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      text-decoration: none;
+      transition: transform 0.18s ease, background 0.18s ease, box-shadow 0.18s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 2px 0 rgba(0,0,0,0.12);
+      animation: pulseV2 2.4s ease-in-out infinite;
+    " onmouseover="this.style.background='#caa066';this.style.transform='translateY(-1px)';this.style.boxShadow='0 4px 0 rgba(0,0,0,0.18)'" onmouseout="this.style.background='#b6844a';this.style.transform='translateY(0)';this.style.boxShadow='0 2px 0 rgba(0,0,0,0.12)'">
+      <span style="font-size:0.65rem">✦</span>
+      View New Dashboard
+      <span style="font-size:1rem;line-height:1;margin-left:2px">→</span>
+    </a>
+    <style>
+      @keyframes pulseV2 {
+        0%, 100% { box-shadow: 0 2px 0 rgba(0,0,0,0.12), 0 0 0 0 rgba(182,132,74,0.5); }
+        50%      { box-shadow: 0 2px 0 rgba(0,0,0,0.12), 0 0 0 8px rgba(182,132,74,0); }
+      }
+    </style>
   </div>
 </nav>
 
@@ -2859,7 +2889,7 @@ function buildPipelinePage() {
   const procSteps = [
     { title: '1. Data Acquisition', desc: `${totalRawVars} raw variables are collected from 20+ international databases including World Bank, ILO, UNODC, EM-DAT, ACLED, ND-GAIN, GITOC, Basel AML Index, and others. Each source provides country-level measurements for 185-195 countries.`, formula: null },
     { title: '2. Cleaning & Standardization', desc: 'Raw data is cleaned for consistency: missing values flagged, temporal alignment applied (latest available year per indicator), outliers identified, and units standardized. Logged transformations applied to heavily right-skewed distributions (e.g., conflict intensity, disaster deaths).', formula: 'x_clean = ln(x + 1) for skewed variables' },
-    { title: '3. Composite Sub-Indicator Construction', desc: `Where indicators draw from multiple raw variables, sub-indicators are combined. Methods include weighted averages (e.g., Natural Disaster = 0.5 × deaths + 0.5 × affected), PCA extraction (e.g., Informal Risk Exposure: PC1 explains 93.35% of variance), and deficit inversions (e.g., Rule of Law: (2.5 − WGI) / 5).`, formula: '20 of 37 indicators are composites of 2+ raw variables' },
+    { title: '3. Composite Sub-Indicator Construction', desc: `Where indicators draw from multiple raw variables, sub-indicators are combined. Methods include weighted averages (e.g., Disaster Shock Intensity = 0.5 × deaths + 0.5 × affected), PCA extraction (e.g., Informal Risk Exposure: PC1 explains 93.35% of variance), and deficit inversions (e.g., Rule of Law: (2.5 − WGI) / 5).`, formula: '20 of 37 indicators are composites of 2+ raw variables' },
     { title: '4. Normalization to [0, 1]', desc: `All ${totalIndicators} indicators are rescaled to a common 0-1 range where higher values = higher risk. Most use within-year min-max normalization. Some use natural scales (Gini) or global min-max across years.`, formula: 'x_norm = (x − min) / (max − min)' },
     { title: '5. Domain Aggregation', desc: `Normalized indicators are averaged into ${totalDomains} thematic domains using equal-weighted arithmetic means. Missing indicators handled via pairwise available method. Formative measurement model: each indicator captures something conceptually unique (VIF < 5).`, formula: 'D = (1/n) × Σ(indicators)' },
     { title: '6. Phase Aggregation', desc: `Domain scores are averaged into ${totalPhases} phase scores (Recruitment, Exploitation, Monetization). Equal-weighted arithmetic mean of constituent domains within each phase.`, formula: 'P = (1/d) × Σ(domains)' },
