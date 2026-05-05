@@ -1,0 +1,2694 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FLSRI · Forced Labor Structural Risk Index</title>
+<meta name="description" content="A measure of the structural conditions enabling forced labor across 195 countries. Not a prevalence index.">
+
+<script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3@7.9.0/dist/d3.min.js"></script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,200..900;1,8..60,200..900&family=IBM+Plex+Sans:wght@200;300;400;500;600&family=IBM+Plex+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+
+<script src="flsri-data-v2.js"></script>
+<script src="flsri-geo-v2.js"></script>
+<script src="flsri-lisa-v2.js"></script>
+
+<style>
+/* ============================================================================
+   FLSRI v2 — data-scape design language
+   ============================================================================ */
+
+:root {
+  --paper:      #faf8f3;
+  --paper-soft: #f4f1e8;
+  --paper-deep: #efeadc;
+  --paper-dark: #e8e2d1;
+  --ink:        #1a1814;
+  --ink-2:      #4a463e;
+  --ink-3:      #807c70;
+  --ink-faint:  #b3ad9d;
+  --rule:       #dcd6c4;
+  --rule-soft:  #ebe6d6;
+  --accent:     #a54a2c;
+  --accent-2:   #c4724f;
+  --accent-soft:#e6c0a8;
+  --highlight:  #fef2cb;
+
+  --serif: "Source Serif 4", Georgia, serif;
+  --sans:  "IBM Plex Sans", -apple-system, system-ui, sans-serif;
+  --mono:  "IBM Plex Mono", ui-monospace, monospace;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+body {
+  font-family: var(--sans);
+  background: var(--paper);
+  color: var(--ink);
+  line-height: 1.55;
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "ss01", "cv11";
+  overflow-x: hidden;
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--serif);
+  font-weight: 300;
+  line-height: 1.05;
+  letter-spacing: -0.025em;
+  color: var(--ink);
+}
+em { font-style: italic; }
+strong { font-weight: 500; }
+
+a { color: var(--accent); text-decoration: none; border-bottom: 1px solid transparent; transition: border-color 150ms; }
+a:hover { border-bottom-color: var(--accent); }
+
+::selection { background: var(--accent-soft); color: var(--ink); }
+
+/* Navigation — minimal, fades in on scroll */
+.nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  background: rgba(250, 248, 243, 0.92);
+  backdrop-filter: saturate(140%) blur(12px);
+  border-bottom: 1px solid var(--rule-soft);
+  height: 56px;
+  display: flex; align-items: center;
+  padding: 0 2.5rem;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 350ms ease;
+}
+.nav.visible { opacity: 1; pointer-events: auto; }
+.nav-brand {
+  font-family: var(--serif);
+  font-size: 1.05rem;
+  font-style: italic;
+  font-weight: 400;
+  margin-right: 4rem;
+  letter-spacing: -0.01em;
+}
+.nav-links { display: flex; gap: 2rem; flex: 1; font-size: 0.85rem; }
+.nav-link {
+  color: var(--ink-3); cursor: pointer; padding: 6px 0;
+  transition: color 150ms;
+  border-bottom: 1px solid transparent;
+}
+.nav-link:hover, .nav-link.active { color: var(--ink); border-bottom-color: var(--ink); }
+
+/* ============================================================================
+   HERO — full-bleed editorial intro
+   ============================================================================ */
+
+.hero {
+  min-height: 90vh;
+  padding: 7rem 2.5rem 4rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: relative;
+}
+
+.hero-mark {
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 3rem;
+}
+
+.hero-title {
+  font-family: var(--serif);
+  font-size: clamp(3rem, 9vw, 8rem);
+  font-weight: 200;
+  line-height: 0.95;
+  letter-spacing: -0.04em;
+  max-width: 16ch;
+  margin-bottom: 2.5rem;
+}
+.hero-title em { font-style: italic; color: var(--ink-2); font-weight: 300; }
+.hero-title-mark {
+  display: inline-block;
+  font-family: var(--mono);
+  font-size: 0.85rem;
+  font-weight: 400;
+  letter-spacing: 0.04em;
+  vertical-align: super;
+  color: var(--accent);
+  margin-left: 0.3em;
+}
+
+.hero-thesis {
+  font-family: var(--serif);
+  font-size: clamp(1.1rem, 1.6vw, 1.35rem);
+  line-height: 1.45;
+  color: var(--ink-2);
+  max-width: 56ch;
+  font-weight: 300;
+}
+.hero-thesis em { color: var(--ink); }
+.hero-thesis strong { color: var(--ink); font-weight: 500; }
+
+.hero-bottom {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: end;
+  gap: 4rem;
+  margin-top: 5rem;
+}
+
+.hero-stats {
+  display: flex;
+  gap: 3rem;
+  font-family: var(--mono);
+}
+.hero-stat-num {
+  font-family: var(--serif);
+  font-weight: 300;
+  font-size: 2.25rem;
+  letter-spacing: -0.02em;
+  display: block;
+  line-height: 1;
+}
+.hero-stat-lbl {
+  font-size: 0.7rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  margin-top: 0.5rem;
+}
+
+.scroll-cue {
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+.scroll-cue::after {
+  content: '';
+  display: block;
+  width: 1px;
+  height: 40px;
+  background: var(--ink-3);
+  opacity: 0.5;
+  animation: scrollPulse 2s ease-in-out infinite;
+}
+@keyframes scrollPulse {
+  0%, 100% { transform: scaleY(0.4); opacity: 0.2; }
+  50% { transform: scaleY(1); opacity: 0.6; }
+}
+
+/* ============================================================================
+   SECTION SCAFFOLD
+   ============================================================================ */
+
+section {
+  padding: 6rem 2.5rem;
+  border-top: 1px solid var(--rule-soft);
+}
+
+.section-mark {
+  display: flex;
+  align-items: baseline;
+  gap: 1rem;
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  margin-bottom: 2.5rem;
+}
+.section-mark::before {
+  content: attr(data-num);
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 1rem;
+  text-transform: none;
+  letter-spacing: -0.01em;
+  color: var(--accent);
+}
+
+.section-title {
+  font-family: var(--serif);
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  font-weight: 200;
+  line-height: 1.05;
+  letter-spacing: -0.025em;
+  margin-bottom: 1.5rem;
+  max-width: 18ch;
+}
+.section-title em { font-style: italic; color: var(--ink-2); }
+
+.section-lead {
+  font-family: var(--serif);
+  font-size: 1.3rem;
+  line-height: 1.45;
+  color: var(--ink-2);
+  font-weight: 300;
+  max-width: 44ch;
+  margin-bottom: 4rem;
+}
+
+.section-prose {
+  max-width: 60ch;
+  font-size: 1.05rem;
+  line-height: 1.65;
+  color: var(--ink-2);
+}
+.section-prose p + p { margin-top: 1rem; }
+.section-prose strong { color: var(--ink); font-weight: 500; }
+
+/* ============================================================================
+   COMPOSITE EXPLORER — cinematic map + ranked list
+   ============================================================================ */
+
+.composite-grid {
+  display: grid;
+  grid-template-columns: 1fr 380px;
+  gap: 3rem;
+  align-items: start;
+}
+
+#composite-map { height: 620px; background: var(--paper-soft); border: 1px solid var(--rule); }
+
+.ranking-list { font-family: var(--sans); }
+.ranking-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 0.5rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid var(--ink);
+}
+.ranking-header h3 {
+  font-size: 1.1rem;
+  font-weight: 300;
+  font-style: italic;
+}
+.ranking-header .ranking-tabs {
+  display: flex;
+  gap: 0.5rem;
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.ranking-tab {
+  cursor: pointer;
+  color: var(--ink-3);
+  padding: 4px 8px;
+  border-bottom: 1px solid transparent;
+}
+.ranking-tab:hover { color: var(--ink); }
+.ranking-tab.active { color: var(--ink); border-bottom-color: var(--ink); }
+
+.ranking-row {
+  display: grid;
+  grid-template-columns: 1.5rem 1fr 100px;
+  gap: 0.5rem;
+  align-items: center;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid var(--rule-soft);
+  cursor: pointer;
+  transition: background 150ms;
+  font-size: 0.88rem;
+}
+.ranking-row:hover { background: var(--paper-soft); }
+.ranking-row .r-rank {
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  color: var(--ink-3);
+  text-align: right;
+}
+.ranking-row .r-country {
+  font-weight: 500;
+}
+.ranking-row .r-iso {
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  color: var(--ink-faint);
+  font-weight: 400;
+  margin-left: 0.4em;
+}
+.ranking-row .r-score {
+  font-family: var(--mono);
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--accent);
+  text-align: right;
+}
+.ranking-row .r-bar {
+  grid-column: 2 / -1;
+  margin-top: 4px;
+  height: 2px;
+  background: var(--rule-soft);
+  position: relative;
+}
+.ranking-row .r-bar::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; bottom: 0;
+  background: var(--accent);
+  width: var(--w, 0%);
+}
+
+/* ============================================================================
+   PROFILE FINGERPRINT — the country-as-data-shape view
+   ============================================================================ */
+
+.fingerprint {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+  align-items: start;
+  margin-top: 3rem;
+}
+.fingerprint-meta { font-family: var(--mono); font-size: 0.7rem; color: var(--ink-3); letter-spacing: 0.1em; text-transform: uppercase; }
+.fingerprint h2 {
+  font-size: clamp(2.5rem, 4vw, 3.5rem);
+  margin: 0.5rem 0 1rem;
+  font-weight: 300;
+}
+.fp-composite {
+  display: flex;
+  align-items: baseline;
+  gap: 1rem;
+  margin: 1.5rem 0 2.5rem;
+  padding: 1rem 0;
+  border-top: 1px solid var(--rule);
+  border-bottom: 1px solid var(--rule);
+}
+.fp-composite .fp-num {
+  font-family: var(--serif);
+  font-size: 4rem;
+  font-weight: 200;
+  line-height: 1;
+  letter-spacing: -0.03em;
+}
+.fp-composite .fp-rank {
+  font-family: var(--mono);
+  font-size: 0.85rem;
+  color: var(--ink-3);
+}
+
+.fp-phases { display: flex; flex-direction: column; gap: 1.25rem; }
+.fp-phase { }
+.fp-phase-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 0.5rem;
+}
+.fp-phase-name {
+  font-family: var(--serif);
+  font-size: 1.1rem;
+  font-style: italic;
+  font-weight: 400;
+}
+.fp-phase-name .fp-phase-mark {
+  font-family: var(--mono);
+  font-style: normal;
+  font-size: 0.7rem;
+  color: var(--ink-3);
+  letter-spacing: 0.1em;
+  margin-right: 0.5rem;
+}
+.fp-phase-score {
+  font-family: var(--mono);
+  font-size: 0.95rem;
+  color: var(--accent);
+}
+.fp-phase-track {
+  height: 4px;
+  background: var(--paper-deep);
+  position: relative;
+  margin-top: 4px;
+}
+.fp-phase-fill {
+  position: absolute; top: 0; bottom: 0; left: 0;
+  background: var(--ink);
+}
+
+.fp-domains {
+  margin-top: 0.6rem;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.4rem;
+}
+.fp-domain {
+  display: grid;
+  grid-template-columns: 1fr 60px 30px;
+  font-size: 0.78rem;
+  align-items: center;
+  gap: 0.5rem;
+  padding-left: 1.5rem;
+  color: var(--ink-2);
+}
+.fp-domain-bar {
+  height: 2px;
+  background: var(--rule-soft);
+  position: relative;
+}
+.fp-domain-bar-fill { position: absolute; top: 0; bottom: 0; left: 0; background: var(--ink-2); }
+.fp-domain-val {
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  color: var(--ink-3);
+  text-align: right;
+}
+
+.fp-side h3 {
+  font-family: var(--serif);
+  font-size: 1.1rem;
+  font-style: italic;
+  font-weight: 400;
+  margin-bottom: 0.75rem;
+  color: var(--ink-2);
+}
+
+/* Country search */
+.country-search {
+  display: flex;
+  align-items: baseline;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--rule);
+}
+.country-search label {
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+.country-search select {
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid var(--ink);
+  font-family: var(--serif);
+  font-size: 1.5rem;
+  color: var(--ink);
+  font-weight: 400;
+  font-style: italic;
+  padding: 4px 4px 8px;
+  flex: 1;
+  min-width: 280px;
+  cursor: pointer;
+  -webkit-appearance: none;
+  appearance: none;
+  background-image: linear-gradient(45deg, transparent 50%, var(--ink) 50%), linear-gradient(135deg, var(--ink) 50%, transparent 50%);
+  background-position: calc(100% - 14px) center, calc(100% - 9px) center;
+  background-size: 5px 5px, 5px 5px;
+  background-repeat: no-repeat;
+}
+.country-search select:focus { outline: none; }
+
+/* ============================================================================
+   TWO STORIES — comparative narrative
+   ============================================================================ */
+
+.two-stories {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+  margin-top: 4rem;
+}
+.story-col {
+  padding: 2rem;
+  border: 1px solid var(--rule);
+  background: var(--paper-soft);
+}
+.story-mark {
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 1rem;
+}
+.story-col h3 {
+  font-family: var(--serif);
+  font-size: 1.75rem;
+  line-height: 1.1;
+  font-weight: 300;
+  margin-bottom: 1rem;
+  letter-spacing: -0.015em;
+}
+.story-col p {
+  font-size: 0.95rem;
+  line-height: 1.65;
+  color: var(--ink-2);
+  margin-bottom: 1.5rem;
+}
+.story-examples {
+  display: grid;
+  gap: 0.5rem;
+  margin-top: 1.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--rule);
+}
+.story-ex {
+  display: grid;
+  grid-template-columns: 1fr 60px 60px 60px;
+  gap: 0.5rem;
+  font-size: 0.78rem;
+  align-items: center;
+  padding: 0.4rem 0;
+}
+.story-ex-name { font-weight: 500; }
+.story-ex-num {
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  text-align: right;
+}
+.story-ex-num.high { color: var(--accent); font-weight: 500; }
+.story-ex-num.dim { color: var(--ink-faint); }
+.story-ex-header {
+  display: grid;
+  grid-template-columns: 1fr 60px 60px 60px;
+  gap: 0.5rem;
+  font-family: var(--mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  border-bottom: 1px solid var(--rule);
+  padding-bottom: 6px;
+  margin-bottom: 4px;
+}
+.story-ex-header > div:not(:first-child) { text-align: right; }
+
+/* ============================================================================
+   PHASE ANATOMY
+   ============================================================================ */
+
+.phase-anatomy {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 6rem;
+  margin-top: 4rem;
+}
+.phase-block {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  align-items: start;
+}
+.phase-block.reverse { grid-template-columns: 1fr 1fr; }
+.phase-block.reverse .phase-block-content { order: 2; }
+.phase-block.reverse .phase-block-viz { order: 1; }
+
+.phase-block-mark {
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 0.75rem;
+}
+.phase-block h3 {
+  font-family: var(--serif);
+  font-size: clamp(2rem, 3.5vw, 3rem);
+  font-weight: 300;
+  line-height: 1.05;
+  margin-bottom: 1rem;
+  letter-spacing: -0.025em;
+}
+.phase-block-question {
+  font-family: var(--serif);
+  font-size: 1.2rem;
+  font-style: italic;
+  color: var(--ink-2);
+  margin-bottom: 1.5rem;
+  font-weight: 300;
+}
+.phase-block-prose {
+  font-size: 0.95rem;
+  line-height: 1.65;
+  color: var(--ink-2);
+  margin-bottom: 1.5rem;
+  max-width: 50ch;
+}
+.phase-block-domains {
+  display: grid;
+  gap: 0.5rem;
+  margin-top: 1.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--rule);
+}
+.phase-block-domain {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.5rem 1rem;
+  align-items: baseline;
+  padding: 0.3rem 0;
+  font-size: 0.85rem;
+}
+.phase-block-domain code {
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  color: var(--ink-3);
+}
+.phase-block-domain strong { font-weight: 500; }
+.phase-block-domain span { color: var(--ink-3); font-size: 0.78rem; }
+
+.phase-block-viz {
+  background: var(--paper-soft);
+  padding: 2rem;
+  border: 1px solid var(--rule);
+}
+.phase-top10-header {
+  font-family: var(--mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  margin-bottom: 1rem;
+}
+.phase-top10-row {
+  display: grid;
+  grid-template-columns: 1.2rem 1fr 60px;
+  gap: 0.5rem;
+  align-items: center;
+  padding: 0.4rem 0;
+  border-bottom: 1px solid var(--rule-soft);
+  font-size: 0.85rem;
+}
+.phase-top10-row .r-rank { font-family: var(--mono); font-size: 0.7rem; color: var(--ink-3); }
+.phase-top10-row .r-country { font-weight: 500; }
+.phase-top10-row .r-score {
+  font-family: var(--mono);
+  font-size: 0.8rem;
+  color: var(--accent);
+  text-align: right;
+}
+
+/* ============================================================================
+   LIMITATIONS / OPEN QUESTIONS
+   ============================================================================ */
+
+.limits-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2rem;
+  margin-top: 3rem;
+}
+.limit-card {
+  padding: 1.5rem 1.5rem 1.5rem 2rem;
+  border-left: 2px solid var(--accent);
+  background: var(--paper-soft);
+}
+.limit-card h4 {
+  font-family: var(--serif);
+  font-size: 1.2rem;
+  font-style: italic;
+  font-weight: 400;
+  margin-bottom: 0.5rem;
+  color: var(--ink);
+}
+.limit-card p {
+  font-size: 0.9rem;
+  line-height: 1.6;
+  color: var(--ink-2);
+}
+.limit-card .limit-tag {
+  font-family: var(--mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 0.5rem;
+}
+
+/* ============================================================================
+   DISTRIBUTION SECTION
+   ============================================================================ */
+.distribution-layout {
+  display: grid;
+  grid-template-columns: 1.6fr 1fr;
+  gap: 3rem;
+  align-items: start;
+  margin-top: 2rem;
+}
+#phase-scatter { height: 620px; background: var(--paper-soft); border: 1px solid var(--rule); }
+.distribution-sidebar { display: flex; flex-direction: column; gap: 1rem; }
+.dist-cluster {
+  padding: 1.25rem 1.5rem;
+  border: 1px solid var(--rule);
+  background: var(--paper);
+  transition: border-color 200ms;
+}
+.dist-cluster:hover { border-color: var(--ink-2); }
+.dist-cluster-mark {
+  font-family: var(--mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 0.4rem;
+}
+.dist-cluster h4 {
+  font-family: var(--serif);
+  font-size: 1.15rem;
+  font-weight: 400;
+  font-style: italic;
+  margin-bottom: 0.5rem;
+  letter-spacing: -0.01em;
+}
+.dist-cluster p {
+  font-size: 0.82rem;
+  line-height: 1.55;
+  color: var(--ink-2);
+  margin-bottom: 0.6rem;
+}
+.dist-cluster-examples {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-top: 0.5rem;
+  padding-top: 0.6rem;
+  border-top: 1px dashed var(--rule);
+}
+.dist-cluster-chip {
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  padding: 2px 7px;
+  background: var(--paper-soft);
+  border: 1px solid var(--rule);
+  cursor: pointer;
+  transition: background 150ms, color 150ms;
+}
+.dist-cluster-chip:hover { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+
+/* ============================================================================
+   SPATIAL CLUSTERS SECTION
+   ============================================================================ */
+.spatial-grid {
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  gap: 3rem;
+  align-items: start;
+  margin-top: 2rem;
+}
+.spatial-stats { display: grid; gap: 0.75rem; }
+.moran-card {
+  border: 1px solid var(--rule);
+  padding: 1.25rem 1.5rem;
+  background: var(--paper-soft);
+}
+.moran-mark {
+  font-family: var(--mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  margin-bottom: 0.5rem;
+}
+.moran-val {
+  font-family: var(--serif);
+  font-size: 2.5rem;
+  font-weight: 200;
+  letter-spacing: -0.025em;
+  line-height: 1;
+  color: var(--accent);
+}
+.moran-lbl {
+  font-family: var(--serif);
+  font-size: 0.85rem;
+  font-style: italic;
+  color: var(--ink-3);
+  margin-top: 0.3rem;
+}
+
+.spatial-clusters-panel { display: flex; flex-direction: column; gap: 1.5rem; }
+.cluster-controls { border-bottom: 1px solid var(--ink); padding-bottom: 0.5rem; }
+.cluster-tabs {
+  display: flex;
+  gap: 1.5rem;
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.cluster-tab {
+  cursor: pointer;
+  color: var(--ink-3);
+  padding: 4px 0;
+  border-bottom: 1px solid transparent;
+  transition: color 150ms, border-color 150ms;
+}
+.cluster-tab:hover { color: var(--ink); }
+.cluster-tab.active { color: var(--ink); border-bottom-color: var(--ink); }
+
+.cluster-types {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+}
+.cluster-type {
+  padding: 1.25rem;
+  border: 1px solid var(--rule);
+  background: var(--paper);
+}
+.cluster-type-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.5rem;
+}
+.cluster-type-header strong {
+  font-weight: 500;
+  font-size: 0.95rem;
+}
+.cluster-swatch {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  border: 1px solid rgba(0,0,0,0.15);
+}
+.cluster-swatch.hh { background: #5b2414; }
+.cluster-swatch.ll { background: #6b7a5b; }
+.cluster-swatch.hl { background: #b6844a; }
+.cluster-swatch.lh { background: #3a4a5c; }
+.cluster-count {
+  margin-left: auto;
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  color: var(--ink-3);
+}
+.cluster-type-desc {
+  font-size: 0.78rem;
+  line-height: 1.55;
+  color: var(--ink-2);
+  margin-bottom: 0.75rem;
+}
+.cluster-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  padding-top: 0.6rem;
+  border-top: 1px dashed var(--rule);
+  max-height: 180px;
+  overflow-y: auto;
+}
+.cluster-chip {
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  padding: 2px 7px;
+  background: var(--paper-soft);
+  border: 1px solid var(--rule);
+  cursor: pointer;
+  transition: background 150ms, color 150ms;
+}
+.cluster-chip:hover { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+
+/* ============================================================================
+   METHODOLOGY SECTION
+   ============================================================================ */
+.method-blocks {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 3rem;
+  margin-top: 2rem;
+  max-width: 76ch;
+}
+.method-block {
+  padding-left: 2rem;
+  border-left: 1px solid var(--rule);
+  position: relative;
+}
+.method-block::before {
+  content: '';
+  position: absolute;
+  left: -1px;
+  top: 0;
+  width: 1px;
+  height: 4rem;
+  background: var(--accent);
+}
+.method-mark {
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 0.5rem;
+}
+.method-block h3 {
+  font-family: var(--serif);
+  font-size: 1.7rem;
+  font-weight: 300;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  margin-bottom: 1rem;
+}
+.method-block p {
+  font-size: 0.95rem;
+  line-height: 1.7;
+  color: var(--ink-2);
+  margin-bottom: 1rem;
+}
+.method-block strong { color: var(--ink); font-weight: 500; }
+.method-block code {
+  font-family: var(--mono);
+  font-size: 0.85em;
+  background: var(--paper-deep);
+  padding: 1px 5px;
+  border-radius: 2px;
+  color: var(--ink);
+}
+.method-formula {
+  margin: 1.5rem 0;
+  padding: 1.25rem 1.5rem;
+  background: var(--paper-soft);
+  border: 1px solid var(--rule);
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+.method-formula-row {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  gap: 1rem;
+  align-items: baseline;
+  font-size: 0.85rem;
+}
+.method-formula-lbl {
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+.method-formula code {
+  background: transparent;
+  padding: 0;
+  font-size: 0.85rem;
+  color: var(--ink);
+}
+
+/* ============================================================================
+   COMPARE COUNTRIES — added to profile section
+   ============================================================================ */
+.compare-row {
+  display: flex;
+  align-items: baseline;
+  gap: 1rem;
+  margin-top: 1.5rem;
+  padding-top: 1rem;
+  border-top: 1px dashed var(--rule);
+}
+.compare-label {
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+.compare-row select {
+  background: transparent;
+  border: none;
+  border-bottom: 1px dashed var(--ink-3);
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 1.05rem;
+  color: var(--ink);
+  padding: 4px;
+  flex: 1;
+  min-width: 200px;
+  cursor: pointer;
+  -webkit-appearance: none;
+  appearance: none;
+}
+.compare-row select:focus { outline: none; border-bottom-color: var(--ink); }
+.compare-overlay {
+  position: absolute;
+  top: 0; bottom: 0; left: 0;
+  background: var(--accent);
+  opacity: 0.4;
+  border-right: 1px solid var(--accent);
+}
+.fp-phase-track { position: relative; }
+.fp-domain-bar { position: relative; }
+
+/* ============================================================================
+   COMPARE — side-by-side rendering when a compare country is selected
+   ============================================================================ */
+.fp-compare-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  margin-top: 1rem;
+}
+.fp-compare-grid > .fp-col {
+  border-top: 2px solid var(--ink);
+  padding-top: 1rem;
+}
+.fp-compare-grid .fp-col-mark {
+  font-family: var(--mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  margin-bottom: 0.4rem;
+}
+.fp-compare-grid h3.fp-col-name {
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: 1.4rem;
+  margin: 0 0 0.6rem 0;
+  letter-spacing: -0.01em;
+}
+.fp-col-composite {
+  display: flex;
+  align-items: baseline;
+  gap: 0.6rem;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px dashed var(--rule);
+}
+.fp-col-composite .num {
+  font-family: var(--serif);
+  font-size: 2rem;
+  font-weight: 300;
+  letter-spacing: -0.02em;
+}
+.fp-col-composite .rank {
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  color: var(--ink-3);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+@media (max-width: 880px) {
+  .fp-compare-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+}
+
+/* ============================================================================
+   INTERPRETATION — real-world context panels
+   ============================================================================ */
+.interp-band {
+  margin-top: 2rem;
+  padding: 1.5rem 1.75rem;
+  background: var(--paper-soft);
+  border-left: 3px solid var(--accent);
+  border-radius: 2px;
+}
+.interp-mark {
+  font-family: var(--mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 0.6rem;
+}
+.interp-band h4 {
+  font-family: var(--serif);
+  font-weight: 400;
+  font-style: italic;
+  font-size: 1.15rem;
+  margin: 0 0 0.7rem 0;
+  color: var(--ink);
+}
+.interp-band p {
+  font-family: var(--serif);
+  font-size: 0.95rem;
+  line-height: 1.65;
+  color: var(--ink-2);
+  margin: 0 0 0.6rem 0;
+}
+.interp-band p:last-child { margin-bottom: 0; }
+
+/* score-tier chip on country profile */
+.score-tier {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 4px 10px;
+  font-family: var(--mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  border-radius: 100px;
+  margin-left: 0.75rem;
+  vertical-align: middle;
+}
+.score-tier.t-extreme { background: #5b2414; color: #f5ede0; }
+.score-tier.t-high    { background: #8a3d22; color: #f5ede0; }
+.score-tier.t-elev    { background: #b6844a; color: #2a1f12; }
+.score-tier.t-mod     { background: #d4c2a0; color: #2a1f12; }
+.score-tier.t-low     { background: #6b7a5b; color: #f5ede0; }
+
+/* "how to read" key */
+.read-key {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 0.5rem;
+  margin: 1.25rem 0 0.5rem 0;
+  font-family: var(--mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.read-key > div {
+  padding: 6px 8px;
+  border-bottom: 2px solid;
+  color: var(--ink-2);
+}
+.read-key .k-extreme { border-color: #5b2414; }
+.read-key .k-high    { border-color: #8a3d22; }
+.read-key .k-elev    { border-color: #b6844a; }
+.read-key .k-mod     { border-color: #d4c2a0; }
+.read-key .k-low     { border-color: #6b7a5b; }
+.read-key .k-label { font-family: var(--serif); font-style: italic; font-size: 0.75rem; text-transform: none; letter-spacing: 0; color: var(--ink-3); margin-top: 2px; }
+@media (max-width: 700px) { .read-key { grid-template-columns: repeat(2, 1fr); } }
+
+/* dominant-phase tag */
+.phase-dom {
+  font-family: var(--mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 3px 8px;
+  border: 1px solid var(--rule);
+  border-radius: 2px;
+  color: var(--ink-2);
+  margin-left: 0.5rem;
+}
+
+@media (max-width: 900px) {
+  .distribution-layout, .spatial-grid { grid-template-columns: 1fr; }
+  .cluster-types { grid-template-columns: 1fr; }
+  .method-formula-row { grid-template-columns: 1fr; }
+}
+
+/* Footer */
+footer {
+  padding: 4rem 2.5rem 3rem;
+  border-top: 1px solid var(--rule);
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  color: var(--ink-3);
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .composite-grid, .fingerprint, .two-stories, .phase-block, .phase-block.reverse, .limits-grid {
+    grid-template-columns: 1fr;
+  }
+  .phase-block.reverse .phase-block-content,
+  .phase-block.reverse .phase-block-viz { order: unset; }
+  section { padding: 4rem 1.5rem; }
+  .hero { padding: 6rem 1.5rem 3rem; }
+  .nav { padding: 0 1.5rem; }
+  .hero-stats { gap: 1.5rem; flex-wrap: wrap; }
+  .nav-links { gap: 1rem; overflow-x: auto; }
+}
+
+/* Plotly overrides */
+.plotly .modebar { display: none !important; }
+
+/* Subtle entrance for above-fold sections */
+.fade-on-load {
+  opacity: 0;
+  transform: translateY(8px);
+  animation: fadeUp 0.9s ease-out 0.1s forwards;
+}
+@keyframes fadeUp {
+  to { opacity: 1; transform: translateY(0); }
+}
+</style>
+</head>
+<body>
+
+<!-- ============================================================================
+     NAVIGATION
+     ============================================================================ -->
+<nav class="nav" id="nav">
+  <div class="nav-brand"><em>FLSRI</em></div>
+  <div class="nav-links">
+    <span class="nav-link" data-target="hero">Index</span>
+    <span class="nav-link" data-target="composite">Map</span>
+    <span class="nav-link" data-target="stories">Two Stories</span>
+    <span class="nav-link" data-target="anatomy">Phases</span>
+    <span class="nav-link" data-target="distribution">Patterns</span>
+    <span class="nav-link" data-target="profile">Profile</span>
+    <span class="nav-link" data-target="spatial">Spatial</span>
+    <span class="nav-link" data-target="methodology">Methodology</span>
+    <span class="nav-link" data-target="limits">Limits</span>
+  </div>
+</nav>
+
+<!-- ============================================================================
+     HERO
+     ============================================================================ -->
+<section class="hero" id="hero" style="border-top: none;">
+  <div class="fade-on-load">
+    <div class="hero-mark">Forced Labor Structural Risk Index · 195 countries</div>
+    <h1 class="hero-title">
+      The conditions <em>that produce</em><br>
+      forced labor.
+      <span class="hero-title-mark">v.2026</span>
+    </h1>
+    <p class="hero-thesis">
+      Forced labor is a hidden phenomenon. The people most exploited are the least able to report.
+      Authoritarian states control what gets recorded; informal economies leave no paper trail; survivors
+      who escape often cannot approach authorities. <strong>Conventional prevalence indices systematically
+      under-count exactly where structural risk is highest</strong> — because the same conditions that produce
+      forced labor also suppress the data those indices depend on.
+    </p>
+    <p class="hero-thesis" style="margin-top: 1.25rem;">
+      <em>FLSRI measures the structural conditions directly</em> — institutional, economic, demographic,
+      financial — and treats the gap between high structural risk and low reported prevalence as a feature,
+      not a discrepancy.
+    </p>
+  </div>
+
+  <div class="hero-bottom">
+    <div class="hero-stats">
+      <div><span class="hero-stat-num">195</span><div class="hero-stat-lbl">Countries</div></div>
+      <div><span class="hero-stat-num">35</span><div class="hero-stat-lbl">Indicators</div></div>
+      <div><span class="hero-stat-num">12</span><div class="hero-stat-lbl">Domains</div></div>
+      <div><span class="hero-stat-num">3</span><div class="hero-stat-lbl">Phases</div></div>
+    </div>
+    <div class="scroll-cue">scroll</div>
+  </div>
+</section>
+
+<!-- ============================================================================
+     COMPOSITE MAP + RANKING
+     ============================================================================ -->
+<section id="composite">
+  <div class="section-mark" data-num="01">The Composite</div>
+  <h2 class="section-title">A score where 1.0 is the <em>theoretical</em> worst.</h2>
+  <p class="section-lead">
+    No country reaches 1.0. The composite combines structural risk across recruitment vulnerability,
+    exploitation conditions, and monetization architecture. Most countries cluster between 0.13 and 0.28;
+    the top tier above 0.30 is small.
+  </p>
+
+  <div class="composite-grid">
+    <div id="composite-map"></div>
+    <div class="ranking-list">
+      <div class="ranking-header">
+        <h3 id="ranking-title">Highest structural risk</h3>
+        <div class="ranking-tabs">
+          <span class="ranking-tab active" data-mode="top">Top</span>
+          <span class="ranking-tab" data-mode="bottom">Bottom</span>
+        </div>
+      </div>
+      <div id="ranking-rows"></div>
+    </div>
+  </div>
+
+  <div class="interp-band" style="margin-top: 2.5rem;">
+    <div class="interp-mark">What you are looking at</div>
+    <h4>The map is structural risk, not victim count.</h4>
+    <p>
+      A country shaded dark on this map has the institutional, economic, and demographic conditions
+      under which forced labor flourishes — not necessarily the highest documented number of victims.
+      The two often diverge. Walk Free's Global Slavery Index puts North Korea at the world's highest
+      prevalence; FLSRI cannot, because the data those measurements depend on is suppressed by the
+      same state apparatus that produces the conditions. Where structural risk is high and reported
+      prevalence is low, that gap is the finding.
+    </p>
+  </div>
+</section>
+
+<!-- ============================================================================
+     TWO STORIES — fragile-origin vs financial-destination
+     ============================================================================ -->
+<section id="stories">
+  <div class="section-mark" data-num="02">Two stories</div>
+  <h2 class="section-title">The index tells <em>two</em> different risk stories.</h2>
+  <p class="section-lead">
+    Conventional prevalence indices compress these into a single rank. FLSRI separates them by phase. The
+    countries that <em>produce</em> exploitable populations are not necessarily the same countries that
+    <em>retain</em> the proceeds.
+  </p>
+
+  <div class="two-stories">
+    <div class="story-col">
+      <div class="story-mark">Fragile-origin risk</div>
+      <h3>Where populations become exploitable.</h3>
+      <p>
+        Conflict, displacement, climate disasters, weak institutions, household economic precarity,
+        and absent social protection — the conditions that produce populations available for predatory
+        recruitment. These countries score high on Phase 1 because the structural pre-conditions for
+        forced labor are concentrated there.
+      </p>
+      <div class="story-examples">
+        <div class="story-ex-header"><div></div><div>P1</div><div>P2</div><div>P3</div></div>
+        <div id="story-fragile"></div>
+      </div>
+    </div>
+    <div class="story-col">
+      <div class="story-mark">Financial-destination risk</div>
+      <h3>Where proceeds can be retained.</h3>
+      <p>
+        High-income, well-governed economies often score low on recruitment and exploitation but
+        elevated on monetization. The Phase 3 score identifies these jurisdictions as financial-system
+        environments where illicit value can be moved or retained — not as places where forced labor
+        occurs domestically. The framing this index makes possible: <em>monetization geography is not
+        exploitation geography</em>.
+      </p>
+      <div class="story-examples">
+        <div class="story-ex-header"><div></div><div>P1</div><div>P2</div><div>P3</div></div>
+        <div id="story-financial"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="interp-band" style="margin-top: 2rem;">
+    <div class="interp-mark">Why this matters</div>
+    <h4>Conventional indices conflate the two.</h4>
+    <p>
+      Treating a global league table of "where is forced labor worst" as a single ranking erases the
+      difference between countries that <em>produce</em> exploitable populations (typically conflict-affected,
+      displacement-pressured, institutionally fragile) and countries that <em>retain the proceeds</em>
+      (typically high-income, well-governed, with sophisticated financial systems). Policy responses
+      diverge accordingly: the former call for humanitarian and developmental interventions; the latter
+      call for AML reform, supply-chain due diligence, and beneficial-ownership transparency. FLSRI's
+      phase decomposition makes that distinction explicit.
+    </p>
+  </div>
+</section>
+
+<!-- ============================================================================
+     PHASE ANATOMY
+     ============================================================================ -->
+<section id="anatomy">
+  <div class="section-mark" data-num="03">Phase anatomy</div>
+  <h2 class="section-title">Three phases. <em>One</em> system.</h2>
+  <p class="section-lead">
+    The phases are sequential: people are recruited from somewhere, exploited under some institutional
+    conditions, and the proceeds flow through some financial channel. A country has high structural risk
+    when all three align — and that's why the composite is a geometric mean rather than an arithmetic one.
+  </p>
+
+  <div class="phase-anatomy">
+    <!-- P1 -->
+    <div class="phase-block">
+      <div class="phase-block-content">
+        <div class="phase-block-mark">Phase 1</div>
+        <h3>Recruitment</h3>
+        <p class="phase-block-question">Where do exploitable populations come from?</p>
+        <p class="phase-block-prose">
+          The structural conditions that produce populations vulnerable to recruitment into exploitative
+          labor. Captures both acute disruptions (disasters, conflict, displacement) and chronic
+          conditions (household economic precarity, absent institutional protection). High Phase 1
+          scores indicate <strong>large recruitment-vulnerable populations</strong>.
+        </p>
+        <div class="phase-block-domains">
+          <div class="phase-block-domain"><code>D1.1</code><div><strong>Structural Disruption</strong> <span>· disaster shocks, climate vulnerability, armed conflict</span></div></div>
+          <div class="phase-block-domain"><code>D1.2</code><div><strong>Forced Displacement</strong> <span>· IDPs and refugees from origin countries</span></div></div>
+          <div class="phase-block-domain"><code>D1.3</code><div><strong>Reduced Bargaining Power</strong> <span>· youth exclusion, child labor, inequality, education deficit</span></div></div>
+          <div class="phase-block-domain"><code>D1.4</code><div><strong>Institutional Protection Deficit</strong> <span>· rule of law, civil documentation, social protection</span></div></div>
+        </div>
+      </div>
+      <div class="phase-block-viz">
+        <div class="phase-top10-header">Top 10 — Recruitment</div>
+        <div id="phase-top-p1"></div>
+      </div>
+    </div>
+
+    <!-- P2 -->
+    <div class="phase-block reverse">
+      <div class="phase-block-content">
+        <div class="phase-block-mark">Phase 2</div>
+        <h3>Exploitation</h3>
+        <p class="phase-block-question">Where can it persist without consequence?</p>
+        <p class="phase-block-prose">
+          The institutional and structural conditions allowing exploitation to operate openly. Weak labor
+          enforcement, sectoral concentration in coercion-prone work, criminal-state capacity gaps, and
+          structural exit barriers. High Phase 2 scores indicate <strong>environments where exploitation
+          can persist undetected and uncontested</strong>.
+        </p>
+        <div class="phase-block-domains">
+          <div class="phase-block-domain"><code>D2.1</code><div><strong>Enforcement Capacity</strong> <span>· bribery prevalence, regulatory strength</span></div></div>
+          <div class="phase-block-domain"><code>D2.3</code><div><strong>Sector Exposure</strong> <span>· informality, commodity concentration, productivity</span></div></div>
+          <div class="phase-block-domain"><code>D2.4</code><div><strong>Institutional Coercion Enablement</strong> <span>· criminality vs resilience, criminal authority</span></div></div>
+          <div class="phase-block-domain"><code>D2.5</code><div><strong>Structural Entrapment</strong> <span>· exit barriers, mobility constraint, displacement burden</span></div></div>
+        </div>
+      </div>
+      <div class="phase-block-viz">
+        <div class="phase-top10-header">Top 10 — Exploitation</div>
+        <div id="phase-top-p2"></div>
+      </div>
+    </div>
+
+    <!-- P3 -->
+    <div class="phase-block">
+      <div class="phase-block-content">
+        <div class="phase-block-mark">Phase 3</div>
+        <h3>Monetization</h3>
+        <p class="phase-block-question">Where can the proceeds be retained?</p>
+        <p class="phase-block-prose">
+          The financial-architecture conditions enabling perpetrators to retain illicit value. Regulatory
+          capture, laundering surface, cash-economy reliance, formal credit constraint. Notably, high
+          Phase 3 scores appear both in <strong>fragile states</strong> (where opacity protects proceeds)
+          and in <strong>well-governed financial centers</strong> (where formal-system depth creates
+          channels usable for moving illicit value).
+        </p>
+        <div class="phase-block-domains">
+          <div class="phase-block-domain"><code>D3.1</code><div><strong>Regulatory Integrity & Capture</strong> <span>· AML risk, bribery environment, clientelism</span></div></div>
+          <div class="phase-block-domain"><code>D3.2</code><div><strong>Laundering Infrastructure</strong> <span>· digital payment, account penetration</span></div></div>
+          <div class="phase-block-domain"><code>D3.3</code><div><strong>Cash Transaction Reliance</strong> <span>· cash-wage prevalence</span></div></div>
+          <div class="phase-block-domain"><code>D3.4</code><div><strong>Formal Credit Constraint</strong> <span>· enterprise finance access</span></div></div>
+        </div>
+      </div>
+      <div class="phase-block-viz">
+        <div class="phase-top10-header">Top 10 — Monetization</div>
+        <div id="phase-top-p3"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================================
+     DISTRIBUTION PATTERNS — phase relationships
+     ============================================================================ -->
+<section id="distribution">
+  <div class="section-mark" data-num="04">Distribution patterns</div>
+  <h2 class="section-title">The phase plane reveals <em>structure</em>.</h2>
+  <p class="section-lead">
+    Plotting recruitment risk against exploitation risk reveals four distinct profile clusters.
+    The composite score compresses these into a single rank; the phase plane preserves them.
+  </p>
+
+  <div class="distribution-layout">
+    <div id="phase-scatter"></div>
+    <div class="distribution-sidebar">
+      <div class="dist-cluster" data-cluster="full-system">
+        <div class="dist-cluster-mark">Quadrant 1</div>
+        <h4>Full-system risk</h4>
+        <p>High on every phase. Recruitment vulnerability, weak guardianship, and monetization channels all align. The composite top tier.</p>
+        <div class="dist-cluster-examples" id="cluster-full"></div>
+      </div>
+      <div class="dist-cluster" data-cluster="fragile-origin">
+        <div class="dist-cluster-mark">Quadrant 2</div>
+        <h4>Fragile-origin profile</h4>
+        <p>High recruitment and exploitation, lower monetization. Conditions produce vulnerable populations and exploitation persists, but proceeds-retention infrastructure is weaker.</p>
+        <div class="dist-cluster-examples" id="cluster-fragile"></div>
+      </div>
+      <div class="dist-cluster" data-cluster="financial-dest">
+        <div class="dist-cluster-mark">Quadrant 3</div>
+        <h4>Financial-destination profile</h4>
+        <p>Low recruitment and exploitation, high monetization. Forced labor does not occur at structural scale here; the monetization phase identifies these as financial-system environments where illicit value can be moved or retained.</p>
+        <div class="dist-cluster-examples" id="cluster-financial"></div>
+      </div>
+      <div class="dist-cluster" data-cluster="low-risk">
+        <div class="dist-cluster-mark">Quadrant 4</div>
+        <h4>Low structural risk</h4>
+        <p>Low across all phases. The conditions for forced labor to flourish at structural scale are not present.</p>
+        <div class="dist-cluster-examples" id="cluster-low"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="interp-band" style="margin-top: 2rem;">
+    <div class="interp-mark">Reading the quadrants</div>
+    <h4>One number compresses four very different stories.</h4>
+    <p>
+      A composite score of 0.30 can mean a fragile-origin country with active conflict and weak
+      institutions, or a high-income financial center with elevated AML risk. The composite ranks them
+      similarly; the structural reality is unrelated. Quadrant placement is a more honest answer to
+      "what is happening here?" than the rank.
+    </p>
+  </div>
+</section>
+
+<!-- ============================================================================
+     COUNTRY FINGERPRINT
+     ============================================================================ -->
+<section id="profile">
+  <div class="section-mark" data-num="05">Country profile</div>
+  <h2 class="section-title">Every country has a <em>shape</em>.</h2>
+  <p class="section-lead">
+    The phase profile is a fingerprint. A country can score the same composite as another but with a
+    completely different distribution across recruitment, exploitation, and monetization — and that
+    distribution is the real story.
+  </p>
+
+  <div class="country-search">
+    <label for="profile-select">Select</label>
+    <select id="profile-select"></select>
+  </div>
+
+  <div class="compare-row">
+    <span class="compare-label">Compare with</span>
+    <select id="compare-select">
+      <option value="">— none —</option>
+    </select>
+    <span id="compare-clear" style="display:none;font-family:var(--mono);font-size:0.65rem;color:var(--accent);letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;border-bottom:1px dashed var(--accent);padding-bottom:1px">clear</span>
+  </div>
+
+  <div class="read-key">
+    <div class="k-low"><div>0.00 – 0.15</div><div class="k-label">low</div></div>
+    <div class="k-mod"><div>0.15 – 0.25</div><div class="k-label">moderate</div></div>
+    <div class="k-elev"><div>0.25 – 0.35</div><div class="k-label">elevated</div></div>
+    <div class="k-high"><div>0.35 – 0.50</div><div class="k-label">high</div></div>
+    <div class="k-extreme"><div>0.50 +</div><div class="k-label">extreme</div></div>
+  </div>
+
+  <div id="profile-content" class="fingerprint"></div>
+
+  <div id="profile-interp"></div>
+</section>
+
+<!-- ============================================================================
+     SPATIAL CLUSTERS — LISA
+     ============================================================================ -->
+<section id="spatial">
+  <div class="section-mark" data-num="06">Spatial clusters</div>
+  <!-- (kept at 06) -->
+  <h2 class="section-title">Risk does not <em>respect</em> borders.</h2>
+  <p class="section-lead">
+    Local Indicators of Spatial Association detect statistically significant clusters where countries
+    and their neighbors share similar risk profiles. Global Moran's I quantifies the overall degree of
+    spatial autocorrelation in each phase.
+  </p>
+
+  <div class="cluster-controls" style="margin-bottom: 1.5rem;">
+    <div class="cluster-tabs">
+      <span class="cluster-tab active" data-phase="composite">Composite</span>
+      <span class="cluster-tab" data-phase="recruitment">Recruitment</span>
+      <span class="cluster-tab" data-phase="exploitation">Exploitation</span>
+      <span class="cluster-tab" data-phase="monetization">Monetization</span>
+    </div>
+  </div>
+
+  <div class="spatial-grid">
+    <div class="spatial-stats">
+      <div class="moran-card">
+        <div class="moran-mark">Composite</div>
+        <div class="moran-val" id="moran-composite">—</div>
+        <div class="moran-lbl">Global Moran's I</div>
+      </div>
+      <div class="moran-card">
+        <div class="moran-mark">Recruitment</div>
+        <div class="moran-val" id="moran-recruitment">—</div>
+        <div class="moran-lbl">strongest spatial pattern</div>
+      </div>
+      <div class="moran-card">
+        <div class="moran-mark">Exploitation</div>
+        <div class="moran-val" id="moran-exploitation">—</div>
+        <div class="moran-lbl">moderate clustering</div>
+      </div>
+      <div class="moran-card">
+        <div class="moran-mark">Monetization</div>
+        <div class="moran-val" id="moran-monetization">—</div>
+        <div class="moran-lbl">moderate clustering</div>
+      </div>
+    </div>
+
+    <div class="spatial-clusters-panel">
+      <div id="lisa-map" style="height:520px;background:var(--paper-soft);border:1px solid var(--rule);margin-bottom:1.5rem"></div>
+
+      <div class="cluster-types">
+        <div class="cluster-type" data-type="HH">
+          <div class="cluster-type-header">
+            <span class="cluster-swatch hh"></span>
+            <strong>High–High</strong>
+            <span class="cluster-count" id="ct-HH">0</span>
+          </div>
+          <div class="cluster-type-desc">High-risk countries surrounded by high-risk neighbors. Regional risk concentration.</div>
+          <div class="cluster-list" id="cluster-list-HH"></div>
+        </div>
+        <div class="cluster-type" data-type="LL">
+          <div class="cluster-type-header">
+            <span class="cluster-swatch ll"></span>
+            <strong>Low–Low</strong>
+            <span class="cluster-count" id="ct-LL">0</span>
+          </div>
+          <div class="cluster-type-desc">Low-risk countries surrounded by low-risk neighbors. Regional resilience cluster.</div>
+          <div class="cluster-list" id="cluster-list-LL"></div>
+        </div>
+        <div class="cluster-type" data-type="HL">
+          <div class="cluster-type-header">
+            <span class="cluster-swatch hl"></span>
+            <strong>High–Low</strong>
+            <span class="cluster-count" id="ct-HL">0</span>
+          </div>
+          <div class="cluster-type-desc">High-risk outliers in otherwise lower-risk neighborhoods. Isolated structural-risk concentrations.</div>
+          <div class="cluster-list" id="cluster-list-HL"></div>
+        </div>
+        <div class="cluster-type" data-type="LH">
+          <div class="cluster-type-header">
+            <span class="cluster-swatch lh"></span>
+            <strong>Low–High</strong>
+            <span class="cluster-count" id="ct-LH">0</span>
+          </div>
+          <div class="cluster-type-desc">Low-risk countries embedded in high-risk neighborhoods. Regional protective outliers.</div>
+          <div class="cluster-list" id="cluster-list-LH"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="interp-band" style="margin-top: 2.5rem;">
+    <div class="interp-mark">Why borders matter</div>
+    <h4>Forced labor flows through corridors, not states.</h4>
+    <p>
+      The Sahel-to-Maghreb migration corridor, the Andean-Amazon trafficking routes, the South Asian
+      labor-migration system, the Mekong fisheries: each is a <em>regional</em> structural-risk cluster
+      that no single-country index can capture. The HH clusters above are not coincidences — they
+      reflect the geography of conflict spillover, shared institutional weakness, and migration routes
+      where vulnerable populations cross borders into jurisdictions whose enforcement gaps are
+      effectively continuous with their origin country.
+    </p>
+    <p>
+      The HL "isolated risk" tag and LH "regional protective" tag matter for policy. A country
+      flagged HL is a structural-risk concentration its neighbors don't share — typically driven by
+      domestic conditions (state policy, single-sector exposure) rather than regional spillover.
+      An LH country is comparatively well-positioned, but the surrounding pressure means policy
+      cannot be purely domestic.
+    </p>
+  </div>
+</section>
+
+<!-- ============================================================================
+     METHODOLOGY
+     ============================================================================ -->
+<section id="methodology">
+  <div class="section-mark" data-num="07">Methodology</div>
+  <!-- (kept at 07) -->
+  <h2 class="section-title">Every choice is <em>traceable</em>.</h2>
+  <p class="section-lead">
+    The index is built on a discipline of theoretical anchoring, transparent aggregation, and honest
+    propagation of missing data. Every methodological decision traces to either a source codebook or
+    construct theory.
+  </p>
+
+  <div class="method-blocks">
+    <div class="method-block">
+      <div class="method-mark">Anchor A</div>
+      <h3>Theoretical maximum, not observed maximum.</h3>
+      <p>
+        Every indicator is scaled to <code>[0, 1]</code> where <strong>1.0 represents the theoretical worst</strong> on that
+        dimension — not the worst-observed country. For percentages, the anchor is 100% by definition.
+        For ordinal indices (V-Dem, GITOC, Basel), the anchor is the source codebook maximum. For
+        per-capita disaster mortality, the anchor is the population fraction (entire population
+        affected per year). For labor productivity (which has no codebook ceiling), the World Bank
+        international subsistence wage anchors the high-risk floor and the OECD G7 mean anchors the
+        low-risk frontier.
+      </p>
+      <p>
+        The discipline matters because the index uses multiplicative aggregation across phases.
+        Multiplication only has consistent meaning when factors are anchored consistently. And it
+        means the scale is stable across data updates: adding a country to the sample does not
+        reshuffle existing scores.
+      </p>
+    </div>
+
+    <div class="method-block">
+      <div class="method-mark">Aggregation</div>
+      <h3>Indicator → domain → phase → composite.</h3>
+      <p>Each level applies a different rule, deliberately:</p>
+      <div class="method-formula">
+        <div class="method-formula-row">
+          <span class="method-formula-lbl">Indicator → Domain</span>
+          <code>D = mean of available indicators (NaN-tolerant)</code>
+        </div>
+        <div class="method-formula-row">
+          <span class="method-formula-lbl">Domain → Phase</span>
+          <code>P = exp(Σ ln(D) / n_observed)  — geometric mean</code>
+        </div>
+        <div class="method-formula-row">
+          <span class="method-formula-lbl">Reinforcement</span>
+          <code>R_adj = R × (0.70 + 0.60 × E × M)</code>
+        </div>
+        <div class="method-formula-row">
+          <span class="method-formula-lbl">Composite</span>
+          <code>FLSRI = ∛(max(0.05, R_adj) × max(0.05, E) × max(0.05, M))</code>
+        </div>
+      </div>
+      <p>
+        The geometric mean at the phase and composite levels enforces the routine-activity-theory
+        thesis: forced labor at structural scale requires recruitment vulnerability, exploitation
+        conditions, <em>and</em> monetization architecture <em>simultaneously</em>. A country
+        strong on one dimension but absent on another cannot reach the top tier — and that is the
+        correct compositional logic for the construct.
+      </p>
+    </div>
+
+    <div class="method-block">
+      <div class="method-mark">Imputation</div>
+      <h3>Missing data is not fabricated.</h3>
+      <p>
+        Indicator values that are missing in the source data <strong>propagate as NaN</strong> through
+        the aggregation hierarchy. A country with sparse coverage produces NaN at affected aggregation
+        levels rather than an imputed value. This is more honest than fabricating, and it is consistent
+        with the structural-versus-prevalence thesis: countries where data is suppressed by political
+        conditions are themselves the structural-risk cases the index exists to surface.
+      </p>
+      <p>
+        One narrowly justified exception applies to civil documentation (1.4.2): high-income OECD
+        countries are zero-filled because universal birth registration is the institutional baseline
+        in those jurisdictions, and absence in source data reflects non-reporting of saturated
+        coverage rather than a coverage gap.
+      </p>
+    </div>
+
+    <div class="method-block">
+      <div class="method-mark">Theoretical grounding</div>
+      <h3>Routine activity theory, three phases.</h3>
+      <p>
+        The framework operationalizes Routine Activity Theory (Cohen and Felson, 1979). Crime persists
+        where three conditions converge: vulnerable populations, weak guardianship, and motivated
+        offenders with means. Each becomes a phase. Each phase decomposes into domains capturing
+        distinct mechanisms. Each domain decomposes into indicators with documented sources, transforms,
+        and theoretical anchors.
+      </p>
+    </div>
+
+    <div class="method-block">
+      <div class="method-mark">Validation thesis</div>
+      <h3>Divergence from prevalence is informative.</h3>
+      <p>
+        FLSRI scores are expected to show moderate but imperfect correlation with prevalence-based
+        forced-labor indices (Walk Free GSI, ILO Global Estimates, US Trafficking in Persons reports).
+        Where FLSRI flags high structural risk and prevalence indices report low cases,
+        <strong>the gap itself is meaningful</strong> — it suggests forced labor that is institutionally
+        invisible. The validation strategy does not treat prevalence indices as ground truth; it treats
+        their divergence from FLSRI as informative about the boundary of what each measurement
+        captures.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================================
+     LIMITATIONS
+     ============================================================================ -->
+<section id="limits">
+  <div class="section-mark" data-num="08">Limits</div>
+  <h2 class="section-title">What this index <em>cannot</em> tell you.</h2>
+  <p class="section-lead">
+    Every measurement has boundaries. These are the ones we know about and document.
+  </p>
+
+  <div class="limits-grid">
+    <div class="limit-card">
+      <div class="limit-tag">Closed-state under-sensitivity</div>
+      <h4>The structural-versus-prevalence thesis applies to FLSRI itself.</h4>
+      <p>
+        Closed states (DPRK, Eritrea, Turkmenistan) evade the data sources the index relies on. Where
+        data exists, scores are extreme; where data is missing, the geometric-mean phase aggregation
+        produces NaN or artificially low scores. This is the construct working correctly while exposing
+        the boundary of what any indicator can measure.
+      </p>
+    </div>
+    <div class="limit-card">
+      <div class="limit-tag">Per-capita amplification</div>
+      <h4>Small populations can over-rank on per-capita measures.</h4>
+      <p>
+        Small countries with concentrated disaster shocks or asylum inflows can produce per-capita
+        scores that overstate structural risk relative to larger countries with absolutely larger but
+        proportionally smaller flows. Slovenia's 2023 floods, Costa Rica's Nicaraguan asylum inflow,
+        and Vanuatu's cyclones are examples in the data.
+      </p>
+    </div>
+    <div class="limit-card">
+      <div class="limit-tag">Reinforcement calibration</div>
+      <h4>The reinforcement multiplier is provisional.</h4>
+      <p>
+        The current coefficients (0.70 / 0.60) imply a multiplier range of [0.70, 1.30] but realize a
+        smaller range in observed data because no country reaches the joint-maximum exploitation ×
+        monetization product the formula assumes. Subject to lock-time recalibration once all phases
+        stabilize.
+      </p>
+    </div>
+    <div class="limit-card">
+      <div class="limit-tag">Validation thesis</div>
+      <h4>Moderate correlation with prevalence is the expected state.</h4>
+      <p>
+        FLSRI is not validated against prevalence indices as ground truth. The expected pattern is
+        moderate correlation with significant divergence — strong enough to confirm both measure related
+        phenomena, weak enough to confirm FLSRI captures information prevalence misses. The divergences
+        are the point.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================================
+     FOOTER
+     ============================================================================ -->
+<footer>
+  <div>FLSRI · Forced Labor Structural Risk Index</div>
+  <div>v.2026 · 195 countries · 35 indicators · 12 domains · 3 phases</div>
+</footer>
+
+<!-- ============================================================================
+     APP LOGIC
+     ============================================================================ -->
+<script>
+(function () {
+  'use strict';
+
+  if (typeof DATA === 'undefined' || !DATA.countries) {
+    document.body.innerHTML = '<div style="padding:4rem;text-align:center;font-family:var(--mono);color:var(--accent)">No data file found.</div>';
+    return;
+  }
+
+  const countries = DATA.countries;
+  const scored = countries.filter(c => c['COMPOSITE INDEX'] != null);
+  const sortedDesc = [...scored].sort((a, b) => b['COMPOSITE INDEX'] - a['COMPOSITE INDEX']);
+  const sortedAsc = [...scored].sort((a, b) => a['COMPOSITE INDEX'] - b['COMPOSITE INDEX']);
+
+  // ---------------------------------------------------------------------------
+  // Composite map (Plotly choropleth)
+  // ---------------------------------------------------------------------------
+  function renderCompositeMap() {
+    const mapEl = document.getElementById('composite-map');
+    if (!mapEl) return;
+
+    const isos = scored.map(c => c.ISO3);
+    const z = scored.map(c => c['COMPOSITE INDEX']);
+    const texts = scored.map(c =>
+      `<b>${c.Country}</b><br>` +
+      `Composite: ${c['COMPOSITE INDEX'].toFixed(3)}<br>` +
+      `Rank: ${c['COMPOSITE RANK']} of ${scored.length}<br><br>` +
+      `Recruitment: ${(c.RECRUITMENT||0).toFixed(3)}<br>` +
+      `Exploitation: ${(c.EXPLOITATION||0).toFixed(3)}<br>` +
+      `Monetization: ${(c.MONETIZATION||0).toFixed(3)}`
+    );
+
+    const trace = {
+      type: 'choropleth',
+      locationmode: 'ISO-3',
+      locations: isos,
+      z: z,
+      text: texts,
+      hoverinfo: 'text',
+      customdata: isos,
+      colorscale: [
+        [0, '#f4f1e8'],
+        [0.25, '#e6c0a8'],
+        [0.5, '#c4724f'],
+        [0.75, '#a54a2c'],
+        [1, '#7c2f15']
+      ],
+      colorbar: {
+        title: '', thickness: 8, len: 0.5, x: 0.02, y: 0.5,
+        tickfont: { family: 'IBM Plex Mono', size: 10, color: '#807c70' },
+        outlinewidth: 0,
+      },
+      marker: { line: { color: '#dcd6c4', width: 0.4 } },
+      zmin: 0, zmax: 0.55,
+    };
+
+    const layout = {
+      paper_bgcolor: 'rgba(0,0,0,0)',
+      plot_bgcolor: 'rgba(0,0,0,0)',
+      geo: {
+        bgcolor: 'rgba(0,0,0,0)',
+        showframe: false,
+        showcoastlines: true,
+        coastlinecolor: '#dcd6c4',
+        countrycolor: '#dcd6c4',
+        landcolor: '#f4f1e8',
+        projection: { type: 'natural earth' },
+      },
+      margin: { t: 0, r: 0, b: 0, l: 0 },
+      autosize: true,
+    };
+
+    const config = { displayModeBar: false, responsive: true };
+
+    Plotly.newPlot(mapEl, [trace], layout, config).then(() => {
+      // Force a resize after initial render — fixes intermittent zero-width issues
+      // when Plotly renders inside CSS grid before the container has settled.
+      Plotly.Plots.resize(mapEl);
+      mapEl.on('plotly_click', function (d) {
+        if (d.points && d.points.length) selectCountry(d.points[0].customdata);
+      });
+    });
+
+    // Resize on window resize for fully responsive behavior
+    let resizeTimer;
+    window.addEventListener('resize', () => {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(() => Plotly.Plots.resize(mapEl), 150);
+    });
+  }
+
+  // ---------------------------------------------------------------------------
+  // Ranking list with top/bottom toggle
+  // ---------------------------------------------------------------------------
+  let rankMode = 'top';
+  function renderRanking() {
+    const list = rankMode === 'top' ? sortedDesc.slice(0, 25) : sortedAsc.slice(0, 25);
+    const maxScore = sortedDesc[0]['COMPOSITE INDEX'];
+    const target = document.getElementById('ranking-rows');
+    document.getElementById('ranking-title').textContent =
+      rankMode === 'top' ? 'Highest structural risk' : 'Lowest structural risk';
+    target.innerHTML = list.map((c, i) => {
+      const wPct = (c['COMPOSITE INDEX'] / maxScore) * 100;
+      const rank = rankMode === 'top' ? c['COMPOSITE RANK'] : (sortedDesc.length - sortedAsc.indexOf(c));
+      return `
+        <div class="ranking-row" onclick="window.__flsri_selectCountry('${c.ISO3}')">
+          <div class="r-rank">${rank}</div>
+          <div class="r-country">${c.Country}<span class="r-iso">${c.ISO3}</span></div>
+          <div class="r-score">${c['COMPOSITE INDEX'].toFixed(3)}</div>
+          <div class="r-bar" style="--w: ${wPct}%"></div>
+        </div>`;
+    }).join('');
+  }
+
+  document.querySelectorAll('.ranking-tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      document.querySelectorAll('.ranking-tab').forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+      rankMode = tab.dataset.mode;
+      renderRanking();
+    });
+  });
+
+  // ---------------------------------------------------------------------------
+  // Two stories: fragile-origin + financial-destination
+  // ---------------------------------------------------------------------------
+  function renderStories() {
+    // Fragile-origin: high P1 + high P2, P1 dominant or near-equal
+    const fragile = scored
+      .filter(c => c.RECRUITMENT > 0.4 && c.EXPLOITATION > 0.3)
+      .sort((a, b) => (b.RECRUITMENT + b.EXPLOITATION) - (a.RECRUITMENT + a.EXPLOITATION))
+      .slice(0, 8);
+
+    // Financial-destination: low P1, low P2, high P3
+    const financial = scored
+      .filter(c => c.RECRUITMENT < 0.2 && c.EXPLOITATION < 0.25 && c.MONETIZATION > 0.4)
+      .sort((a, b) => b.MONETIZATION - a.MONETIZATION)
+      .slice(0, 8);
+
+    const renderRows = (target, list, dimP1, dimP2, dimP3) => {
+      document.getElementById(target).innerHTML = list.map(c => `
+        <div class="story-ex">
+          <div class="story-ex-name">${c.Country}</div>
+          <div class="story-ex-num ${dimP1 ? 'dim' : 'high'}">${(c.RECRUITMENT||0).toFixed(2)}</div>
+          <div class="story-ex-num ${dimP2 ? 'dim' : 'high'}">${(c.EXPLOITATION||0).toFixed(2)}</div>
+          <div class="story-ex-num ${dimP3 ? 'dim' : 'high'}">${(c.MONETIZATION||0).toFixed(2)}</div>
+        </div>`).join('');
+    };
+
+    renderRows('story-fragile', fragile, false, false, true);
+    renderRows('story-financial', financial, true, true, false);
+  }
+
+  // ---------------------------------------------------------------------------
+  // Phase top 10 visualizations
+  // ---------------------------------------------------------------------------
+  function renderPhaseTops() {
+    [['p1', 'RECRUITMENT'], ['p2', 'EXPLOITATION'], ['p3', 'MONETIZATION']].forEach(([id, col]) => {
+      const list = countries
+        .filter(c => c[col] != null)
+        .sort((a, b) => b[col] - a[col])
+        .slice(0, 10);
+      document.getElementById('phase-top-' + id).innerHTML = list.map((c, i) => `
+        <div class="phase-top10-row" onclick="window.__flsri_selectCountry('${c.ISO3}')" style="cursor:pointer">
+          <div class="r-rank">${i + 1}</div>
+          <div class="r-country">${c.Country}</div>
+          <div class="r-score">${c[col].toFixed(3)}</div>
+        </div>`).join('');
+    });
+  }
+
+  // ---------------------------------------------------------------------------
+  // Phase scatter — distribution patterns
+  // ---------------------------------------------------------------------------
+  function renderPhaseScatter() {
+    const el = document.getElementById('phase-scatter');
+    if (!el) return;
+
+    const valid = scored.filter(c => c.RECRUITMENT != null && c.EXPLOITATION != null && c.MONETIZATION != null);
+
+    // Quadrant assignment for coloring
+    const xMid = 0.25, yMid = 0.30;
+    function quadrant(c) {
+      const high1 = c.RECRUITMENT >= xMid;
+      const high2 = c.EXPLOITATION >= yMid;
+      if (high1 && high2) return 'fragile';      // top-right
+      if (!high1 && !high2 && c.MONETIZATION > 0.4) return 'financial'; // bottom-left + high P3
+      if (!high1 && !high2) return 'low';
+      return 'mixed';
+    }
+
+    const colorMap = {
+      fragile: '#a54a2c',
+      financial: '#3a4a5c',
+      low: '#b3ad9d',
+      mixed: '#d79a7a',
+    };
+
+    const trace = {
+      type: 'scatter',
+      mode: 'markers',
+      x: valid.map(c => c.RECRUITMENT),
+      y: valid.map(c => c.EXPLOITATION),
+      text: valid.map(c =>
+        `<b>${c.Country}</b><br>` +
+        `Recruitment: ${c.RECRUITMENT.toFixed(3)}<br>` +
+        `Exploitation: ${c.EXPLOITATION.toFixed(3)}<br>` +
+        `Monetization: ${c.MONETIZATION.toFixed(3)}<br>` +
+        `Composite: ${c['COMPOSITE INDEX'].toFixed(3)} (rank ${c['COMPOSITE RANK']})`
+      ),
+      hoverinfo: 'text',
+      customdata: valid.map(c => c.ISO3),
+      marker: {
+        color: valid.map(c => c.MONETIZATION),
+        colorscale: [
+          [0, '#dcd6c4'],
+          [0.5, '#c4724f'],
+          [1, '#3a4a5c']
+        ],
+        size: valid.map(c => 5 + (c['COMPOSITE INDEX'] || 0) * 18),
+        opacity: 0.78,
+        line: { color: 'rgba(26,24,20,0.4)', width: 0.5 },
+        colorbar: {
+          title: 'Monetization', titleside: 'right',
+          thickness: 8, len: 0.4, x: 1.02, y: 0.5,
+          tickfont: { family: 'IBM Plex Mono', size: 9, color: '#807c70' },
+          titlefont: { family: 'IBM Plex Mono', size: 10, color: '#807c70' },
+          outlinewidth: 0,
+        },
+      },
+    };
+
+    const layout = {
+      paper_bgcolor: 'rgba(0,0,0,0)',
+      plot_bgcolor: 'rgba(0,0,0,0)',
+      font: { family: 'IBM Plex Sans', color: '#4a463e' },
+      xaxis: {
+        title: { text: 'Recruitment risk →', font: { family: 'Source Serif 4', style: 'italic', size: 13, color: '#4a463e' } },
+        range: [0, 0.7],
+        gridcolor: 'rgba(26,24,20,0.06)',
+        zerolinecolor: 'rgba(26,24,20,0.2)',
+        tickfont: { family: 'IBM Plex Mono', size: 10, color: '#807c70' },
+      },
+      yaxis: {
+        title: { text: 'Exploitation risk →', font: { family: 'Source Serif 4', style: 'italic', size: 13, color: '#4a463e' } },
+        range: [0, 0.6],
+        gridcolor: 'rgba(26,24,20,0.06)',
+        zerolinecolor: 'rgba(26,24,20,0.2)',
+        tickfont: { family: 'IBM Plex Mono', size: 10, color: '#807c70' },
+      },
+      shapes: [
+        { type: 'line', x0: xMid, x1: xMid, y0: 0, y1: 0.6, line: { color: 'rgba(26,24,20,0.15)', dash: 'dash', width: 1 } },
+        { type: 'line', x0: 0, x1: 0.7, y0: yMid, y1: yMid, line: { color: 'rgba(26,24,20,0.15)', dash: 'dash', width: 1 } },
+      ],
+      annotations: [
+        { x: 0.65, y: 0.55, text: 'full-system risk', showarrow: false, font: { family: 'Source Serif 4', style: 'italic', size: 11, color: '#a54a2c' }, xanchor: 'right', yanchor: 'top' },
+        { x: 0.65, y: 0.05, text: 'Phase 1 dominant', showarrow: false, font: { family: 'Source Serif 4', style: 'italic', size: 11, color: '#807c70' }, xanchor: 'right' },
+        { x: 0.05, y: 0.55, text: 'Phase 2 dominant', showarrow: false, font: { family: 'Source Serif 4', style: 'italic', size: 11, color: '#807c70' }, xanchor: 'left', yanchor: 'top' },
+        { x: 0.05, y: 0.05, text: 'low risk · check P3 color', showarrow: false, font: { family: 'Source Serif 4', style: 'italic', size: 11, color: '#807c70' }, xanchor: 'left' },
+      ],
+      margin: { t: 20, r: 80, b: 60, l: 60 },
+      autosize: true,
+      hoverlabel: { bgcolor: '#1a1814', font: { color: '#faf8f3', family: 'IBM Plex Sans', size: 11 } },
+    };
+
+    Plotly.newPlot(el, [trace], layout, { displayModeBar: false, responsive: true }).then(() => {
+      Plotly.Plots.resize(el);
+      el.on('plotly_click', d => {
+        if (d.points && d.points.length) selectCountry(d.points[0].customdata);
+      });
+    });
+
+    // Sidebar quadrant chips
+    function fillCluster(targetId, predicate, sortKey) {
+      const list = scored.filter(predicate).sort((a, b) => sortKey(b) - sortKey(a)).slice(0, 8);
+      document.getElementById(targetId).innerHTML = list.map(c =>
+        `<span class="dist-cluster-chip" onclick="window.__flsri_selectCountry('${c.ISO3}')" title="${c.Country}">${c.Country}</span>`
+      ).join('');
+    }
+    fillCluster('cluster-full',
+      c => c.RECRUITMENT > 0.4 && c.EXPLOITATION > 0.35 && c.MONETIZATION > 0.4,
+      c => c['COMPOSITE INDEX']);
+    fillCluster('cluster-fragile',
+      c => c.RECRUITMENT > 0.4 && c.EXPLOITATION > 0.3 && c.MONETIZATION < 0.4,
+      c => c.RECRUITMENT + c.EXPLOITATION);
+    fillCluster('cluster-financial',
+      c => c.RECRUITMENT < 0.20 && c.EXPLOITATION < 0.30 && c.MONETIZATION > 0.55,
+      c => c.MONETIZATION);
+    fillCluster('cluster-low',
+      c => c.RECRUITMENT < 0.20 && c.EXPLOITATION < 0.20 && c.MONETIZATION < 0.40,
+      c => -(c.RECRUITMENT + c.EXPLOITATION + c.MONETIZATION));
+  }
+
+  // ---------------------------------------------------------------------------
+  // LISA spatial clusters
+  // ---------------------------------------------------------------------------
+  let currentLisaPhase = 'composite';
+
+  // Color map for cluster types
+  const LISA_COLORS = { HH: '#5b2414', LL: '#6b7a5b', HL: '#b6844a', LH: '#3a4a5c', NS: '#e8e2d1' };
+
+  function renderLisa() {
+    if (typeof LISA_MORAN === 'undefined' || typeof LISA_CLUSTERS === 'undefined') return;
+    document.getElementById('moran-composite').textContent = (LISA_MORAN.composite ?? 0).toFixed(3);
+    document.getElementById('moran-recruitment').textContent = (LISA_MORAN.recruitment ?? 0).toFixed(3);
+    document.getElementById('moran-exploitation').textContent = (LISA_MORAN.exploitation ?? 0).toFixed(3);
+    document.getElementById('moran-monetization').textContent = (LISA_MORAN.monetization ?? 0).toFixed(3);
+    fillLisaPanels(currentLisaPhase);
+    renderLisaMap(currentLisaPhase);
+
+    document.querySelectorAll('.cluster-tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        document.querySelectorAll('.cluster-tab').forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+        currentLisaPhase = tab.dataset.phase;
+        fillLisaPanels(currentLisaPhase);
+        renderLisaMap(currentLisaPhase);
+      });
+    });
+  }
+
+  function renderLisaMap(phase) {
+    const el = document.getElementById('lisa-map');
+    if (!el || typeof LISA_CLUSTERS === 'undefined') return;
+
+    // Build iso → cluster type map
+    const isoCluster = {};
+    const data = LISA_CLUSTERS[phase] || {};
+    ['HH', 'LL', 'HL', 'LH'].forEach(type => {
+      (data[type] || []).forEach(item => { isoCluster[item.iso] = type; });
+    });
+
+    // For all 195 countries, assign a numeric class (0=NS, 1=HH, 2=LL, 3=HL, 4=LH)
+    const allIsos = countries.map(c => c.ISO3);
+    const classMap = { NS: 0, HH: 1, LL: 2, HL: 3, LH: 4 };
+    const classNames = ['Not significant', 'High–High', 'Low–Low', 'High–Low', 'Low–High'];
+    const z = allIsos.map(iso => classMap[isoCluster[iso] || 'NS']);
+    const texts = allIsos.map(iso => {
+      const c = countries.find(x => x.ISO3 === iso);
+      const cls = isoCluster[iso] || 'NS';
+      const name = c ? c.Country : iso;
+      const phaseScore = c ? (phase === 'composite' ? c['COMPOSITE INDEX'] :
+                              phase === 'recruitment' ? c.RECRUITMENT :
+                              phase === 'exploitation' ? c.EXPLOITATION : c.MONETIZATION) : null;
+      return `<b>${name}</b><br>` +
+        `${phase[0].toUpperCase()}${phase.slice(1)}: ${phaseScore != null ? phaseScore.toFixed(3) : '—'}<br>` +
+        `Cluster: <b>${cls === 'NS' ? 'Not significant' : classNames[classMap[cls]]}</b>`;
+    });
+
+    // Discrete colorscale — Plotly needs values in [0,1]
+    const colorscale = [
+      [0.0, LISA_COLORS.NS], [0.2, LISA_COLORS.NS],
+      [0.2, LISA_COLORS.HH], [0.4, LISA_COLORS.HH],
+      [0.4, LISA_COLORS.LL], [0.6, LISA_COLORS.LL],
+      [0.6, LISA_COLORS.HL], [0.8, LISA_COLORS.HL],
+      [0.8, LISA_COLORS.LH], [1.0, LISA_COLORS.LH],
+    ];
+
+    const trace = {
+      type: 'choropleth',
+      locationmode: 'ISO-3',
+      locations: allIsos,
+      z: z,
+      text: texts,
+      hoverinfo: 'text',
+      customdata: allIsos,
+      colorscale: colorscale,
+      zmin: 0, zmax: 4,
+      showscale: false,
+      marker: { line: { color: '#dcd6c4', width: 0.4 } },
+    };
+
+    const layout = {
+      paper_bgcolor: 'rgba(0,0,0,0)',
+      plot_bgcolor: 'rgba(0,0,0,0)',
+      geo: {
+        bgcolor: 'rgba(0,0,0,0)',
+        showframe: false,
+        showcoastlines: true,
+        coastlinecolor: '#dcd6c4',
+        countrycolor: '#dcd6c4',
+        landcolor: '#f4f1e8',
+        projection: { type: 'natural earth' },
+      },
+      margin: { t: 10, r: 10, b: 10, l: 10 },
+      autosize: true,
+    };
+
+    Plotly.newPlot(el, [trace], layout, { displayModeBar: false, responsive: true }).then(() => {
+      Plotly.Plots.resize(el);
+      el.on('plotly_click', d => {
+        if (d.points && d.points.length) selectCountry(d.points[0].customdata);
+      });
+    });
+  }
+
+  function fillLisaPanels(phase) {
+    const data = (LISA_CLUSTERS[phase] || {});
+    ['HH', 'LL', 'HL', 'LH'].forEach(type => {
+      const list = data[type] || [];
+      document.getElementById('ct-' + type).textContent = list.length;
+      const target = document.getElementById('cluster-list-' + type);
+      target.innerHTML = list.slice(0, 30).map(item => {
+        const country = countries.find(c => c.ISO3 === item.iso);
+        const name = country ? country.Country : item.name;
+        return `<span class="cluster-chip" onclick="window.__flsri_selectCountry('${item.iso}')" title="${name} · score ${item.score.toFixed(3)} · neighbors avg ${item.nb_mean.toFixed(3)}">${name}</span>`;
+      }).join('');
+      if (list.length === 0) {
+        target.innerHTML = '<span style="font-family: var(--serif); font-style: italic; color: var(--ink-3); font-size: 0.85rem;">no significant clusters in this phase</span>';
+      }
+    });
+  }
+
+  // ---------------------------------------------------------------------------
+  // Score interpretation helpers
+  // ---------------------------------------------------------------------------
+  function scoreTier(v) {
+    if (v == null || isNaN(v)) return { cls: '', label: '—' };
+    if (v >= 0.50) return { cls: 't-extreme', label: 'Extreme' };
+    if (v >= 0.35) return { cls: 't-high',    label: 'High' };
+    if (v >= 0.25) return { cls: 't-elev',    label: 'Elevated' };
+    if (v >= 0.15) return { cls: 't-mod',     label: 'Moderate' };
+    return { cls: 't-low', label: 'Low' };
+  }
+
+  function dominantPhaseLabel(c) {
+    const r = c.RECRUITMENT, e = c.EXPLOITATION, m = c.MONETIZATION;
+    if (r == null && e == null && m == null) return null;
+    const scores = [
+      { key: 'R', name: 'Recruitment-led', v: r ?? -1 },
+      { key: 'E', name: 'Exploitation-led', v: e ?? -1 },
+      { key: 'M', name: 'Monetization-led', v: m ?? -1 },
+    ].sort((a, b) => b.v - a.v);
+    const top = scores[0], second = scores[1];
+    if (top.v - second.v < 0.05) return 'Multi-phase';
+    return top.name;
+  }
+
+  // Hand-curated real-world drivers for the highest-risk countries.
+  // Source: each country's documented structural drivers per the indicator data.
+  const COUNTRY_NARRATIVES = {
+    SYR: 'Sustained armed conflict since 2011 has produced one of the largest refugee outflows of the past century, internal displacement at unprecedented scale, and the collapse of civil documentation systems. Children born into displacement frequently lack birth registration — a foundational vulnerability for trafficking.',
+    LBY: 'A fragmented post-2011 state with two competing governments, militia-controlled detention facilities, and a documented migration corridor where sub-Saharan migrants are sold in open markets. Armed conflict and absence of rule of law converge with a major transit-economy for people in motion.',
+    GNQ: 'Decades of personalist authoritarian rule, oil-revenue capture, and the highest passport restriction profile in the dataset. Bargaining power is structurally suppressed; institutional protection is nearly absent on the indicators that survive censorship.',
+    CAF: 'Ongoing armed conflict, child-soldier recruitment documented across multiple armed groups, weak central authority outside the capital, and chronic displacement. Civil documentation gaps compound recruitment vulnerability.',
+    IRN: 'Religious-political authoritarian governance, ranked extreme on freedom-deficit measures, with documented exit-control regimes and migrant-worker abuses. Sanctions environment also constrains legitimate financial-system development.',
+    GNB: 'A documented narcotics-trafficking corridor with recurrent coups, weak institutional capacity, and significant export-commodity concentration in a single sector. Criminal authority displaces formal enforcement in much of the country.',
+    HTI: 'Gang control of significant urban territory, collapse of the state in much of the country following the 2021 presidential assassination, and an active displacement crisis. Cash-economy reliance is among the highest globally.',
+    SSD: 'World\'s newest country, ongoing intercommunal and political conflict, recurrent climate disasters, and dependence on a single oil-export commodity. Educational attainment gaps and child-labor prevalence are extreme.',
+    BDI: 'Among the world\'s lowest GDP per capita, recurrent political crises producing refugee outflows, severe malnutrition, and persistent rule-of-law deficits. Refugee-origin pressure stacks with chronic poverty.',
+    YEM: 'Active civil war since 2014, world\'s worst documented humanitarian crisis on multiple measures, blockade-driven economic collapse. Child-labor prevalence and recruitment by armed groups are extensively documented.',
+    AFG: 'Taliban return in 2021 reversed decades of women\'s labor-market participation, education access, and civil documentation gains. Refugee outflows continue; internal displacement remains severe.',
+    SOM: 'Persistent state fragmentation, Al-Shabaab control of significant rural territory, recurrent climate disasters in pastoralist regions, and one of the world\'s longest-running displacement situations.',
+    SDN: 'Civil war since April 2023 has produced the world\'s largest current displacement crisis, collapse of state institutions in Khartoum, documented atrocities including sexual violence as a weapon of war.',
+    PRK: 'Closed authoritarian state where state-organized labor export is itself a documented monetization vector. The data ecosystem this index depends on is largely suppressed by the state — scores understate the underlying conditions.',
+    ERI: 'Indefinite national-service regime documented as state-imposed forced labor by ILO mechanisms. As with North Korea, data suppression means the index under-represents the underlying conditions.',
+    TKM: 'State-organized cotton-harvest labor mobilization documented by ILO and independent monitors. Closed political system constrains the data on which structural measurement depends.',
+  };
+
+  function buildInterpretation(c) {
+    if (!c['COMPOSITE INDEX']) return '';
+    const v = c['COMPOSITE INDEX'];
+    const tier = scoreTier(v);
+    const dom = dominantPhaseLabel(c);
+    const r = c.RECRUITMENT, e = c.EXPLOITATION, m = c.MONETIZATION;
+
+    const narrative = COUNTRY_NARRATIVES[c.ISO3];
+
+    // Phase-shape interpretation
+    let shapeText = '';
+    if (r != null && e != null && m != null) {
+      const high = (x) => x >= 0.35;
+      const low  = (x) => x < 0.20;
+      if (high(r) && high(e) && high(m)) {
+        shapeText = 'All three phases register high — recruitment vulnerability, exploitation conditions, and monetization architecture all align. This is the structural pattern most predictive of large-scale forced labor escaping conventional measurement.';
+      } else if (high(r) && low(m)) {
+        shapeText = 'Recruitment vulnerability is severe, but the monetization architecture is constrained. Where this profile appears, exploited populations are often moved across borders into jurisdictions where the proceeds can be retained — a transnational pattern conventional country-level prevalence indices struggle to capture.';
+      } else if (high(m) && low(r) && low(e)) {
+        shapeText = 'Recruitment and exploitation conditions are well-controlled domestically, but the financial-system architecture provides infrastructure where illicit proceeds can be moved or retained. Monetization geography is not exploitation geography — and that distinction is part of what this index makes visible.';
+      } else if (high(e) && !high(r)) {
+        shapeText = 'Exploitation conditions are pronounced even though the country is not a primary recruitment-vulnerable origin. Sectoral exposure (informal employment, single-commodity dependence, weak labor enforcement) typically drives this profile — often visible in migrant-receiving economies.';
+      } else if (high(r) && high(e)) {
+        shapeText = 'Recruitment and exploitation phases are both elevated. Vulnerable populations are produced and exploited within the same jurisdiction; weak enforcement allows the conditions to persist without consequence.';
+      } else {
+        shapeText = 'The phase profile is mixed — no single phase dominates. Composite-only readings would compress the structural pattern this profile reveals.';
+      }
+    }
+
+    let html = '<div class="interp-band"><div class="interp-mark">Reading the score</div>';
+    html += `<h4>${c.Country} sits in the <em>${tier.label.toLowerCase()}</em> tier of structural risk${dom ? `, with a ${dom.toLowerCase()} profile` : ''}.</h4>`;
+    if (shapeText) html += `<p>${shapeText}</p>`;
+    if (narrative) {
+      html += `<p><strong style="font-family:var(--sans);font-size:0.7rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--accent);font-weight:500">Real-world drivers · </strong>${narrative}</p>`;
+    } else {
+      html += `<p style="font-family:var(--sans);font-size:0.8rem;color:var(--ink-3);font-style:normal">No country-specific narrative attached. The score reflects the documented indicator values; methodology section explains what each domain measures.</p>`;
+    }
+    html += '</div>';
+    return html;
+  }
+
+  // ---------------------------------------------------------------------------
+  // Country fingerprint
+  // ---------------------------------------------------------------------------
+  function renderColumn(c) {
+    if (!c['COMPOSITE INDEX']) {
+      return `
+        <div class="fp-col">
+          <div class="fp-col-mark">${c.ISO3}${c.Region ? ' · ' + c.Region : ''}</div>
+          <h3 class="fp-col-name">${c.Country}</h3>
+          <p style="color: var(--ink-3); font-style: italic; margin-top: 1.5rem; font-family: var(--serif); font-size: 1.05rem; line-height: 1.6;">
+            Composite not available — insufficient indicator coverage at the phase level.
+            That absence is itself a structural-risk signal: the conditions that suppress data
+            collection often co-occur with the conditions the index measures.
+          </p>
+        </div>`;
+    }
+    const phases = [
+      { key: 'RECRUITMENT', name: 'Recruitment', mark: 'P1', letter: 'R',
+        domains: DATA.domainArchitecture.filter(d => d.Phase === 1) },
+      { key: 'EXPLOITATION', name: 'Exploitation', mark: 'P2', letter: 'E',
+        domains: DATA.domainArchitecture.filter(d => d.Phase === 2) },
+      { key: 'MONETIZATION', name: 'Monetization', mark: 'P3', letter: 'M',
+        domains: DATA.domainArchitecture.filter(d => d.Phase === 3) },
+    ];
+    const phaseHtml = phases.map(p => {
+      const v = c[p.key];
+      const w = v != null ? Math.min(1, v) * 100 : 0;
+      const tier = scoreTier(v);
+      const domHtml = p.domains.map(d => {
+        const colKey = `${p.letter}: ${d['Domain Name']}`;
+        const dv = c[colKey];
+        const dw = dv != null ? Math.min(1, dv) * 100 : 0;
+        return `
+          <div class="fp-domain">
+            <span>${d['Domain Name']}</span>
+            <div class="fp-domain-bar"><div class="fp-domain-bar-fill" style="width:${dw}%"></div></div>
+            <span class="fp-domain-val">${dv != null ? dv.toFixed(2) : '—'}</span>
+          </div>`;
+      }).join('');
+      return `
+        <div class="fp-phase">
+          <div class="fp-phase-header">
+            <div class="fp-phase-name"><span class="fp-phase-mark">${p.mark}</span>${p.name}</div>
+            <div class="fp-phase-score">${v != null ? v.toFixed(3) : '—'}${tier.cls ? `<span class="score-tier ${tier.cls}">${tier.label}</span>` : ''}</div>
+          </div>
+          <div class="fp-phase-track"><div class="fp-phase-fill" style="width:${w}%"></div></div>
+          <div class="fp-domains">${domHtml}</div>
+        </div>`;
+    }).join('');
+    const tier = scoreTier(c['COMPOSITE INDEX']);
+    const dom = dominantPhaseLabel(c);
+    return `
+      <div class="fp-col">
+        <div class="fp-col-mark">${c.ISO3}${c.Region ? ' · ' + c.Region : ''}</div>
+        <h3 class="fp-col-name">${c.Country}</h3>
+        <div class="fp-col-composite">
+          <div class="num">${c['COMPOSITE INDEX'].toFixed(3)}</div>
+          <div class="rank">Rank #${c['COMPOSITE RANK']} of ${scored.length}</div>
+          ${tier.cls ? `<span class="score-tier ${tier.cls}">${tier.label}</span>` : ''}
+          ${dom ? `<span class="phase-dom">${dom}</span>` : ''}
+        </div>
+        <div class="fp-phases">${phaseHtml}</div>
+      </div>`;
+  }
+
+  function renderCountryProfile(iso) {
+    const c = countries.find(x => x.ISO3 === iso);
+    if (!c) return;
+    window.__flsri_currentCountry = c;
+
+    const compareIso = window.__flsri_compareIso;
+    const c2 = (compareIso && compareIso !== iso) ? countries.find(x => x.ISO3 === compareIso) : null;
+
+    const target = document.getElementById('profile-content');
+    const interpEl = document.getElementById('profile-interp');
+    const clearBtn = document.getElementById('compare-clear');
+    if (clearBtn) clearBtn.style.display = c2 ? 'inline' : 'none';
+
+    if (c2) {
+      // Side-by-side comparison view
+      target.classList.remove('fingerprint');
+      target.className = 'fp-compare-grid';
+      target.innerHTML = renderColumn(c) + renderColumn(c2);
+      // No similar-profiles sidebar; instead show comparative interp under both
+      interpEl.innerHTML = buildCompareInterpretation(c, c2);
+      return;
+    }
+
+    // Single-country fingerprint view
+    target.classList.remove('fp-compare-grid');
+    target.className = 'fingerprint';
+
+    if (!c['COMPOSITE INDEX']) {
+      target.innerHTML = `
+        <div>
+          <div class="fingerprint-meta">${c.ISO3}${c.Region ? ' · ' + c.Region : ''}</div>
+          <h2>${c.Country}</h2>
+          <p style="color: var(--ink-3); font-style: italic; margin-top: 1.5rem; font-family: var(--serif); font-size: 1.1rem;">
+            Composite score not available — insufficient indicator coverage at the phase level.
+            This is itself a structural-risk signal: the conditions that suppress data collection
+            often co-occur with the conditions the index measures.
+          </p>
+        </div>`;
+      interpEl.innerHTML = '';
+      return;
+    }
+
+    const phases = [
+      { key: 'RECRUITMENT', name: 'Recruitment', mark: 'P1', letter: 'R',
+        domains: DATA.domainArchitecture.filter(d => d.Phase === 1) },
+      { key: 'EXPLOITATION', name: 'Exploitation', mark: 'P2', letter: 'E',
+        domains: DATA.domainArchitecture.filter(d => d.Phase === 2) },
+      { key: 'MONETIZATION', name: 'Monetization', mark: 'P3', letter: 'M',
+        domains: DATA.domainArchitecture.filter(d => d.Phase === 3) },
+    ];
+
+    const phaseHtml = phases.map(p => {
+      const v = c[p.key];
+      const w = v != null ? Math.min(1, v) * 100 : 0;
+      const tier = scoreTier(v);
+      const domHtml = p.domains.map(d => {
+        const colKey = `${p.letter}: ${d['Domain Name']}`;
+        const dv = c[colKey];
+        const dw = dv != null ? Math.min(1, dv) * 100 : 0;
+        return `
+          <div class="fp-domain">
+            <span>${d['Domain Name']}</span>
+            <div class="fp-domain-bar"><div class="fp-domain-bar-fill" style="width:${dw}%"></div></div>
+            <span class="fp-domain-val">${dv != null ? dv.toFixed(2) : '—'}</span>
+          </div>`;
+      }).join('');
+      return `
+        <div class="fp-phase">
+          <div class="fp-phase-header">
+            <div class="fp-phase-name"><span class="fp-phase-mark">${p.mark}</span>${p.name}</div>
+            <div class="fp-phase-score">${v != null ? v.toFixed(3) : '—'}${tier.cls ? `<span class="score-tier ${tier.cls}">${tier.label}</span>` : ''}</div>
+          </div>
+          <div class="fp-phase-track"><div class="fp-phase-fill" style="width:${w}%"></div></div>
+          <div class="fp-domains">${domHtml}</div>
+        </div>`;
+    }).join('');
+
+    // Find similar-profile countries (closest in phase-vector euclidean distance)
+    const cv = [c.RECRUITMENT, c.EXPLOITATION, c.MONETIZATION];
+    const sim = scored
+      .filter(x => x.ISO3 !== iso && x.RECRUITMENT != null && x.EXPLOITATION != null && x.MONETIZATION != null)
+      .map(x => {
+        const xv = [x.RECRUITMENT, x.EXPLOITATION, x.MONETIZATION];
+        const d = Math.sqrt(cv.reduce((s, v, i) => s + (v - xv[i]) ** 2, 0));
+        return { c: x, d };
+      })
+      .sort((a, b) => a.d - b.d)
+      .slice(0, 6);
+
+    const simHtml = sim.map(s => `
+      <div class="ranking-row" onclick="window.__flsri_selectCountry('${s.c.ISO3}')">
+        <div class="r-rank">#${s.c['COMPOSITE RANK']}</div>
+        <div class="r-country">${s.c.Country}<span class="r-iso">${s.c.ISO3}</span></div>
+        <div class="r-score">${s.c['COMPOSITE INDEX'].toFixed(3)}</div>
+      </div>`).join('');
+
+    const tier = scoreTier(c['COMPOSITE INDEX']);
+    const dom = dominantPhaseLabel(c);
+
+    target.innerHTML = `
+      <div>
+        <div class="fingerprint-meta">${c.ISO3}${c.Region ? ' · ' + c.Region : ''}</div>
+        <h2>${c.Country}${tier.cls ? `<span class="score-tier ${tier.cls}">${tier.label}</span>` : ''}</h2>
+        <div class="fp-composite">
+          <div class="fp-num">${c['COMPOSITE INDEX'].toFixed(3)}</div>
+          <div>
+            <div style="font-family: var(--serif); font-style: italic; font-size: 0.95rem;">composite ${dom ? `· <span style="font-family:var(--mono);font-size:0.75rem;font-style:normal;color:var(--ink-3);letter-spacing:0.05em">${dom.toUpperCase()}</span>` : ''}</div>
+            <div class="fp-rank">Rank #${c['COMPOSITE RANK']} of ${scored.length}</div>
+          </div>
+        </div>
+        <div class="fp-phases">${phaseHtml}</div>
+      </div>
+      <div class="fp-side">
+        <h3>Closest profiles</h3>
+        <p style="font-size: 0.85rem; color: var(--ink-3); margin-bottom: 1rem; line-height: 1.5;">
+          Countries with the most similar phase shape — not necessarily the most similar composite score. Click to switch country.
+        </p>
+        ${simHtml}
+      </div>`;
+
+    interpEl.innerHTML = buildInterpretation(c);
+  }
+
+  function buildCompareInterpretation(a, b) {
+    if (!a['COMPOSITE INDEX'] || !b['COMPOSITE INDEX']) return '';
+    const dPhases = ['RECRUITMENT', 'EXPLOITATION', 'MONETIZATION'].map(k => ({
+      key: k,
+      label: k.charAt(0) + k.slice(1).toLowerCase(),
+      a: a[k], b: b[k],
+      delta: (a[k] != null && b[k] != null) ? a[k] - b[k] : null,
+    }));
+    const biggest = dPhases.filter(d => d.delta != null).sort((x, y) => Math.abs(y.delta) - Math.abs(x.delta))[0];
+    const compDelta = a['COMPOSITE INDEX'] - b['COMPOSITE INDEX'];
+
+    let lead = '';
+    if (Math.abs(compDelta) < 0.03) {
+      lead = `Composite scores are close (${a['COMPOSITE INDEX'].toFixed(3)} vs ${b['COMPOSITE INDEX'].toFixed(3)}), but the phase shapes differ.`;
+    } else {
+      const higher = compDelta > 0 ? a : b;
+      const lower  = compDelta > 0 ? b : a;
+      lead = `${higher.Country} ranks higher on composite structural risk than ${lower.Country} (${higher['COMPOSITE INDEX'].toFixed(3)} vs ${lower['COMPOSITE INDEX'].toFixed(3)}).`;
+    }
+
+    let shape = '';
+    if (biggest && Math.abs(biggest.delta) >= 0.10) {
+      const which = biggest.delta > 0 ? a : b;
+      const other = biggest.delta > 0 ? b : a;
+      shape = `The largest gap is on <em>${biggest.label}</em>: ${which.Country} scores ${Math.abs(biggest.delta).toFixed(3)} higher than ${other.Country} on this phase. `;
+      if (biggest.key === 'RECRUITMENT') {
+        shape += 'Recruitment-side gaps reflect differences in displacement pressure, conflict exposure, household economic precarity, or institutional protection.';
+      } else if (biggest.key === 'EXPLOITATION') {
+        shape += 'Exploitation-side gaps reflect differences in enforcement capacity, sectoral exposure to coercion-prone industries, and structural entrapment of mobile populations.';
+      } else {
+        shape += 'Monetization-side gaps reflect differences in financial-system architecture: AML environment, account penetration, cash-economy reliance, and credit-system development.';
+      }
+    } else {
+      shape = 'No single phase shows a dominant gap — the two profiles are structurally similar across the recruitment-exploitation-monetization sequence.';
+    }
+
+    return `<div class="interp-band">
+      <div class="interp-mark">Comparing ${a.Country} ↔ ${b.Country}</div>
+      <h4>${lead}</h4>
+      <p>${shape}</p>
+    </div>`;
+  }
+
+  // ---------------------------------------------------------------------------
+  // Country selector
+  // ---------------------------------------------------------------------------
+  function initCountrySelector() {
+    const sel = document.getElementById('profile-select');
+    const cmpSel = document.getElementById('compare-select');
+    const sorted = [...countries].sort((a, b) => a.Country.localeCompare(b.Country));
+    const optionsHtml = sorted.map(c =>
+      `<option value="${c.ISO3}">${c.Country}${c['COMPOSITE INDEX'] != null ? ' · ' + c['COMPOSITE INDEX'].toFixed(3) : ''}</option>`
+    ).join('');
+    sel.innerHTML = optionsHtml;
+    sel.addEventListener('change', e => renderCountryProfile(e.target.value));
+
+    if (cmpSel) {
+      cmpSel.innerHTML = '<option value="">— none —</option>' + optionsHtml;
+      cmpSel.addEventListener('change', e => {
+        window.__flsri_compareIso = e.target.value || null;
+        if (window.__flsri_currentCountry) {
+          renderCountryProfile(window.__flsri_currentCountry.ISO3);
+        }
+      });
+    }
+    const clearBtn = document.getElementById('compare-clear');
+    if (clearBtn) {
+      clearBtn.addEventListener('click', () => {
+        window.__flsri_compareIso = null;
+        if (cmpSel) cmpSel.value = '';
+        if (window.__flsri_currentCountry) {
+          renderCountryProfile(window.__flsri_currentCountry.ISO3);
+        }
+      });
+    }
+
+    // Default to top of composite
+    sel.value = sortedDesc[0].ISO3;
+    renderCountryProfile(sortedDesc[0].ISO3);
+  }
+
+  // Global function for cross-section country selection
+  window.__flsri_selectCountry = function (iso) {
+    const sel = document.getElementById('profile-select');
+    if (sel) sel.value = iso;
+    renderCountryProfile(iso);
+    document.getElementById('profile').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
+  function selectCountry(iso) { window.__flsri_selectCountry(iso); }
+
+  // ---------------------------------------------------------------------------
+  // Nav fade-in + active section tracking
+  // ---------------------------------------------------------------------------
+  function initNav() {
+    const nav = document.getElementById('nav');
+    const hero = document.getElementById('hero');
+    window.addEventListener('scroll', () => {
+      const heroBottom = hero.offsetTop + hero.offsetHeight - 100;
+      if (window.scrollY > heroBottom) nav.classList.add('visible');
+      else nav.classList.remove('visible');
+    });
+
+    document.querySelectorAll('.nav-link').forEach(link => {
+      link.addEventListener('click', () => {
+        const target = link.dataset.target;
+        const el = document.getElementById(target);
+        if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
+    });
+
+    // Section observer for active state
+    const sections = ['hero', 'composite', 'stories', 'anatomy', 'distribution', 'profile', 'spatial', 'methodology', 'limits'];
+    const obs = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          const id = e.target.id;
+          document.querySelectorAll('.nav-link').forEach(l => {
+            l.classList.toggle('active', l.dataset.target === id);
+          });
+        }
+      });
+    }, { threshold: 0.4 });
+    sections.forEach(id => {
+      const el = document.getElementById(id);
+      if (el) obs.observe(el);
+    });
+  }
+
+  // ---------------------------------------------------------------------------
+  // Init
+  // ---------------------------------------------------------------------------
+  document.addEventListener('DOMContentLoaded', () => {
+    renderCompositeMap();
+    renderRanking();
+    renderStories();
+    renderPhaseTops();
+    renderPhaseScatter();
+    renderLisa();
+    initCountrySelector();
+    initNav();
+  });
+})();
+</script>
+</body>
+</html>
