@@ -1,0 +1,860 @@
+{
+  "frozen": true,
+  "source": "docs/METHODS.md",
+  "indicator_layer": "derived from pipeline/crosswalk.py + config/data_register.csv",
+  "product1_composite": [
+    "recruitment",
+    "exploitation"
+  ],
+  "product2_only": [
+    "monetization"
+  ],
+  "domain_count": 13,
+  "phases": [
+    {
+      "slug": "recruitment",
+      "code": "R",
+      "label": "Recruitment",
+      "product1_composite": true,
+      "domains": [
+        {
+          "slug": "economic-precarity",
+          "path": "recruitment/economic-precarity",
+          "name": "Economic Precarity",
+          "note": "",
+          "confidence": "ok",
+          "product1_composite": true,
+          "product2_only": false,
+          "flags": [
+            "D3 agrarian rests on single agrarian-concentration signal (S3a landlessness unsourced); D5 volatility not yet residual-scoped."
+          ],
+          "indicators": [
+            {
+              "table": "recruitment_econprecarity",
+              "column": "ep_poverty_headcount_685",
+              "register_key": "ep_poverty_headcount_685",
+              "source": "World Bank WDI",
+              "series_id": "SI.POV.UMIC",
+              "license": "CC BY 4.0",
+              "direction": "high_risk",
+              "anchor": "[0.0, 100.0] % of population below $6.85/day (2017 PPP)",
+              "coverage_pct": 87.2,
+              "register_note": "GAP-FILL (Econ Precarity D1 poverty). $6.85/day (UMIC) line chosen over $2.15 for the lower-middle pickable stratum; non-monotone middle-stratum reading is a DOWNSTREAM signal-construction step -- this connector delivers the raw headcount.",
+              "slug": "ep_poverty_headcount_685",
+              "path": "recruitment/economic-precarity/ep_poverty_headcount_685",
+              "role": "generating"
+            },
+            {
+              "table": "recruitment_econprecarity",
+              "column": "ep_informal_employment_share",
+              "register_key": "ep_informal_employment_share",
+              "source": "ILOSTAT (ILO, rplumber API)",
+              "series_id": "SDG_0831_SEX_ECO_RT_A (TOTAL/SEX_T)",
+              "license": "CC BY 4.0 (ILO open data)",
+              "direction": "high_risk",
+              "anchor": "[0.0, 100.0] % of total employment that is informal (SDG 8.3.1)",
+              "coverage_pct": 73.3,
+              "register_note": "GAP-FILL (Econ Precarity D2 informality). SDG 8.3.1 informal-employment rate, ECO_AGGREGATE_TOTAL + SEX_T slice.",
+              "slug": "ep_informal_employment_share",
+              "path": "recruitment/economic-precarity/ep_informal_employment_share",
+              "role": "generating"
+            },
+            {
+              "table": "recruitment_econprecarity",
+              "column": "ep_agrarian_employment_share",
+              "register_key": "ep_agrarian_employment_share",
+              "source": "World Bank WDI",
+              "series_id": "SL.AGR.EMPL.ZS",
+              "license": "CC BY 4.0",
+              "direction": "high_risk",
+              "anchor": "[0.0, 80.0] % of total employment in agriculture",
+              "coverage_pct": 91.8,
+              "register_note": "GAP-FILL (Econ Precarity D3 agrarian concentration, S3b). Employment in agriculture (% of total employment), ILO-modelled, mirrored on WB. S3b ONLY: landlessness / land-tenure insecurity (S3a) has NO publish-safe global panel and is a flagged HARD GAP -- not fabricated; D3 rests on this single agrarian-concentration signal, surfaced low-confidence at the driver level.",
+              "slug": "ep_agrarian_employment_share",
+              "path": "recruitment/economic-precarity/ep_agrarian_employment_share",
+              "role": "generating"
+            },
+            {
+              "table": "recruitment_econprecarity",
+              "column": "ep_income_volatility",
+              "register_key": "ep_income_volatility",
+              "source": "World Bank WDI",
+              "series_id": "NY.GDP.MKTP.KD.ZG",
+              "license": "CC BY 4.0",
+              "direction": "high_risk",
+              "anchor": "[0.0, 8.0] std-dev of annual real GDP growth (pct points), recent ~15-yr window",
+              "coverage_pct": 99.0,
+              "register_note": "GAP-FILL (Econ Precarity D5 volatility). STRUCTURAL PROXY = std dev of annual real GDP growth over the recent 15-yr window (>= 5 obs). NOT yet residual-scoped net of named hazards -- residual decomposition vs. Structural Disruption is a downstream formula step, flagged not applied.",
+              "slug": "ep_income_volatility",
+              "path": "recruitment/economic-precarity/ep_income_volatility",
+              "role": "generating"
+            },
+            {
+              "table": "worldbank",
+              "column": "wb_gini",
+              "register_key": "wb_gini",
+              "source": "World Bank WDI + WGI",
+              "series_id": "SI.POV.GINI",
+              "license": "CC BY 4.0",
+              "direction": "high_risk",
+              "anchor": "[20.0, 65.0] Gini index (0-100)",
+              "coverage_pct": 87.2,
+              "register_note": null,
+              "slug": "wb_gini",
+              "path": "recruitment/economic-precarity/wb_gini",
+              "role": "generating"
+            }
+          ]
+        },
+        {
+          "slug": "debt-financialized-dependency",
+          "path": "recruitment/debt-financialized-dependency",
+          "name": "Debt & Financialized Dependency",
+          "note": "connecting-flagged",
+          "confidence": "low_confidence",
+          "product1_composite": true,
+          "product2_only": false,
+          "flags": [
+            "Lead driver R-D1 (recruitment-fee/migration debt) UNSOURCED; domain rests on R-D2 + R-D3 (Findex). R-D3 borrowing = penetration PROXY, not DSTI distress. 59% borrowing-module coverage."
+          ],
+          "indicators": [
+            {
+              "table": "findex",
+              "column": "findex_account_exclusion",
+              "register_key": "findex_account_exclusion",
+              "source": "World Bank Global Findex Database 2025",
+              "series_id": "GlobalFindexDatabase2025.csv:account_t_d(1-x)",
+              "license": "CC BY 3.0 IGO (World Bank open data; attribution required)",
+              "direction": "high_risk",
+              "anchor": "[0.0, 1.0] share of adults with no financial account (0-1)",
+              "coverage_pct": 81.0,
+              "register_note": "VINTAGE-MIX: 21 country values fall back to a pre-2024 wave (latest available per country, 2011-2024); the rest are 2024 -- re-examine staleness at data-stage review",
+              "slug": "findex_account_exclusion",
+              "path": "recruitment/debt-financialized-dependency/findex_account_exclusion",
+              "role": "generating"
+            },
+            {
+              "table": "findex",
+              "column": "findex_informal_borrowing",
+              "register_key": "findex_informal_borrowing",
+              "source": "World Bank Global Findex Database 2025",
+              "series_id": "GlobalFindexDatabase2025.csv:fin22b+fin22c",
+              "license": "CC BY 3.0 IGO (World Bank open data; attribution required)",
+              "direction": "high_risk",
+              "anchor": "[0.0, 1.0] share of adults borrowing from informal sources (0-1)",
+              "coverage_pct": 59.0,
+              "register_note": "VINTAGE-MIX: 18 country values fall back to a pre-2024 wave (latest available per country, 2011-2024); the rest are 2024 -- re-examine staleness at data-stage review; UPPER-BOUND: fin22b + fin22c summed and clamped to [0,1] (a person can use both informal sources) -- re-examine ceiling vs observed distribution at data-stage review",
+              "slug": "findex_informal_borrowing",
+              "path": "recruitment/debt-financialized-dependency/findex_informal_borrowing",
+              "role": "generating"
+            },
+            {
+              "table": "findex",
+              "column": "findex_borrow_prevalence",
+              "register_key": "findex_borrow_prevalence",
+              "source": "World Bank Global Findex Database 2025",
+              "series_id": "GlobalFindexDatabase2025.csv:borrow_any_t_d",
+              "license": "CC BY 3.0 IGO (World Bank open data; attribution required)",
+              "direction": "high_risk",
+              "anchor": "[0.0, 1.0] share of adults who borrowed any money in the past year (0-1)",
+              "coverage_pct": 59.0,
+              "register_note": "VINTAGE-MIX: 18 country values fall back to a pre-2024 wave (latest available per country, 2011-2024); the rest are 2024 -- re-examine staleness at data-stage review; PROXY: standing borrowing prevalence, NOT a debt-service-distress (DSTI) measure -- Findex has no over-indebtedness series; low-confidence direction, surfaced for review",
+              "slug": "findex_borrow_prevalence",
+              "path": "recruitment/debt-financialized-dependency/findex_borrow_prevalence",
+              "role": "generating"
+            }
+          ]
+        },
+        {
+          "slug": "constrained-mobility",
+          "path": "recruitment/constrained-mobility",
+          "name": "Constrained Mobility",
+          "note": "connecting-flagged",
+          "confidence": "low_confidence",
+          "product1_composite": true,
+          "product2_only": false,
+          "flags": [
+            "D1 + D4 only (2 of 4 drivers); D2 kafala + D3 brokerage UNSOURCED. Henley RE-PUBLICATION-UNCONFIRMED (license unconfirmed)."
+          ],
+          "indicators": [
+            {
+              "table": "vdem",
+              "column": "v2xcl_dmove",
+              "register_key": "v2xcl_dmove",
+              "source": "V-Dem Country-Year Core v16",
+              "series_id": "v2xcl_dmove",
+              "license": "CC BY 4.0",
+              "direction": "low_risk",
+              "anchor": "[0.0, 1.0] interval 0-1 (higher = freer)",
+              "coverage_pct": 88.7,
+              "register_note": "V-Dem codes unmatched to ISO3 (dropped, non-FLSRI sub-units): PSG (Palestine/Gaza), SML (Somaliland)",
+              "slug": "v2xcl_dmove",
+              "path": "recruitment/constrained-mobility/v2xcl_dmove",
+              "role": "generating"
+            },
+            {
+              "table": "static_indices",
+              "column": "henley_passport_access",
+              "register_key": "henley_passport_access",
+              "source": "Henley Passport Index (May 2026 vintage)",
+              "series_id": "henley_passport_index_count_2026-05-07.csv:Visa Free",
+              "license": "UNCONFIRMED for public release -- RE-PUBLICATION-UNCONFIRMED (Henley proprietary, attribution required, re-publication rights unclear; confirm before release)",
+              "direction": "low_risk",
+              "anchor": "[0.0, 227.0] visa-free destination count",
+              "coverage_pct": 100.0,
+              "register_note": "RE-PUBLICATION-UNCONFIRMED (design decision 3.2): Henley Passport Index (May 2026 vintage) re-publication rights UNCONFIRMED -- confirm before public release; NOT blocking now",
+              "slug": "henley_passport_access",
+              "path": "recruitment/constrained-mobility/henley_passport_access",
+              "role": "generating"
+            },
+            {
+              "table": "unhcr",
+              "column": "unhcr_refugees_by_coo",
+              "register_key": "unhcr_refugees_by_coo",
+              "source": "UNHCR Population Statistics API",
+              "series_id": "unhcr_refugees_by_coo",
+              "license": "Open / CC BY (attribution required)",
+              "direction": "high_risk",
+              "anchor": "[0.0, 5000.0] persons per 100k population",
+              "coverage_pct": 99.0,
+              "register_note": null,
+              "slug": "unhcr_refugees_by_coo",
+              "path": "recruitment/constrained-mobility/unhcr_refugees_by_coo",
+              "role": "generating"
+            }
+          ]
+        },
+        {
+          "slug": "ascriptive-exclusion",
+          "path": "recruitment/ascriptive-exclusion",
+          "name": "Ascriptive Exclusion",
+          "note": "legal cluster split out",
+          "confidence": "low_confidence",
+          "product1_composite": true,
+          "product2_only": false,
+          "flags": [
+            "Single EPR signal (political-exclusion only; under-captures labor-market caste/ethnic channeling). ~41 countries off EPR universe stay MISSING (not 0). EPR license-verify before publish."
+          ],
+          "indicators": [
+            {
+              "table": "epr",
+              "column": "epr_excluded_pop_share",
+              "register_key": "epr_excluded_pop_share",
+              "source": "ETH-Zurich Ethnic Power Relations (EPR) Core 2023",
+              "series_id": "EPR-2023 Core: status x size, snapshot 2023",
+              "license": "Academic / open; downloadable at icr.ethz.ch -- redistribution terms under confirmation (see docs/data-provenance.md)",
+              "direction": "high_risk",
+              "anchor": "[0.0, 0.5] depth-weighted share of population in politically-excluded ethnic groups",
+              "coverage_pct": 88.2,
+              "register_note": "SINGLE-SIGNAL DRIVER (Ascriptive Exclusion) -- single EPR signal operationalizes the COMBINED driver D; the four conceptual axes (S1 caste / S2 ethnic / S3 religious / S4 indigeneity) are NOT separately resolved by EPR's unified ethnic-group frame; POLITICAL-EXCLUSION not SOCIOECONOMIC-CHANNELING: EPR codes access to executive power, under-captures labor-market caste hierarchy (India SCs coded JUNIOR PARTNER -> 0; ZAF post-apartheid majority in-power -> 0); the labor-market-channeling CONDITION c_A is NOT supplied here -- this is the UNCONDITIONED standing-exclusion signal; STRUCTURAL-ABSENCE vs UNMEASURED (rule 9): ~41 sample countries absent from EPR's universe (pop>=250k & >=2 relevant groups) stay MISSING (drop-and-re-average), NOT 0 -- cannot distinguish 'no excluded stratum' from 'not covered' from the panel alone; pending a coding rule; LICENSE-VERIFY: EPR academic/open & downloadable but redistribution terms for the published index UNCONFIRMED -- confirm before public release; NOT blocking now; GOVERNANCE-MODULATOR (Z1) NOT applied here: the shared general-governance dial is the score-once WGI/V-Dem backbone (already wired: wb_wgi_rule_of_law / v2x_rule) applied at domain-assembly, NOT in this source table -- de-dup at the cross-domain pass",
+              "slug": "epr_excluded_pop_share",
+              "path": "recruitment/ascriptive-exclusion/epr_excluded_pop_share",
+              "role": "generating"
+            }
+          ]
+        },
+        {
+          "slug": "legal-non-recognition",
+          "path": "recruitment/legal-non-recognition",
+          "name": "Legal Non-Recognition",
+          "note": "CRVS / birth-registration backbone",
+          "confidence": "ok",
+          "product1_composite": true,
+          "product2_only": false,
+          "flags": [
+            "26 single-driver rows are low-confidence (statelessness dropped/suppressed -> rests on birth-reg alone); never zeroed."
+          ],
+          "indicators": [
+            {
+              "table": "legal_non_recognition",
+              "column": "lnr_birth_registration_incompleteness",
+              "register_key": "lnr_birth_registration_incompleteness",
+              "source": "World Bank WDI (UNICEF/UNSD CRVS / SDG 16.9.1 birth-registration completeness)",
+              "series_id": "SP.REG.BRTH.ZS",
+              "license": "CC BY 4.0",
+              "direction": "low_risk",
+              "anchor": "[0.0, 100.0] % of births registered (completeness)",
+              "coverage_pct": 91.3,
+              "register_note": "SINGLE-HOME: this is the SOLE scored home for birth-registration completeness (ceded by Age/Childhood Structuring + Ascriptive Exclusion; docs/METHODS.md). Do NOT score it in a sibling domain.; NON-RANDOM-MISSING: ~17 mostly high-income/small states lack a survey value (de-facto-universal registration). Per rule 9 they are DROPPED, NOT imputed to 100% -- never fabricate 'registered'; low-confidence there.; ANCHOR-PRIOR: raw scale floor=0%/ceiling=100%, direction low_risk inverts ONCE so 100%=0 risk and 0%=1 risk; risk signal is un-registered share. Re-examine at data-stage review.",
+              "slug": "lnr_birth_registration_incompleteness",
+              "path": "recruitment/legal-non-recognition/lnr_birth_registration_incompleteness",
+              "role": "generating"
+            },
+            {
+              "table": "legal_non_recognition",
+              "column": "lnr_statelessness_prevalence",
+              "register_key": "lnr_statelessness_prevalence",
+              "source": "UNHCR Population Statistics API (re-used via data/processed/unhcr.csv)",
+              "series_id": "unhcr_stateless_by_country",
+              "license": "Open / CC BY (attribution required)",
+              "direction": "high_risk",
+              "anchor": "[0.0, 5000.0] persons per 100k population (re-used from UNHCR connector)",
+              "coverage_pct": 93.3,
+              "register_note": "RE-USED-NOT-REPULLED: D2 statelessness reads the already-standardized `unhcr_stateless_by_country` column from data/processed/unhcr.csv (data-stage correlation de-dup -- UNHCR connector owns the pull). SUPPRESSION/NON-RANDOM-MISSING (Strode et al. 2021; docs/METHODS.md): an absent/suppressed figure is DROPPED, NEVER -> 0; opacity can never lower the score; rows resting on D1 alone are marked low-confidence.",
+              "slug": "lnr_statelessness_prevalence",
+              "path": "recruitment/legal-non-recognition/lnr_statelessness_prevalence",
+              "role": "generating"
+            }
+          ]
+        },
+        {
+          "slug": "gender-structuring",
+          "path": "recruitment/gender-structuring",
+          "name": "Gender Structuring",
+          "note": "generating face; modulating face routed to modifiers",
+          "confidence": "ok",
+          "product1_composite": true,
+          "product2_only": false,
+          "flags": [
+            "D3 single-signal (unpaid-care s3.1 + migration-channel s3.3 unsourced). GII license-verify. mobility-constraint c_mob non-monotonic gate applied downstream, not here."
+          ],
+          "indicators": [
+            {
+              "table": "gender_structuring",
+              "column": "gs_lfp_gender_gap",
+              "register_key": "gs_lfp_gender_gap",
+              "source": "World Bank (Gender Statistics / WDI / Women Business and the Law)",
+              "series_id": "SL.TLF.CACT.MA.ZS - SL.TLF.CACT.FE.ZS (male-minus-female LFP)",
+              "license": "CC BY 4.0",
+              "direction": "high_risk",
+              "anchor": "[0.0, 50.0] male-minus-female labour-force-participation gap (pct points, pop 15+)",
+              "coverage_pct": 91.8,
+              "register_note": "GAP-SOURCE (Gender Structuring D1.s1.1). GENDERED GAP, not a level (anti-double-count vs Economic Precarity; see docs/METHODS.md). Modelled ILO LFP estimates differenced; negative gaps (female>male) clamp to 0. Screen D1 collinearity vs Economic Precarity (see docs/METHODS.md).",
+              "slug": "gs_lfp_gender_gap",
+              "path": "recruitment/gender-structuring/gs_lfp_gender_gap",
+              "role": "generating"
+            },
+            {
+              "table": "gender_structuring",
+              "column": "gs_gender_inequality_index",
+              "register_key": "gs_gender_inequality_index",
+              "source": "UNDP Human Development Report -- Gender Inequality Index (via Our World in Data republication)",
+              "series_id": "UNDP HDR Gender Inequality Index (OWID full CSV)",
+              "license": "UNDP HDR (publish with attribution); OWID data CC BY 4.0 -- confirm UNDP HDR re-publication terms before public release",
+              "direction": "high_risk",
+              "anchor": "[0.0, 1.0] UNDP Gender Inequality Index (0 = equal, 1 = maximally unequal)",
+              "coverage_pct": 88.2,
+              "register_note": "GAP-SOURCE (Gender Structuring D1.s1.2). UNDP GII = multi-dimensional gendered-gap composite, native 0-1 absolute anchor. LICENSE-VERIFY: UNDP HDR re-publication terms UNCONFIRMED for the public index -- confirm before release (OWID layer is CC BY 4.0). GII embeds a labour-market LFP component -- screen collinearity with gs_lfp_gender_gap (partial within-D1 overlap) and vs Economic Precarity.",
+              "slug": "gs_gender_inequality_index",
+              "path": "recruitment/gender-structuring/gs_gender_inequality_index",
+              "role": "generating"
+            },
+            {
+              "table": "gender_structuring",
+              "column": "gs_mobility_constraint",
+              "register_key": "gs_mobility_constraint",
+              "source": "World Bank (Gender Statistics / WDI / Women Business and the Law)",
+              "series_id": "GD_WBL_MOB_LAW_T (WBL Legal Framework, Mobility score)",
+              "license": "CC BY 4.0",
+              "direction": "low_risk",
+              "anchor": "[0.0, 100.0] WBL Legal Framework, Mobility score (0-100)",
+              "coverage_pct": 95.4,
+              "register_note": "GAP-SOURCE (Gender Structuring D2.s2.2). Standing codified mobility-constraint signal; direction LOW_RISK (high legal-mobility score = low constraint, inverted). CHO-GATE-NOT-APPLIED: the c_mob mobility-enablement condition (the Cho 2015 non-monotonicity gate) is a DOWNSTREAM formula step -- this connector delivers the raw standing-constraint signal only; D2 must NOT enter linearly. Screen D2 vs Constrained Mobility collinearity (see docs/METHODS.md).",
+              "slug": "gs_mobility_constraint",
+              "path": "recruitment/gender-structuring/gs_mobility_constraint",
+              "role": "generating"
+            },
+            {
+              "table": "gender_structuring",
+              "column": "gs_sex_sector_channel_share",
+              "register_key": "gs_sex_sector_channel_share",
+              "source": "ILOSTAT (ILO, rplumber API)",
+              "series_id": "EMP_TEMP_SEX_ECO_NB_A (sex x economic activity)",
+              "license": "CC BY 4.0 (ILO open data)",
+              "direction": "high_risk",
+              "anchor": "[0.0, 0.7] max(sex-specific exploitation-exposed-sector employment share), 0-1",
+              "coverage_pct": 96.4,
+              "register_note": "GAP-SOURCE (Gender Structuring D3.s3.2, the domain's strongest generating driver). STRUCTURAL sex x sector EMPLOYMENT composition = max(male (AGR+CON+MAN)/male-total, female (AGR+domestic ISIC4_T)/female-total); sex-symmetric. ANTI-CIRCULARITY (LOAD-BEARING): scored value is the STRUCTURAL employment share, NEVER the GEMS 2021 prevalence/victim count -- GEMS (ILO/WalkFree/IOM 2022) grounds the mechanism ONLY and is NOT pulled/scored; no trafficking/forced-labour prevalence series is mapped here. FEMALE-DOMESTIC-PARTIAL: paid domestic work (ISIC4_T) added to the female channel only where reported (~172/195); elsewhere the female channel = agriculture alone (understates the isolated-domestic channel) -- surfaced, not imputed. D3 is a SINGLE-SIGNAL driver here (s3.1 unpaid-care time-use + s3.3 migration-channelling not sourced) -- low-confidence per rule 9. REFRESH-REVISION (2026-06-10): ILOSTAT EMP_TEMP_SEX_ECO_NB_A re-pull revised this sex x sector channel for DJI/BHS/BRB/BTN; DJI's Gender Structuring domain rose enough to cross the frozen lower->middle tier cut (0.281) on observed data -- accepted as legitimate observed-data movement, not imputed.",
+              "slug": "gs_sex_sector_channel_share",
+              "path": "recruitment/gender-structuring/gs_sex_sector_channel_share",
+              "role": "generating"
+            }
+          ]
+        },
+        {
+          "slug": "age-childhood-structuring",
+          "path": "recruitment/age-childhood-structuring",
+          "name": "Age/Childhood Structuring",
+          "note": "child-labour-as-pickability",
+          "confidence": "low_confidence",
+          "product1_composite": true,
+          "product2_only": false,
+          "flags": [
+            "D1 child-labour prevalence 47% coverage (below floor). D3 single-signal (orphanhood S3.1 unsourced -> child-marriage alone). child-marriage->FL mechanism review OPEN."
+          ],
+          "indicators": [
+            {
+              "table": "age_childhood",
+              "column": "age_child_labor_prevalence",
+              "register_key": "age_child_labor_prevalence",
+              "source": "World Bank WDI (mirrors ILO/UNICEF SDG series)",
+              "series_id": "SL.TLF.0714.ZS",
+              "license": "CC BY 4.0",
+              "direction": "high_risk",
+              "anchor": "[0.0, 40.0] % of children ages 7-14 in employment",
+              "coverage_pct": 47.2,
+              "register_note": "BELOW-COVERAGE-FLOOR (92/195 = 47%; floor 50%/min 2) -- low-confidence; STANDING-NOT-REALIZED: read as child-work pool size, not realized trafficking/worst-forms (anti-circularity gate; docs/METHODS.md)",
+              "slug": "age_child_labor_prevalence",
+              "path": "recruitment/age-childhood-structuring/age_child_labor_prevalence",
+              "role": "generating"
+            },
+            {
+              "table": "age_childhood",
+              "column": "age_out_of_school_rate",
+              "register_key": "age_out_of_school_rate",
+              "source": "World Bank WDI (mirrors ILO/UNICEF SDG series)",
+              "series_id": "SE.SEC.UNER.LO.ZS",
+              "license": "CC BY 4.0",
+              "direction": "high_risk",
+              "anchor": "[0.0, 60.0] % of lower-secondary-age adolescents out of school",
+              "coverage_pct": 91.8,
+              "register_note": null,
+              "slug": "age_out_of_school_rate",
+              "path": "recruitment/age-childhood-structuring/age_out_of_school_rate",
+              "role": "generating"
+            },
+            {
+              "table": "age_childhood",
+              "column": "age_child_cohort_share",
+              "register_key": "age_child_cohort_share",
+              "source": "World Bank WDI (mirrors ILO/UNICEF SDG series)",
+              "series_id": "SP.POP.0014.TO.ZS",
+              "license": "CC BY 4.0",
+              "direction": "high_risk",
+              "anchor": "[10.0, 50.0] % of total population ages 0-14",
+              "coverage_pct": 99.5,
+              "register_note": "PROXY: WDI carries no clean 15-24 school-to-work band share; the 0-14 share is the available structural cohort-weight proxy. Condition-A youth-boundary ramp is a downstream formula gate.",
+              "slug": "age_child_cohort_share",
+              "path": "recruitment/age-childhood-structuring/age_child_cohort_share",
+              "role": "generating"
+            },
+            {
+              "table": "age_childhood",
+              "column": "age_child_marriage_rate",
+              "register_key": "age_child_marriage_rate",
+              "source": "World Bank WDI (mirrors ILO/UNICEF SDG series)",
+              "series_id": "SP.M18.2024.FE.ZS",
+              "license": "CC BY 4.0",
+              "direction": "high_risk",
+              "anchor": "[0.0, 60.0] % of women ages 20-24 first married by age 18",
+              "coverage_pct": 71.3,
+              "register_note": "MECHANISM-SOURCE-GAP : the prevalence DATA exists and is wired, but the child-marriage -> forced-labor MECHANISM source at the mechanism bar is still a pending decision; whether S3.2 is RETAINED in D3 scoring depends on that mechanism review -- flagged for review.",
+              "slug": "age_child_marriage_rate",
+              "path": "recruitment/age-childhood-structuring/age_child_marriage_rate",
+              "role": "generating"
+            }
+          ]
+        },
+        {
+          "slug": "structural-disruption",
+          "path": "recruitment/structural-disruption",
+          "name": "Structural Disruption",
+          "note": "gated, not additive; connecting-flagged",
+          "confidence": "ok",
+          "product1_composite": true,
+          "product2_only": false,
+          "flags": [
+            "EM-DAT PRE-PUBLICATION-REQUIREMENT (non-commercial/academic) -- confirm eligibility or swap to DesInventar before public release. D2 single-signal (ND-GAIN). UNHCR displacement double-count guard vs Constrained Mobility (pending data-correlation check)."
+          ],
+          "indicators": [
+            {
+              "table": "aux_emdat",
+              "column": "aux_emdat_disaster_shock",
+              "register_key": "disaster_affected_intensity",
+              "source": "EM-DAT (CRED/UCLouvain), public custom request 2026-05-28",
+              "series_id": "EM-DAT Total Deaths / Total Affected (Natural)",
+              "license": "Non-commercial / academic; registration required (CRED/UCLouvain) -- PUBLICATION-ELIGIBILITY PENDING: confirm publication eligibility before public release",
+              "direction": "high_risk",
+              "anchor": "[0.0, 1.0] persons affected as share of population (5-yr window 2020-2024)",
+              "coverage_pct": 99.5,
+              "register_note": "PUBLICATION-ELIGIBILITY PENDING (design decision 3.1): EM-DAT non-commercial/academic only -- rows KEPT. Confirm CRED/UCLouvain publication eligibility (or line up a publishable disaster proxy) before public release; Structural Disruption D1 depends on these; MNAR-TRUE-ZERO: in-sample countries absent from EM-DAT treated as 0 events (accepted event-stock assumption, NOT drop-and-re-average); countries with no population denominator stay missing; WINDOW-PRIOR: 5 complete years 2020-2024 (prior effort used 2020-2025; 2025 partial excluded) -- re-examine, pending decision; ANCHOR-PRIOR: mortality ceiling 100/100k, affected ceiling 1.0 share -- absolute per-exposure anchors, re-examine; HEAT-WAVE-EXCLUDED (documented design decision): Disaster Subtype 'Heat wave' entries excluded, all years -- excess-mortality accounting tracks measurement capacity, not displacement-producing shock; cold-wave entries stay (flagged for watch)",
+              "slug": "aux_emdat_disaster_shock",
+              "path": "recruitment/structural-disruption/aux_emdat_disaster_shock",
+              "role": "generating"
+            },
+            {
+              "table": "ndgain",
+              "column": "ndgain_climate_vulnerability",
+              "register_key": "ndgain_climate_vulnerability",
+              "source": "ND-GAIN Country Index 2026 (vulnerability score) -- Notre Dame Global Adaptation Initiative",
+              "series_id": "ND-GAIN vulnerability, snapshot 2023",
+              "license": "Creative Commons (free/open, publish-safe with attribution) -- gain.nd.edu",
+              "direction": "high_risk",
+              "anchor": "[0.0, 1.0] ND-GAIN vulnerability score (0-1 composite, native bounds)",
+              "coverage_pct": 95.9,
+              "register_note": "SINGLE-SIGNAL DRIVER (Structural Disruption D2 chronic climate, s2.1). ND-GAIN vulnerability supplies s2.1 climate exposure/sensitivity ONLY; D2 signals s2.2 agrarian-livelihood dependence and s2.3 climate-driven outmigration (the D2 displacement hinge) are NOT supplied here -- D2 rests on this one signal until those land (within-driver average); STRUCTURAL-ABSENCE vs UNMEASURED (rule 9): FLSRI-sample countries absent from the ND-GAIN panel (~185-192 coverage) stay MISSING (drop-and-re-average), NOT 0 -- off-panel = unmeasured, not 'least vulnerable'; GOVERNANCE-DEDUP NOTE: ND-GAIN holds governance in its SEPARATE readiness axis (NOT mixed into the vulnerability score used here), so this signal does not double-count the shared governance defeater Z (z.1 = wb_wgi_rule_of_law / v2x_rule, applied once at domain assembly); ABSOLUTE-ANCHOR (rule 1): scored at native 0-1 conceptual bounds, NOT a winsorized-relative fallback -- comparable across refreshes; SNAPSHOT-YEAR 2023: most-recent fully-populated column in the 2026 edition; chronic standing condition (Condition B cB,2 ~= 1, continuously in-window)",
+              "slug": "ndgain_climate_vulnerability",
+              "path": "recruitment/structural-disruption/ndgain_climate_vulnerability",
+              "role": "generating"
+            },
+            {
+              "table": "aux_ucdp",
+              "column": "ucdp_conflict_intensity",
+              "register_key": "ucdp_conflict_intensity",
+              "source": "UCDP Georeferenced Event Dataset (GED) v24.1 -- Uppsala Conflict Data Program",
+              "series_id": "UCDP GED v24.1 best-deaths, types [1, 2, 3], window 2019-2023",
+              "license": "CC BY 4.0 (fully open, publish-safe with attribution) -- ucdp.uu.se",
+              "direction": "high_risk",
+              "anchor": "[0.0, 100.0] conflict (best-estimate) deaths per 100k (5-yr window 2019-2023)",
+              "coverage_pct": 99.5,
+              "register_note": "SOURCE-CHOICE (Structural Disruption D3 conflict intensity, s3.1). UCDP GED chosen over ACLED, which is licence-restricted (registration, no redistribution) and EXCLUDED from the published index -- 'use UCDP, NOT ACLED'; MNAR-TRUE-ZERO: in-sample countries absent from UCDP GED treated as 0 events (accepted event-stock assumption, mirrors EM-DAT, NOT drop-and-re-average); countries with no population denominator stay missing; WINDOW-PRIOR: 5 complete years 2019-2023 (GED v24.1 ends 2023; mirrors the EM-DAT 5-yr window length) -- pending decision, not locked; ANCHOR-PRIOR: ceiling 100 deaths/100k over the window -- absolute per-exposure anchor mirroring EM-DAT D1 for cross-signal comparability; UKR/ETH/ISR/AFG clamp at ceiling -- pending decision, not locked; DISPLACEMENT DOUBLE-COUNT GUARD: this is the DIRECT intensity signal s3.1 ONLY; the D3 displacement hinge s3.2 (IDPs + originating refugees) is the already-wired UNHCR series and is NOT re-counted here; UNIT-CAUTION: D3 degrades most under country-level aggregation (conflict is natively subnational); subnational disaggregation = future work via GED geocodes, not a reason to change the unit now; LICENSE OPEN: UCDP GED is CC BY 4.0 publish-safe -- NOT a pre-publication requirement (unlike the EM-DAT D1 sibling and the rejected ACLED)",
+              "slug": "ucdp_conflict_intensity",
+              "path": "recruitment/structural-disruption/ucdp_conflict_intensity",
+              "role": "generating"
+            },
+            {
+              "table": "unhcr",
+              "column": "unhcr_idps_by_country",
+              "register_key": "unhcr_idps_by_country",
+              "source": "UNHCR Population Statistics API",
+              "series_id": "unhcr_idps_by_country",
+              "license": "Open / CC BY (attribution required)",
+              "direction": "high_risk",
+              "anchor": "[0.0, 5000.0] persons per 100k population",
+              "coverage_pct": 93.3,
+              "register_note": null,
+              "slug": "unhcr_idps_by_country",
+              "path": "recruitment/structural-disruption/unhcr_idps_by_country",
+              "role": "generating"
+            },
+            {
+              "table": "unhcr",
+              "column": "unhcr_refugees_by_coo",
+              "register_key": "unhcr_refugees_by_coo",
+              "source": "UNHCR Population Statistics API",
+              "series_id": "unhcr_refugees_by_coo",
+              "license": "Open / CC BY (attribution required)",
+              "direction": "high_risk",
+              "anchor": "[0.0, 5000.0] persons per 100k population",
+              "coverage_pct": 99.0,
+              "register_note": null,
+              "slug": "unhcr_refugees_by_coo",
+              "path": "recruitment/structural-disruption/unhcr_refugees_by_coo",
+              "role": "generating"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "exploitation",
+      "code": "E",
+      "label": "Exploitation",
+      "product1_composite": true,
+      "domains": [
+        {
+          "slug": "foreclosed-exit-structural",
+          "path": "exploitation/foreclosed-exit-structural",
+          "name": "Foreclosed Exit (Structural)",
+          "note": "standing exit-cost / monopsony capacity",
+          "confidence": "insufficient_data",
+          "product1_composite": true,
+          "product2_only": false,
+          "flags": [
+            "GENERATING SPINE UNSOURCED: D1 monopsony/exit-cost (the named generating driver, scored only here) is UNSOURCEABLE at 195 scale. The only sourced signals are Z-DEFEATERS (ILOSTAT inspection/collective-voice, 42-69% coverage) -- protective, not generating. Domain score here is a low-confidence STAND-IN; standalone-low-confidence vs fold-in is a pending decision. Flagged for review."
+          ],
+          "indicators": [
+            {
+              "table": "ilostat",
+              "column": "LAI_INDE_NOC_RT_A",
+              "register_key": "LAI_INDE_NOC_RT_A",
+              "source": "ILOSTAT (ILO, rplumber API)",
+              "series_id": "LAI_INDE_NOC_RT_A",
+              "license": "CC BY 4.0 (ILO open data)",
+              "direction": "low_risk",
+              "anchor": "[0.0, 3.0] labour inspectors per 10,000 employed persons",
+              "coverage_pct": 42.6,
+              "register_note": "BELOW-COVERAGE-FLOOR (83/195 = 43%; floor 50%/min 2) -- low-confidence",
+              "slug": "LAI_INDE_NOC_RT_A",
+              "path": "exploitation/foreclosed-exit-structural/LAI_INDE_NOC_RT_A",
+              "role": "defeater"
+            },
+            {
+              "table": "ilostat",
+              "column": "ILR_CBCT_NOC_RT_A",
+              "register_key": "ILR_CBCT_NOC_RT_A",
+              "source": "ILOSTAT (ILO, rplumber API)",
+              "series_id": "ILR_CBCT_NOC_RT_A",
+              "license": "CC BY 4.0 (ILO open data)",
+              "direction": "low_risk",
+              "anchor": "[0.0, 100.0] % of employees covered by collective agreements",
+              "coverage_pct": 50.8,
+              "register_note": null,
+              "slug": "ILR_CBCT_NOC_RT_A",
+              "path": "exploitation/foreclosed-exit-structural/ILR_CBCT_NOC_RT_A",
+              "role": "defeater"
+            },
+            {
+              "table": "ilostat",
+              "column": "ILR_TUMT_NOC_RT_A",
+              "register_key": "ILR_TUMT_NOC_RT_A",
+              "source": "ILOSTAT (ILO, rplumber API)",
+              "series_id": "ILR_TUMT_NOC_RT_A",
+              "license": "CC BY 4.0 (ILO open data)",
+              "direction": "low_risk",
+              "anchor": "[0.0, 100.0] % of employees who are trade union members",
+              "coverage_pct": 69.2,
+              "register_note": null,
+              "slug": "ILR_TUMT_NOC_RT_A",
+              "path": "exploitation/foreclosed-exit-structural/ILR_TUMT_NOC_RT_A",
+              "role": "defeater"
+            }
+          ]
+        },
+        {
+          "slug": "economic-structure-demand",
+          "path": "exploitation/economic-structure-demand",
+          "name": "Economic Structure & Demand",
+          "note": "",
+          "confidence": "low_confidence",
+          "product1_composite": true,
+          "product2_only": false,
+          "flags": [
+            "Business-cluster only (D1-D3). D4 criminal-market embedding = 0 drivers sourced (GI-TOC excluded as outcome-circular). Option-B 50/50 business/crime combine cannot run until D4 lands. esd_d3 buyer-concentration proxied LOW-CONFIDENCE by UNCTAD export concentration."
+          ],
+          "indicators": [
+            {
+              "table": "econ_structure_demand",
+              "column": "esd_d1_hazardous_sector_share",
+              "register_key": "esd_d1_hazardous_sector_share",
+              "source": "World Bank WDI (employment by sector, modelled ILO estimate)",
+              "series_id": "SL.AGR.EMPL.ZS",
+              "license": "CC BY 4.0",
+              "direction": "high_risk",
+              "anchor": "[0.0, 60.0] employment in agriculture, % of total employment",
+              "coverage_pct": 91.8,
+              "register_note": null,
+              "slug": "esd_d1_hazardous_sector_share",
+              "path": "exploitation/economic-structure-demand/esd_d1_hazardous_sector_share",
+              "role": "generating"
+            },
+            {
+              "table": "econ_structure_demand",
+              "column": "esd_d2_informal_employment_share",
+              "register_key": "esd_d2_informal_employment_share",
+              "source": "ILOSTAT (ILO, rplumber API)",
+              "series_id": "SDG_0831_SEX_ECO_RT_A",
+              "license": "CC BY 4.0 (ILO open data)",
+              "direction": "high_risk",
+              "anchor": "[0.0, 100.0] informal employment, % of total employment (SDG 8.3.1)",
+              "coverage_pct": 73.3,
+              "register_note": null,
+              "slug": "esd_d2_informal_employment_share",
+              "path": "exploitation/economic-structure-demand/esd_d2_informal_employment_share",
+              "role": "generating"
+            },
+            {
+              "table": "aux_unctad",
+              "column": "aux_unctad_export_concentration",
+              "register_key": "unctad_export_concentration",
+              "source": "UNCTADSTAT (authenticated OData API)",
+              "series_id": "unctad_concent_div_exports",
+              "license": "UNCTAD data publicly available; cite UNCTADSTAT",
+              "direction": "high_risk",
+              "anchor": "[0.0, 1.0] UNCTAD merchandise export concentration index (HHI-style, 0-1)",
+              "coverage_pct": 97.9,
+              "register_note": "DIRECTION-FIXED (1.10): switched from IMPORT (Flow/Code '02') to EXPORT concentration (Flow/Code '01') to match indicator 2.3.4; DIRECTION-VERIFY flag cleared. EXPORT-REFRESH-DONE (2026-06-01): credentials present, series re-pulled on the export flow (Flow/Code '01', 2024) -- data/processed/aux_unctad.csv now carries aux_unctad_export_concentration (the prior stale import column is overwritten); M49->ISO3 mapping implemented here via pycountry numeric (was missing in the prior pipeline); 5xxx regional aggregates dropped",
+              "slug": "aux_unctad_export_concentration",
+              "path": "exploitation/economic-structure-demand/aux_unctad_export_concentration",
+              "role": "generating"
+            }
+          ]
+        },
+        {
+          "slug": "state-production-of-unfreedom",
+          "path": "exploitation/state-production-of-unfreedom",
+          "name": "State Production of Unfreedom",
+          "note": "",
+          "confidence": "insufficient_data",
+          "product1_composite": true,
+          "product2_only": false,
+          "flags": [
+            "Only D4+D5 of 5 designed drivers (40% < driver floor) -> INSUFFICIENT-DATA. D4 input v2xcl_slave is CIRCULAR (V-Dem freedom-from-forced-labour = outcome/de-facto proxy, not de jure) -- CIRCULARITY_FLAG. D5 separability vs governance backbone UNCONFIRMED (pending data-correlation check). TRACE RE-PUBLICATION-UNCONFIRMED. D1/D2/D3 GAP."
+          ],
+          "indicators": [
+            {
+              "table": "vdem",
+              "column": "v2xcl_slave",
+              "register_key": "v2xcl_slave",
+              "source": "V-Dem Country-Year Core v16",
+              "series_id": "v2xcl_slave",
+              "license": "CC BY 4.0",
+              "direction": "low_risk",
+              "anchor": "[0.0, 1.0] interval 0-1 (higher = freer)",
+              "coverage_pct": 88.7,
+              "register_note": "V-Dem codes unmatched to ISO3 (dropped, non-FLSRI sub-units): PSG (Palestine/Gaza), SML (Somaliland)",
+              "slug": "v2xcl_slave",
+              "path": "exploitation/state-production-of-unfreedom/v2xcl_slave",
+              "role": "circular-flagged"
+            },
+            {
+              "table": "vdem",
+              "column": "v2xnp_client",
+              "register_key": "v2xnp_client",
+              "source": "V-Dem Country-Year Core v16",
+              "series_id": "v2xnp_client",
+              "license": "CC BY 4.0",
+              "direction": "high_risk",
+              "anchor": "[0.0, 1.0] interval 0-1 (REVERSED: higher = MORE clientelism = worse)",
+              "coverage_pct": 88.7,
+              "register_note": "V-Dem codes unmatched to ISO3 (dropped, non-FLSRI sub-units): PSG (Palestine/Gaza), SML (Somaliland)",
+              "slug": "v2xnp_client",
+              "path": "exploitation/state-production-of-unfreedom/v2xnp_client",
+              "role": "generating"
+            },
+            {
+              "table": "static_indices",
+              "column": "trace_bribery_total",
+              "register_key": "trace_bribery_total",
+              "source": "TRACE International Bribery Risk Matrix 2024",
+              "series_id": "trace_bribery_risk_matrix_2024.csv:Total Score",
+              "license": "UNCONFIRMED for public release -- RE-PUBLICATION-UNCONFIRMED (TRACE published publicly, no explicit open license; confirm re-publication rights before release)",
+              "direction": "high_risk",
+              "anchor": "[0.0, 100.0] TRACE bribery risk score (0-100)",
+              "coverage_pct": 97.4,
+              "register_note": "RE-PUBLICATION-UNCONFIRMED (design decision 3.2): TRACE International Bribery Risk Matrix 2024 re-publication rights UNCONFIRMED -- confirm before public release; NOT blocking now",
+              "slug": "trace_bribery_total",
+              "path": "exploitation/state-production-of-unfreedom/trace_bribery_total",
+              "role": "generating"
+            },
+            {
+              "table": "worldbank",
+              "column": "wb_bribery_incidence",
+              "register_key": "wb_bribery_incidence",
+              "source": "World Bank WDI + WGI",
+              "series_id": "IC.FRM.BRIB.ZS",
+              "license": "CC BY 4.0",
+              "direction": "high_risk",
+              "anchor": "[0.0, 60.0] % of firms experiencing at least one bribe payment request",
+              "coverage_pct": 89.7,
+              "register_note": null,
+              "slug": "wb_bribery_incidence",
+              "path": "exploitation/state-production-of-unfreedom/wb_bribery_incidence",
+              "role": "generating"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "monetization",
+      "code": "M",
+      "label": "Monetization",
+      "product1_composite": false,
+      "domains": [
+        {
+          "slug": "domain-a-transnational-concealment",
+          "path": "monetization/domain-a-transnational-concealment",
+          "name": "Domain A - Transnational concealment & laundering infrastructure",
+          "note": "Product-2 lens; does NOT score into the Product-1 composite",
+          "confidence": "low_confidence",
+          "product1_composite": false,
+          "product2_only": true,
+          "flags": [
+            "PRODUCT-2 LENS ONLY -- does NOT enter Product-1 composite. FATF-ME = distinct second FI component (Monetization only). FSI = Product-2 lens only. Both license RE-PUBLICATION-UNCONFIRMED (FSI)."
+          ],
+          "indicators": [
+            {
+              "table": "basel_fatf",
+              "column": "basel_fatf_me_effectiveness",
+              "register_key": "basel_fatf_me_effectiveness",
+              "source": "Basel AML Index Expert Edition 2026 (Basel Institute on Governance), FATF Mutual Evaluation sub-component",
+              "series_id": "basel-aml-index-expertedition_2026-03-31.xlsx:FATF Mutual Evaluation Reports (col 9)",
+              "license": "Open with citation (Basel Institute on Governance)",
+              "direction": "high_risk",
+              "anchor": "[0.0, 10.0] Basel risk scale 0-10 (FATF Mutual Evaluation effectiveness; higher = weaker AML effectiveness = more risk)",
+              "coverage_pct": 94.4,
+              "register_note": "PRODUCT-2 LENS ONLY (scoring rule 7; see docs/METHODS.md): Monetization Domain A feeds the intervention map, NOT the R x E composite; NON-CIRCULAR SLICE (circularity flags; docs/METHODS.md): disaggregated Basel sub-component, NOT the Basel composite (which embeds the TIP Report); lens-only -- do not promote to Product-1 without the data-stage demonstration; CORRELATION-PENDING (scoring rule 4 / rule 8): keep-distinct-vs-merge for the Monetization financial-integrity component count is the data-stage correlation/collinearity screen vs the governance backbone (wb_wgi_rule_of_law / v2x_rule) and FATF-ME vs FSI -- pending decision, flagged for review (placeholder ~r<0.6-0.7 keep / ~r>=0.85 merge)",
+              "slug": "basel_fatf_me_effectiveness",
+              "path": "monetization/domain-a-transnational-concealment/basel_fatf_me_effectiveness",
+              "role": "generating"
+            },
+            {
+              "table": "basel_fatf",
+              "column": "basel_tjn_fsi",
+              "register_key": "basel_tjn_fsi",
+              "source": "Tax Justice Network Financial Secrecy Index 2025 (via Basel AML Index Expert Edition 2026)",
+              "series_id": "basel-aml-index-expertedition_2026-03-31.xlsx:Tax Justice Network Financial Secrecy Index (col 20)",
+              "license": "Basel workbook open with citation; standalone TJN FSI re-publication license UNCONFIRMED -- RE-PUBLICATION-UNCONFIRMED",
+              "direction": "high_risk",
+              "anchor": "[0.0, 10.0] Basel risk scale 0-10 (TJN Financial Secrecy Index; higher = more secrecy-jurisdiction exposure = more risk)",
+              "coverage_pct": 61.5,
+              "register_note": "PRODUCT-2 LENS ONLY (scoring rule 7; see docs/METHODS.md): Monetization Domain A feeds the intervention map, NOT the R x E composite; NON-CIRCULAR SLICE (circularity flags; docs/METHODS.md): disaggregated Basel sub-component, NOT the Basel composite (which embeds the TIP Report); lens-only -- do not promote to Product-1 without the data-stage demonstration; CORRELATION-PENDING (scoring rule 4 / rule 8): keep-distinct-vs-merge for the Monetization financial-integrity component count is the data-stage correlation/collinearity screen vs the governance backbone (wb_wgi_rule_of_law / v2x_rule) and FATF-ME vs FSI -- pending decision, flagged for review (placeholder ~r<0.6-0.7 keep / ~r>=0.85 merge); LICENSE-PENDING: standalone TJN FSI re-publication rights UNCONFIRMED -- confirm before public release (NOT blocking now); CANDIDATE SECOND SIGNAL: kept only if it passes the data-stage de-correlation check vs FATF-ME + the governance backbone",
+              "slug": "basel_tjn_fsi",
+              "path": "monetization/domain-a-transnational-concealment/basel_tjn_fsi",
+              "role": "generating"
+            },
+            {
+              "table": "basel_fatf",
+              "column": "basel_fatf_listing_flag",
+              "register_key": "basel_fatf_listing_flag",
+              "source": "Basel AML Index Expert Edition 2026 (Basel Institute on Governance), FATF Mutual Evaluation sub-component",
+              "series_id": "basel-aml-index-expertedition_2026-03-31.xlsx:FATF grey list (col 38) | FATF black list (col 39)",
+              "license": "Open with citation (Basel Institute on Governance)",
+              "direction": "high_risk",
+              "anchor": "[0.0, 1.0] binary 0/1 (FATF grey- or black-list standing)",
+              "coverage_pct": 97.9,
+              "register_note": "PRODUCT-2 LENS ONLY (scoring rule 7; see docs/METHODS.md): Monetization Domain A feeds the intervention map, NOT the R x E composite; OPTIONAL listing signal (separate from the continuous FATF-ME score); screen as its own indicator in the data-stage correlation check",
+              "slug": "basel_fatf_listing_flag",
+              "path": "monetization/domain-a-transnational-concealment/basel_fatf_listing_flag",
+              "role": "generating"
+            }
+          ]
+        },
+        {
+          "slug": "domain-b-cash-informal-retention",
+          "path": "monetization/domain-b-cash-informal-retention",
+          "name": "Domain B - Cash & informal-economy retention",
+          "note": "Product-2 lens; carries the only narrow Product-1 candidate slice (conditional, Phase 2)",
+          "confidence": "low_confidence",
+          "product1_composite": false,
+          "product2_only": true,
+          "flags": [
+            "PRODUCT-2 by default; the narrow Product-1 retention slice is a conditional Phase-2 entrant (three-condition test) NOT resolved here -- so EXCLUDED from Product-1 composite at build. financial_exclusion duplicates Recruitment-Debt Findex (pending data-correlation de-dup)."
+          ],
+          "indicators": [
+            {
+              "table": "monetization_b",
+              "column": "monet_b_shadow_economy",
+              "register_key": "monet_b_shadow_economy",
+              "source": "World Bank Informal Economy Database (Elgin, Kose, Ohnsorge & Yu) [WB_INFECDB_DGE_P]",
+              "series_id": "WB_INFECDB_DGE_P",
+              "license": "World Bank open data (CC BY 4.0); cite Elgin et al. 2021 \"Understanding Informality\"",
+              "direction": "high_risk",
+              "anchor": "[8.0, 50.0] shadow economy, % of official GDP (DGE estimate)",
+              "coverage_pct": 80.0,
+              "register_note": "PRIOR-ANCHOR: floor/ceiling are a data-stage starting point -- re-examine; PRODUCT-1-CONDITIONAL: Domain B is Product-2 by default (scoring rule 7); Product-1 inclusion is subject to the three-condition test (non-circular indicator; separable local slice; controllable normative-split gate -- docs/METHODS.md) and is NOT resolved at the data layer. The criminal-proceeds-context gate (c_proceeds) and the coercion-context gate (c_coercion) are UNWIRED here -- raw signal capacity only, gating applied downstream; CONNECTING-FLAG: shadow/informal economy connects -> Exploitation informality reading; scored in Monetization (retention) form only -- cross-phase de-dup is a data-stage correlation/synthesis step; OWNED-CONNECTOR: WB Informal Economy DB (data360 API, live)",
+              "slug": "monet_b_shadow_economy",
+              "path": "monetization/domain-b-cash-informal-retention/monet_b_shadow_economy",
+              "role": "generating"
+            },
+            {
+              "table": "monetization_b",
+              "column": "monet_b_financial_exclusion",
+              "register_key": "monet_b_financial_exclusion",
+              "source": "World Bank Global Findex Database 2025",
+              "series_id": "account_t_d",
+              "license": "CC BY 3.0 IGO (World Bank open data; attribution required)",
+              "direction": "high_risk",
+              "anchor": "[0.0, 1.0] share of adults with no financial account (0-1)",
+              "coverage_pct": 81.0,
+              "register_note": "PRODUCT-1-CONDITIONAL: Domain B is Product-2 by default (scoring rule 7); Product-1 inclusion is subject to the three-condition test (non-circular indicator; separable local slice; controllable normative-split gate -- docs/METHODS.md) and is NOT resolved at the data layer. The criminal-proceeds-context gate (c_proceeds) and the coercion-context gate (c_coercion) are UNWIRED here -- raw signal capacity only, gating applied downstream; DUPLICATE-OF-FINDEX: same variable as Recruitment-Debt's findex_account_exclusion (1 - account_t_d). SHARED cross-domain signal -- the data-stage correlation screen must de-duplicate the shared variance; do NOT double-count across Recruitment-Debt and Monetization-B; CONNECTING-FLAG: financial exclusion connects -> Recruitment Debt domain; scored in Monetization (D2 s2.1) form only; DEFEATER-NOTE: this exclusion signal is the inverse of Domain B's z.1 inclusion DEFEATER -- the defeater is applied downstream at aggregation, not double-entered here; SHARED-CONNECTOR: reads the same Findex direct upload as findex.py; does not rebuild the sibling connector",
+              "slug": "monet_b_financial_exclusion",
+              "path": "monetization/domain-b-cash-informal-retention/monet_b_financial_exclusion",
+              "role": "generating"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "shared_gate": {
+    "slug": "corruption-capture-gate",
+    "name": "Corruption / capture & bought impunity",
+    "note": "Shared modifier/defeater-flagged gate folded into the domains it protects across all three phases; not a standalone domain. The general-governance backbone signal (worldbank/wb_wgi_rule_of_law) is scored once as the domain-level attenuate-only modulator; the financial-integrity / AML signal gets a distinct second entry in Monetization. See docs/scoring-rules.md.",
+    "governance_backbone": {
+      "table": "worldbank",
+      "column": "wb_wgi_rule_of_law"
+    }
+  }
+}

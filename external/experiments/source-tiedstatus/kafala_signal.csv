@@ -1,0 +1,11 @@
+iso3,country,snapshot,F1_single_employer_tying,F2_consent_to_leave,F3_exit_or_absconding_offence,kafala_tied_status_signal,confidence,domestic_worker_carveout,wb_wgi_rule_of_law_riskaligned
+JOR,Jordan,end-2024,1.0,1.0,1.0,1.0,high,no,0.4663
+LBN,Lebanon,end-2024,1.0,1.0,1.0,1.0,high,no,0.7171
+MYS,Malaysia,end-2024,1.0,1.0,0.5,0.8333333333333334,low,no,0.431
+SGP,Singapore,end-2024,1.0,1.0,0.5,0.8333333333333334,low,no,0.2138
+KWT,Kuwait,end-2024,1.0,0.5,0.5,0.6666666666666666,high,yes,0.4538
+OMN,Oman,end-2024,1.0,0.5,0.5,0.6666666666666666,high,partial,0.4101
+ARE,United Arab Emirates,end-2024,0.5,0.5,0.5,0.5,high,partial,0.4006
+SAU,Saudi Arabia,end-2024,0.5,0.5,0.5,0.5,high,yes,0.4579
+QAT,Qatar,end-2024,0.5,0.0,0.5,0.3333333333333333,high,yes,0.3821
+BHR,Bahrain,end-2024,0.5,0.0,0.5,0.3333333333333333,high,partial,0.4664

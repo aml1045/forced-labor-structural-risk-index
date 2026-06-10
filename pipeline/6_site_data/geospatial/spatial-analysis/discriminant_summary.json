@@ -1,0 +1,90 @@
+{
+  "seed": 42,
+  "permutations": 999,
+  "alpha_fdr": 0.05,
+  "n_countries": 164,
+  "composite_vs_wgi": {
+    "pearson_r": 0.9047,
+    "R2": 0.8186
+  },
+  "global_moran_I": {
+    "composite": 0.5701,
+    "wgi": 0.5329,
+    "residual": 0.3497
+  },
+  "pseudo_p": {
+    "composite": 0.001,
+    "wgi": 0.001,
+    "residual": 0.001
+  },
+  "residual_share_of_composite_I": 0.6134,
+  "hh_sets": {
+    "composite": [
+      "CAF",
+      "CMR",
+      "COD",
+      "COG",
+      "ETH",
+      "NER",
+      "SDN",
+      "TCD",
+      "TZA"
+    ],
+    "wgi": [
+      "CAF",
+      "CMR",
+      "COG",
+      "ETH",
+      "NER",
+      "SDN",
+      "TCD"
+    ],
+    "residual": [
+      "CAF",
+      "COD",
+      "TZA"
+    ]
+  },
+  "ll_sets": {
+    "composite": [
+      "AUT",
+      "BEL",
+      "CHE",
+      "CZE",
+      "DEU",
+      "FRA",
+      "ITA",
+      "LUX",
+      "SWE"
+    ],
+    "wgi": [
+      "AUT",
+      "BEL",
+      "CHE",
+      "DEU",
+      "FRA",
+      "ITA",
+      "LUX",
+      "SWE"
+    ],
+    "residual": [
+      "KAZ",
+      "SRB",
+      "UKR"
+    ]
+  },
+  "jaccard_composite_wgi_hh": 0.7778,
+  "surviving_hh": [
+    "CAF",
+    "COD",
+    "TZA"
+  ],
+  "governance_explained_hh": [
+    "CMR",
+    "COG",
+    "ETH",
+    "NER",
+    "SDN",
+    "TCD"
+  ]
+}

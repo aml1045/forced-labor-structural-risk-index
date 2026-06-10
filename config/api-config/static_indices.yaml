@@ -1,0 +1,101 @@
+# static_indices.yaml -- config for the three manually-parsed static indices
+# loaded by pipeline/sources/static_indices.py.
+#
+# These are NOT live APIs. Each is parsed once (annual) from a saved HTML/PDF by
+# the parsers (tools/html_to_data/trace.py, .../basel.py,
+# tools/pdf_to_data/henley.py) into the parsed CSVs referenced below. This file
+# records, per index, the source file, headline column, kept sub-scores, the
+# 0-1 anchor (floor/ceiling in the source's native unit), and the explicit
+# direction (higher = more risk).
+#
+# LICENSE FLAGS (flagged for review; see docs/data-provenance.md):
+#   TRACE  : re-publication rights UNCONFIRMED -> confirm before publish (3.2)
+#   Henley : re-publication rights UNCONFIRMED -> confirm before publish (3.2)
+#   Basel  : open with citation -> OK (but no live rows; see basel_aml block)
+
+# Parsed CSVs (reused as-is; see docs/data-provenance.md),
+# now staged repo-relative under data/raw/ (resolved under the repo root by
+# static_indices.py).
+_load_dir: data/raw
+
+indices:
+
+  trace_bribery:
+    title: TRACE International Bribery Risk Matrix 2024
+    source_file: trace_bribery_risk_matrix_2024.csv
+    parser: tools/html_to_data/trace.py
+    source_url: https://traceinternational.org/trace-matrix
+    license: UNCONFIRMED for public release (TRACE published publicly, no explicit open license; confirm re-publication rights before release)
+    iso_col: ISO3
+    year_min: 2024
+    year_max: 2024
+    headline:
+      column: Total Score          # 0-100, higher = more bribery risk
+      output_col: trace_bribery_total
+      floor: 0
+      ceiling: 100
+      direction: high_risk
+      unit: TRACE bribery risk score (0-100)
+      anchor_source: >-
+        TRACE Matrix is a bounded 0-100 composite (0 = lowest business bribery
+        risk, 100 = highest); the index endpoints are the absolute anchors.
+    # Sub-scores deliberately NOT kept: the four domain / nine sub-domain scores
+    # are near-duplicates of the Total Score (governance backbone) and
+    # docs/scoring-rules.md warns against stacking collinear governance signals.
+    # Component count is a pending decision (data-stage correlation check).
+
+  basel_aml:
+    title: Basel AML Index Expert Edition 2025/2026
+    source_file: basel_aml_index_2025.csv
+    parser: tools/html_to_data/basel.py
+    source_url: https://baselgovernance.org/basel-aml-index
+    license: Open with citation (Basel Institute on Governance)
+    iso_col: ISO3
+    year_min: 2025
+    year_max: 2025
+    # DESIGN DECISION (Basel-AML sub-component triage, 2026-06): NO LIVE ROWS.
+    # Both previously-ingested columns were dropped because they are circular:
+    #   - 'Overall Score'  (basel_aml_overall): the full Basel composite embeds
+    #     the US TIP Report and crime-market outcome measures -> trafficking-
+    #     circular. DROPPED.
+    #   - 'AML/CFT Framework' (basel_aml_cft_framework): the AML/CFT-framework
+    #     domain is itself a weighted composite, one component of which is the
+    #     US State Dept TIP Report (0.05) -> still trafficking-circular. DROPPED.
+    # No `headline` / `subscores` keys -> static_indices.py emits no Basel rows.
+    #
+    # INTENDED Monetization financial-integrity signals (PENDING data-stage
+    # extraction from the Expert Edition workbook; NOT yet ingested -- coverage
+    # must not be fabricated):
+    #   - FATF Mutual Evaluation effectiveness  (PRIMARY; the 0.35 sub-component
+    #     of the AML/CFT-framework domain, the clean FATF-based measure).
+    #   - Tax Justice Network Financial Secrecy Index (FSI)  (CANDIDATE second).
+    #   - OPTIONAL binary: FATF grey/black-list status  (separate listing flag).
+    # EXCLUDED outright (circular or governance-backbone duplicates, scored once
+    # globally): US TIP Report; CPI; TRACE; WJP; Freedom House; WEF; RWB;
+    # GI-TOC org-crime outcome measures.
+    # The surviving corruption / financial-integrity COMPONENT COUNT is a
+    # data-stage correlation/collinearity call (docs/scoring-rules.md rule 4 /
+    # rule 8) -- flagged for review; NOT decided here.
+
+  henley_passport:
+    title: Henley Passport Index (May 2026 vintage)
+    source_file: henley_passport_index_count_2026-05-07.csv
+    parser: tools/pdf_to_data/henley.py
+    source_url: https://www.henleyglobal.com/passport-index
+    license: UNCONFIRMED for public release (Henley proprietary, attribution required, re-publication rights unclear; confirm before release)
+    iso_col: ISO3
+    year_min: 2026
+    year_max: 2026
+    headline:
+      column: Visa Free             # count of visa-free destinations
+      output_col: henley_passport_access
+      floor: 0
+      ceiling: 227
+      direction: low_risk           # MORE visa-free access = LESS entrapment risk -> invert
+      unit: visa-free destination count
+      anchor_source: >-
+        Visa-free destination count, anchored to the absolute possible range
+        [0, total destinations]. Total destinations (227 = Visa Free + Visa
+        Required + 1, the holder's own country) is the universal-access ceiling;
+        0 is total entrapment. Direction = low_risk: high passport access lowers
+        structural mobility constraint, so it INVERTS to a low risk score.

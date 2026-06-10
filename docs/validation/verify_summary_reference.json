@@ -1,0 +1,45 @@
+{
+  "files": {
+    "admin1_risk.topojson": {
+      "bytes": 3888306,
+      "sha256": "5d15323e0ad33b4f4fea8b64d9b7c3f9ce98fb0c70d5119f3145a5c53f787b9c"
+    },
+    "divergence.json": {
+      "bytes": 2752,
+      "sha256": "4bd121d536a13bfcbb5f7c7bc8fd255a61b665b285c206ff52c466ca6ce562f2"
+    },
+    "domains.json": {
+      "bytes": 335216,
+      "sha256": "30871582e0de7a8091f64caaf6bbe01961e31b417dd72d121759a41bb9c595e9"
+    },
+    "lisa.json": {
+      "bytes": 348819,
+      "sha256": "2475bdfb935296877e0545af0131debab8ad794cd1e0467325cfe8193a9bc270"
+    },
+    "lisa_admin1.json": {
+      "bytes": 141770,
+      "sha256": "d36de7196007ac9a02d7429ff8aa90ae0bf205acb76182f08122781f0552e1c3"
+    },
+    "lisa_admin1.topojson": {
+      "bytes": 2906793,
+      "sha256": "9e406c9c42ca91581036dd8877ff29040e9e70b930677dd6f2d547b5e427ace6"
+    },
+    "overlay.json": {
+      "bytes": 277373,
+      "sha256": "42bc185fa566ba3cefbd9fde0ca746c8a73a981109aef06c6a3598ebd05d66ce"
+    },
+    "scores.json": {
+      "bytes": 100172,
+      "sha256": "74f6196b4b4ae8cd9281313b2c4c59e3a31619dca71554064329eeadd56a8c28"
+    },
+    "subnational.json": {
+      "bytes": 11354,
+      "sha256": "fa2dacdc8b7f0ccfcbf809f4a89cc4f7e0c9bab13f290ff37fe80336b0ee836c"
+    }
+  },
+  "scores": {
+    "n_low_confidence": 40,
+    "n_scored": 184,
+    "n_universe": 195
+  }
+}

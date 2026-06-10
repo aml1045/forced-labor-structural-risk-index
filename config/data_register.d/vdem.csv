@@ -1,0 +1,5 @@
+indicator,source,series_id,countries,year_min,year_max,license,direction,anchor,coverage_pct,flags
+v2x_rule,V-Dem Country-Year Core v16,v2x_rule,173,2015,2025,CC BY 4.0,low_risk,"[0.0, 1.0] interval 0-1 (higher = better)",88.7,"V-Dem codes unmatched to ISO3 (dropped, non-FLSRI sub-units): PSG (Palestine/Gaza), SML (Somaliland)"
+v2xcl_dmove,V-Dem Country-Year Core v16,v2xcl_dmove,173,2015,2025,CC BY 4.0,low_risk,"[0.0, 1.0] interval 0-1 (higher = freer)",88.7,"V-Dem codes unmatched to ISO3 (dropped, non-FLSRI sub-units): PSG (Palestine/Gaza), SML (Somaliland)"
+v2xcl_slave,V-Dem Country-Year Core v16,v2xcl_slave,173,2015,2025,CC BY 4.0,low_risk,"[0.0, 1.0] interval 0-1 (higher = freer)",88.7,"V-Dem codes unmatched to ISO3 (dropped, non-FLSRI sub-units): PSG (Palestine/Gaza), SML (Somaliland)"
+v2xnp_client,V-Dem Country-Year Core v16,v2xnp_client,173,2015,2025,CC BY 4.0,high_risk,"[0.0, 1.0] interval 0-1 (REVERSED: higher = MORE clientelism = worse)",88.7,"V-Dem codes unmatched to ISO3 (dropped, non-FLSRI sub-units): PSG (Palestine/Gaza), SML (Somaliland)"

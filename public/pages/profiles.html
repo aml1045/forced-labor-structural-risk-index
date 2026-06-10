@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Country profiles: FLSRI</title>
+<meta name="description" content="Per-country structural risk scores with a plain-language breakdown and data caveats.">
+<link rel="stylesheet" href="../assets/styles.css">
+</head>
+<body>
+<header id="site-header" class="site-header"></header>
+
+<main>
+  <section class="hero">
+    <div class="wrap">
+      <p class="kicker">Country profiles</p>
+      <h1>One score, and the reasons behind it</h1>
+      <p class="lede">Each scored country carries a single number reflecting how strongly the conditions that enable forced labor are present across its economy and institutions. The profile breaks that number into its parts and states plainly where the country sits, how confident the read is, and where the data run thin.</p>
+      <p><span class="badge-ok">Validated structure &middot; scores read in tiers</span> <span class="muted"><small>The scoring structure passed its pre-registered validation suite (see <a href="methodology.html">methodology</a>); the scores shown here are condition estimates with uncertainty bands, read in tiers. The breakdown reports the two phase components that combine into the score and the per-domain risk circles beneath them.</small></span></p>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="wrap">
+      <label for="country-pick" class="fl">Choose a country to profile</label>
+      <select id="country-pick" class="country-pick"></select>
+      <div id="country-panel" class="country-panel" style="margin-top:18px"></div>
+      <div id="indicator-drilldown" style="display:none;margin-top:22px">
+        <details open>
+          <summary style="cursor:pointer;font-weight:700;font-size:1.05rem" id="ind-dd-title">Indicator-level data</summary>
+          <p class="muted" style="margin-top:6px"><small>Every standardized signal as it enters the scorer for this country (0 = lowest-risk anchor, 1 = highest). A missing value is reported as absent &mdash; it is never scored as zero. Monetization signals feed the intervention lens only and are excluded from the composite.</small></p>
+          <div class="table-scroll"><table class="rank" id="ind-dd-table">
+            <thead><tr><th style="width:5.5rem">#</th><th>Indicator</th><th>Source</th><th style="width:34%">Value (0&ndash;1 risk)</th></tr></thead>
+            <tbody></tbody>
+          </table></div>
+          <p class="muted" style="margin-top:8px"><small id="trend-footnote" style="display:none"><strong>Momentum chips</strong> are descriptive trend estimates from the project's analysis lab (Theil&ndash;Sen slopes over a 12-year window on the standardized risk scale) &mdash; they describe the underlying sources, which can lag abrupt events, and they are <strong>not part of the published score</strong>. "Not assessable" is a coverage statement, never a safety statement.</small></p>
+        </details>
+      </div>
+      <div class="note" style="margin-top:18px"><p style="margin:0"><strong>Origin-side scope.</strong> This score reflects a country&rsquo;s own structural conditions. It does not yet capture destination-side sponsorship systems (such as <em>kafala</em> tied legal status), so known migrant-destination countries (including the Gulf) can score lower than their documented forced-labor risk. Read a low score there as &ldquo;not yet measured,&rdquo; not &ldquo;low risk.&rdquo; <a href="limitations.html">More</a>.</p></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="wrap">
+      <h2>How to read a profile</h2>
+      <p>The score runs from 0 to 1. A higher number means more of the enabling conditions are present together, not that more people are in forced labor, which the index does not attempt to count. The two components shown are the vulnerability that exposes people to recruitment (R) and the conditions under which exploitation can run unchecked (E); the published score is their geometric mean. The third part of the frame, the financial conditions that let proceeds disappear, informs the intervention map rather than the published risk score in this build.</p>
+      <p>Where a country&rsquo;s data are too thin to rank it fairly, it is left unscored rather than assigned a misleading number. Of the roughly 195 countries in scope, <span data-meta="n_scored">184</span> are scored.</p>
+      <details class="why">
+        <summary>Why read the tier, not the exact rank?</summary>
+        <div class="why-body">
+          <p>The top and bottom of the table are stable: under repeated testing with small amounts of noise, the highest-risk countries keep roughly 87 percent of their positions and the lowest-risk roughly 80 percent. The middle of the table is not: scores there are densely packed, so a country ranked 80th and one ranked 90th are barely apart and could swap under tiny measurement changes. Reporting a precise mid-table rank would imply a confidence the data do not support. So countries are banded into Higher / Middle / Lower tiers and the band is what should be read, which is what the validation actually supports.</p>
+        </div>
+      </details>
+      <details class="why">
+        <summary>Why is a country sometimes grey (not scored) instead of a number?</summary>
+        <div class="why-body">
+          <p>Eleven countries do not have enough underlying data to clear the coverage floor: the minimum share of indicators needed for a defensible score. Rather than fill the gap with a guess or a zero (which would falsely read as "low risk"), they are left unscored and shown in grey. A missing input is never silently treated as zero anywhere in the index; where too little remains, the honest answer is "this cannot be ranked fairly yet," and the site says so.</p>
+        </div>
+      </details>
+    </div>
+  </section>
+
+  <hr class="rule">
+
+  <section class="block">
+    <div class="wrap-wide">
+      <h2>Where the conditions are strongest, and weakest</h2>
+      <p class="wrap" style="padding:0">The countries at the top of the index are those where vulnerability, weak enforcement, and financial opacity hold together most strongly. Those at the bottom are the settled, well-governed economies where these conditions are largely absent.</p>
+      <div class="footer-grid" style="grid-template-columns:1fr 1fr; gap:32px">
+        <div>
+          <h3>Strongest conditions</h3>
+          <table class="data">
+            <thead><tr><th class="num">#</th><th>Country</th><th class="num">Score</th></tr></thead>
+            <tbody id="top-list"></tbody>
+          </table>
+        </div>
+        <div>
+          <h3>Weakest conditions</h3>
+          <table class="data">
+            <thead><tr><th class="num">#</th><th>Country</th><th class="num">Score</th></tr></thead>
+            <tbody id="bottom-list"></tbody>
+          </table>
+        </div>
+      </div>
+      <p class="muted"><small>The highest observed score is near <span data-meta="composite_max">0.66</span>; the lowest near <span data-meta="composite_min">0.11</span>. The scale&rsquo;s theoretical worst of 1.0 is anchored to a maximum rather than to the worst country observed, so even the highest-risk countries sit well below it.</small></p>
+    </div>
+  </section>
+</main>
+
+<footer id="site-footer" class="site-footer"></footer>
+
+<script src="https://cdn.jsdelivr.net/npm/topojson-client@3/dist/topojson-client.min.js"></script>
+<script src="../assets/site.js"></script>
+<script>
+  FLSRI.loadScores().then(s => {
+    FLSRI.fillMeta(s);
+    FLSRI.fillTopBottom(s);
+    // buildPicker handles #ISO3 deep-linking, hash sync, rank neighbours, and the full breakdown.
+    FLSRI.buildPicker("country-pick", "country-panel");
+  });
+
+  // ---- indicator-level drilldown (data/indicators.json; graceful no-op if absent) ----
+  (function () {
+    const ipath = (location.pathname.includes("/pages/") ? "../" : "") + "data/indicators.json";
+    const tpath = (location.pathname.includes("/pages/") ? "../" : "") + "data/trends.json";
+    Promise.all([
+      fetch(ipath).then(r => { if (!r.ok) throw 0; return r.json(); }),
+      fetch(tpath).then(r => r.ok ? r.json() : {countries:{}}).catch(() => ({countries:{}}))
+    ]).then(([D, T]) => {
+      const wrap = document.getElementById("indicator-drilldown");
+      const tbody = document.querySelector("#ind-dd-table tbody");
+      const title = document.getElementById("ind-dd-title");
+      const sel = document.getElementById("country-pick");
+      const panel = document.getElementById("country-panel");
+      if (!wrap || !tbody || !sel || !panel) return;
+      const domLabel = {}; D.domains.forEach(d => domLabel[d.slug] = d);
+      const PHASE = {1:"Phase 1 \u00b7 Recruitment", 2:"Phase 2 \u00b7 Exploitation",
+                     M:"Monetization \u00b7 intervention lens (not in the composite)"};
+      const DEST_STATES = {"ARE":1,"QAT":1,"SAU":1,"KWT":1,"BHR":1,"OMN":1,"JOR":1,"LBN":1};
+      const destNote = iso => DEST_STATES[iso] ? `<div class="dest-caveat"><b>Documented sponsorship-system destination.</b> This index reads origin-side structural risk and does not yet capture destination-side sponsorship capture &mdash; a low score here means &ldquo;pathway not yet measured,&rdquo; not a clean bill of health. See <a href="limitations.html">Limitations</a>.</div>` : "";
+      function render(iso) {
+        const c = D.countries.find(x => x.iso3 === iso);
+        if (!c) { wrap.style.display = "none"; return; }
+        title.textContent = `Indicator-level data \u2014 ${c.name}`;
+        const oldNote = wrap.querySelector(".dest-caveat"); if (oldNote) oldNote.remove();
+        if (DEST_STATES[iso]) wrap.insertAdjacentHTML("afterbegin", destNote(iso));
+        const KAFALA = ["ARE","QAT","SAU","KWT","BHR","OMN","JOR","LBN"];
+        let kafNote = document.getElementById("kafala-note");
+        if (!kafNote) {
+          kafNote = document.createElement("p"); kafNote.id = "kafala-note"; kafNote.className = "muted";
+          kafNote.style.cssText = "margin:6px 0 0;border-left:3px solid #c98a00;padding-left:8px";
+          wrap.insertBefore(kafNote, wrap.firstChild);
+        }
+        if (KAFALA.includes(iso)) {
+          kafNote.innerHTML = '<small><strong>Sponsorship-regime destination state.</strong> This country operates a documented kafala-style sponsorship system (coded in the index). Destination-side mechanisms are under-measured by available global data, so read this profile alongside the <a href="limitations.html">limitations</a> \u2014 a lower score here is not a clean bill of health.</small>';
+          kafNote.style.display = "";
+        } else kafNote.style.display = "none";
+        let html = "", lastPhase = "", lastDom = "";
+        D.signals.forEach(s => {
+          const d = domLabel[s.domain], pn = s.num.split(".")[0];
+          if (pn !== lastPhase) { html += `<tr><td colspan="4" style="background:var(--ink,#1d1d1b);color:#fff;font-weight:700;padding:0.45em 0.6em">${PHASE[pn]}</td></tr>`; lastPhase = pn; lastDom = ""; }
+          if (s.domain !== lastDom) {
+            const tr = (T.countries[iso] || {})[s.domain];
+            let chip = "";
+            if (tr && tr.status === "read") {
+              const col = tr.class === "deteriorating" ? "#a8320a" : tr.class === "improving" ? "#3a7d44" : "#5c564b";
+              const since = tr.since ? ` since ~${tr.since}` : "";
+              const quals = (tr.quals || []).length ? ` <small style="font-weight:400;opacity:0.65">(${tr.quals.join("; ")})</small>` : "";
+              chip = ` <span style="font-size:0.72rem;font-weight:600;color:${col};border:1px solid ${col};border-radius:9px;padding:0 7px;white-space:nowrap" title="confidence: ${tr.confidence}; change/decade: ${tr.delta_decade}">${tr.class === "deteriorating" ? "&#9650;" : tr.class === "improving" ? "&#9660;" : "&#8596;"} ${tr.label}${since}</span>${quals}`;
+            } else if (tr && tr.status === "na") {
+              chip = ` <span style="font-size:0.72rem;font-style:italic;opacity:0.55" title="${tr.why}">trend not assessable</span>`;
+            }
+            html += `<tr><td colspan="4" style="font-weight:600;background:rgba(0,0,0,0.05);padding:0.35em 0.6em">${d.num}&ensp;${d.label}${chip}</td></tr>`; lastDom = s.domain;
+          }
+          const v = c.values[s.id];
+          const suppl = s.supplementary ? ' <small style="opacity:0.55">(supplementary)</small>' : "";
+          const note = s.note ? ` <small style="opacity:0.55">(${s.note})</small>` : "";
+          const bar = (v === undefined || v === null)
+            ? '<span class="muted">\u2014 not observed</span>'
+            : `<div style="display:flex;align-items:center;gap:0.5em"><div style="flex:1;height:9px;background:rgba(0,0,0,0.08);border-radius:4px;overflow:hidden"><div style="width:${Math.round(v*100)}%;height:100%;background:${v>=0.66?"#a8320a":v>=0.33?"#c98a00":"#3a7d44"}"></div></div><span class="num" style="min-width:3em;text-align:right">${v.toFixed(3)}</span></div>`;
+          html += `<tr><td class="num">${s.num}</td><td>${s.title}${suppl}${note}</td><td><small>${s.source}</small></td><td>${bar}</td></tr>`;
+        });
+        tbody.innerHTML = html;
+        const fn = document.getElementById("trend-footnote");
+        if (fn && T.countries[iso]) fn.style.display = "";
+        wrap.style.display = "";
+      }
+      // re-render whenever the profile panel re-renders (covers select, deep links, initial load)
+      new MutationObserver(() => { if (sel.value) render(sel.value); })
+        .observe(panel, { childList: true });
+      if (sel.value) render(sel.value);
+    }).catch(() => {});
+  })();
+</script>
+</body>
+</html>

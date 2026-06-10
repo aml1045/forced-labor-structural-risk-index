@@ -1,0 +1,49 @@
+# UCDP connector config -- Structural Disruption domain, D3 conflict intensity.
+#
+# Source: Uppsala Conflict Data Program (UCDP) Georeferenced Event Dataset
+# (GED) v24.1 -- individual organized-violence events with a `best` fatality
+# estimate, country, and year. Fully OPEN / publish-safe (CC BY 4.0). Chosen
+# over ACLED, which is licence-restricted (registration, no redistribution) --
+# "use UCDP, NOT ACLED"; see docs/METHODS.md and docs/data-provenance.md.
+#
+# Fills Structural Disruption D3 signal s3.1 "conflict intensity"
+# (conflict deaths per 100k), flagged GAP -- no loaded indicator (UNHCR
+# displacement only proxied s3.2); see docs/METHODS.md. GED 24.1 was pulled
+# fresh from the UCDP open download centre and a slim country-year cache staged
+# to data/aux/ucdp_ged_country_year_2019_2023.csv; see docs/data-provenance.md.
+
+source_title: "UCDP Georeferenced Event Dataset (GED) v24.1 -- Uppsala Conflict Data Program"
+license: "CC BY 4.0 (fully open, publish-safe with attribution) -- ucdp.uu.se"
+
+# data/aux slim cache: country, country_id, year, type_of_violence, best_deaths
+# (GED `best` fatality estimate summed per country-year-violence-type, 2019-2023).
+cache_file: ucdp_ged_country_year_2019_2023.csv
+country_col: country
+deaths_col: best_deaths
+year_col: year
+
+# 5-year window 2019-2023 (five COMPLETE years; GED v24.1 ends at 2023). Mirrors
+# the EM-DAT D1 sibling's 5-year window (aux_emdat: 2020-2024) so the two acute
+# shock signals (D1 disaster, D3 conflict) share a window length. Window is a
+# PRIOR re-examined here, not locked -- flagged.
+year_min: 2019
+year_max: 2023
+
+# type_of_violence: UCDP codes 1=state-based, 2=non-state, 3=one-sided. ALL THREE
+# are organized-violence exposure that knocks a population loose (docs/METHODS.md D3
+# "conflict/occupation collapse protection"); we sum all three. Set to a subset
+# only with a cited reason (flagged if changed).
+include_violence_types: [1, 2, 3]
+
+# Output indicator: conflict deaths per 100k over the window -> 0-1 risk.
+# Anchored ABSOLUTELY (rule 1), mirroring the EM-DAT mortality anchor: ceiling
+# 100 deaths/100k over 5 yrs ~= 0.1% of population killed by organized violence
+# = catastrophic conflict-mortality burden. Direction high_risk. Per-exposure:
+# raw deaths / WB population * 1e5.
+indicator:
+  output_col: ucdp_conflict_intensity
+  floor: 0.0
+  ceiling: 100.0
+  direction: high_risk
+  unit: "conflict (best-estimate) deaths per 100k (5-yr window 2019-2023)"
+  anchor_source: "absolute per-exposure anchor: 100/100k ~= 0.1% pop killed by organized violence over 5 yrs = catastrophic conflict burden; mirrors the EM-DAT D1 mortality anchor for cross-signal comparability within Structural Disruption (UKR ~434, ETH ~244, AFG ~210 clamp at ceiling)"

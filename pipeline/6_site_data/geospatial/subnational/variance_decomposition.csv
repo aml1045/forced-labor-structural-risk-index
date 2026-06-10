@@ -1,0 +1,6 @@
+signal,eta2_between_country,within_country_share,n_admin1
+vulnerable_employment,0.8946,0.1054,1415
+redflag_sector,0.7497,0.2503,1380
+child_labour_comp,0.8334,0.1666,976
+precarity_index,0.8268,0.1732,1454
+risk_surface,0.7896,0.2104,1454

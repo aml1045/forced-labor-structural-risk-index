@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Limitations &amp; Sources: FLSRI</title>
+<meta name="description" content="What the Forced Labor Structural Risk Index can and cannot support, stated plainly, with its data sources.">
+<link rel="stylesheet" href="../assets/styles.css">
+</head>
+<body>
+<header id="site-header" class="site-header"></header>
+
+<main>
+  <section class="hero">
+    <div class="wrap">
+      <p class="kicker">Limitations &amp; sources</p>
+      <h1>What the index can and cannot support</h1>
+      <p class="lede">An index is only as honest as the limits it states, and stating them once, plainly, is more useful than burying them in a wall of caveats. The points below are the ones a reader needs in order to use the index well and avoid over-reading it. They are not boilerplate: several of them constrain what the current figures can be used for.</p>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="wrap">
+      <h2>Limitations</h2>
+
+      <h3>It measures conditions, not cases.</h3>
+      <p>The index measures the structural conditions associated with forced labor, not its prevalence. A high score means the enabling conditions are strongly present, rather than that a particular number of people are exploited. A low score does not certify a country as free of forced labor.</p>
+
+      <h3>It reads origin-side structural risk, and under-reads destination and sponsorship systems.</h3>
+      <p>This is the most important thing to understand before reading any single country&rsquo;s rank. The index is assembled from cross-national indicators that largely describe a country&rsquo;s resident population and its structural conditions. The mechanisms that drive forced labor in <em>destination</em> economies (<em>kafala</em>-style sponsorship that ties a worker&rsquo;s legal status to one employer, recruitment-fee debt, and migration brokerage) are named in the framework but are <strong>not yet sourced at country scale</strong>, and the proxies that are available describe citizens rather than the migrant workforce who are most exposed. As a direct result, several wealthy migrant-destination states score in the lower-risk range: the United Arab Emirates ranks 147th of 184 scored countries, and the other Gulf states sit alongside it, despite well-documented forced-labor risk in their labor systems. <strong>Read a low score for a known destination country as &ldquo;this index does not yet capture that pathway,&rdquo; not as a clean bill of health.</strong> The current index reads origin-side structural vulnerability; it does not yet read destination-side sponsorship capture, and that gap is the next priority for the model rather than a settled feature of the world. Two safeguards make this blind spot visible at the point of use: the eight documented sponsorship-system destinations carry an explicit caveat banner on their country profile and intervention pages, and where Exploitation rests on fewer scored domains the country carries the lower-confidence badge with wider published rank bands &mdash; the uncertainty model widens, symmetrically and honestly, rather than guessing which direction the missing data would point.</p>
+
+      <h3>Read it as bands, not a leaderboard.</h3>
+      <p>A rank-stability analysis that perturbs the modelling choices (weights, the recruitment/exploitation balance, noise on the inputs) finds that countries near the top and the bottom of the index barely move, but positions in the middle of the table sit inside wide intervals: a small data or modelling change can shift a mid-ranked country many places. The honest reading is in tiers: which broad band a country falls in (higher / moderate / lower structural risk) is informative; its exact ordinal rank in the middle of the table is not. Do not treat a difference of a few places mid-table as meaningful.</p>
+
+      <h3>It is correlated with weak governance, by design.</h3>
+      <p>Risk concentrates where institutions are weak. That is expected, because weak governance is one of the most established structural drivers of forced labor, and the index reports the relationship rather than engineering it away. On the build shown here, the composite correlates with a standard rule-of-law measure at r&nbsp;&asymp;&nbsp;0.79. It is not reducible to governance: roughly a third of the variation in the score is not explained by it, and a pre-registered test confirmed the index still carries a forced-labor-specific signal (the prevalence of child labor) once governance is held constant. It is governance-associated without being governance with a new label. The index also actively de-biases against governance: signals that are empirically too correlated with rule of law are down-weighted rather than entered at full strength. That treatment was stress-tested across every reasonable specification (de-biasing one domain or all of them, and measuring the governance correlation against the World Bank rule-of-law index, the V-Dem rule-of-law index, or a blend of the two), and the index barely moves (rank agreement Kendall&nbsp;&tau;&nbsp;&ge;&nbsp;0.96; the governance share stays near 63&nbsp;percent). The governance handling is not a fragile knob: the result does not depend on which governance measure or scope you choose (see <a href="methodology.html">How it&rsquo;s built</a>).</p>
+
+      <h3>Eleven countries are not scored, and they are not a random eleven.</h3>
+      <p>The universe is roughly 195 countries; 184 are scored. Where a country&rsquo;s data are too thin to rank it fairly, the build says so rather than assigning a misleading number. The eleven that drop out are <strong>all micro-states and small-island states</strong> (Andorra, Dominica, Micronesia, St&nbsp;Kitts &amp; Nevis, Liechtenstein, Monaco, Marshall Islands, Nauru, San Marino, Tuvalu, Vatican City): the same kinds of low-administrative-capacity states for which the labor and governance series are not collected. Because missing data are concentrated in low-capacity states rather than scattered at random, thin coverage tends to pull a score <em>down</em> rather than up; a very low score for a data-sparse country therefore deserves extra caution, not confidence.</p>
+
+      <h3>Two exploitation domains lean on weak or proxy signals.</h3>
+      <p>Within the exploitation phase, one domain (foreclosed exit) has no direct measure of its core mechanism and is currently carried by proxies for labor-enforcement capacity, and another leans partly on a de-facto governance proxy. So the exploitation half of the score rests more heavily than is ideal on a single well-measured domain. The affected domains are flagged in the data rather than smoothed over, and a reader can see on each country profile which domains were low-confidence or not scored.</p>
+
+      <h3>Reported figures can be suppressed &mdash; and the index does not pretend to correct for that.</h3>
+      <p>Some of the signals the index relies on are themselves recorded by the states being measured, and a state that controls its own records can report conditions as better than they are. The index&rsquo;s handling is deliberately conservative: a suppressed or absent figure is <em>dropped</em>, never recorded as zero, so opacity can never lower a country&rsquo;s score &mdash; it can only thin the evidence beneath it, and countries whose composite rests on a structurally reduced evidence base are flagged as lower-confidence. What the index does <strong>not</strong> do is estimate what a suppressing state&rsquo;s data would have shown: there is no defensible way to test such an adjustment, so none is made. Treat an opaque state&rsquo;s score as resting on thinner evidence, not as an upper or lower bound.</p>
+
+      <h3>One recruitment-side indicator runs on thin coverage.</h3>
+      <p>The child-labor prevalence indicator (World Bank/ILO survey series) exists for only 92 of 195 countries, below the index&rsquo;s 50&nbsp;percent coverage floor, and the surveys behind it are dated (2005&ndash;2016). Consistent with the no-imputation rule, the gap is disclosed rather than filled: the age/childhood domain still scores where enough companion signals exist, but it carries a low-confidence flag, and the indicator is a priority for replacement with modeled estimates in future versions.</p>
+
+      <h3>The subnational layer covers part of the world.</h3>
+      <p>The regional maps depend on comparable household-survey data, derived from IPUMS-International microdata for 97 countries; the shipped map carries 1,732 admin-1 units across 92 countries, of which roughly 1,450 units in 79 countries pass reliability filtering and carry a risk score. Where it does not exist, the country score remains the best available read. The within-country detail is real but modest for the labor signals at this resolution: it isolates specific high-risk corridors rather than rewriting the national picture wholesale.</p>
+
+      <h3>There is no clean external prevalence benchmark.</h3>
+      <p>The index was tested against an external estimate of how many people are actually in forced labor (the Walk Free Global Slavery Index 2023 prevalence estimates) and, after netting out governance on both sides, no significant association was found. This is reported plainly, but the benchmark is itself heavily entangled with governance, so a null is uninformative rather than disconfirming. There is no clean, governance-independent measure of forced-labor prevalence to validate against. That absence is the gap a structural index exists to fill, and it is also why the index should be read as a map of conditions rather than a scoreboard of outcomes.</p>
+
+    </div>
+  </section>
+
+
+  <section class="block">
+    <div class="wrap">
+      <h2>Sources</h2>
+      <p>The index is assembled from established cross-national datasets covering governance, labor, financial access, migration and displacement, gender and age structure, and disaster exposure, among others. Each indicator records its source, vintage, and coverage, so a country&rsquo;s score can be traced to the data behind it.</p>
+      <p>The full, per-indicator source list (with the dataset, series, vintage, coverage, licence, and citation for each) is published in the repository as <code>docs/data-provenance.md</code>, and the machine-readable register that drives it is at <code>config/data_register.csv</code>. Required attributions for every bundled source, and a record of the two sources (EM-DAT and IPUMS-International) whose terms restrict redistribution, are kept per-source in <code>docs/data-provenance.md</code>.</p>
+      <p>For how these sources are combined into a score, see <a href="methodology.html">How it&rsquo;s built</a>.</p>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="wrap">
+      <div class="note"><p style="margin:0">This index measures the structural conditions associated with forced labor, not its prevalence. It is a tool for identifying where risk is concentrated and why: read alongside, not in place of, on-the-ground knowledge.</p></div>
+    </div>
+  </section>
+</main>
+
+<footer id="site-footer" class="site-footer"></footer>
+<script src="../assets/site.js"></script>
+</body>
+</html>

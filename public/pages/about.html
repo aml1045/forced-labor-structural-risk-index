@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>About: FLSRI</title>
+<meta name="description" content="About the Forced Labor Structural Risk Index: what it is, how it was built and the data behind it.">
+<link rel="stylesheet" href="../assets/styles.css">
+</head>
+<body>
+<header id="site-header" class="site-header"></header>
+
+<main>
+  <section class="hero">
+    <div class="wrap">
+      <p class="kicker">About</p>
+      <h1>About the index</h1>
+      <p class="lede">The Forced Labor Structural Risk Index is a country-level measure of the structural conditions under which forced labor becomes more likely. It is a research instrument, built to be read honestly: it states what it measures, what it does not, and where its evidence runs out.</p>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="wrap">
+      <h2>What it is, in one paragraph</h2>
+      <p>Forced labor is hard to count and easy to hide. Rather than estimate how many people are exploited (a figure that is slow, uneven, and missing for much of the world), the index measures the conditions that produce exploitation: the vulnerability that exposes people to coercive recruitment, and the environment in which exploiting them goes unchecked. It scores 184 of roughly 195 countries on a 0-to-1 scale, leaving the rest unscored where the data cannot support a fair comparison. It is a tool for prevention and triage, meant to be read alongside on-the-ground knowledge, not in place of it.</p>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="wrap">
+      <h2>How it was built</h2>
+      <p>The index is organized as a Phase &rarr; Domain &rarr; Indicator model, described in full on <a href="framework.html">The framework</a> and <a href="methodology.html">Methodology</a>. Conceptual signals were each mapped to a real, established cross-national dataset, standardized to a common absolute-anchored 0-to-1 scale, and combined with a geometric mean that requires both vulnerability and unchecked exploitation to be present before a country scores high. Missing data is handled by re-averaging over the indicators that remain, subject to a coverage floor; it is never silently treated as zero, and countries below the floor are left unscored rather than imputed.</p>
+      <p>The build passed a pre-registered validation suite: it is strongly but not wholly explained by governance (about a third of its variation is independent of rule-of-law), it carries a forced-labor-specific signal that survives holding governance constant, its two components are distinct, and its top and bottom tiers are stable under perturbation. The one criterion it did not meet, convergence against an external prevalence estimate, is reported, because no clean, governance-independent prevalence benchmark exists to test against. That gap is the reason a structural index is worth building.</p>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="wrap">
+      <h2>Data &amp; map sources</h2>
+      <p>Composite scores and rankings shown across this site are read directly from the published build output (exported to the site as <code>data/scores.json</code>); no figure on the site is entered by hand. The index draws on established cross-national datasets spanning governance, labor, financial access, migration and displacement, child labor, and disaster exposure; the per-indicator source list with citations and access dates lives in the index&rsquo;s codebook and is summarized on the <a href="limitations.html">Limitations &amp; sources</a> page.</p>
+      <ul>
+        <li><strong>Country boundaries</strong> for the world map are from <a href="https://github.com/topojson/world-atlas">world-atlas</a>, derived from <a href="https://www.naturalearthdata.com/">Natural Earth</a> (public domain). Small island states absent from the 1:50m geometry render as no-data rather than being faked.</li>
+        <li><strong>The sub-national risk surface</strong> is derived from IPUMS-International census microdata for 97 countries, with disaster-shock exposure from the Geocoded Disasters (GDIS) dataset; the shipped map carries 1,732 first-level administrative regions across 92 countries, of which roughly 1,450 regions in 79 countries pass reliability filtering and carry a risk score.</li>
+        <li><strong>Composite and component scores</strong> are the published build output (see <a href="methodology.html">methodology</a>).</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="wrap">
+      <div class="note"><p style="margin:0">This index measures the structural conditions associated with forced labor, not its prevalence. It is a tool for identifying where risk is concentrated and why, to be read alongside, not in place of, on-the-ground knowledge.</p></div>
+    </div>
+  </section>
+</main>
+
+<footer id="site-footer" class="site-footer"></footer>
+<script src="../assets/site.js"></script>
+</body>
+</html>

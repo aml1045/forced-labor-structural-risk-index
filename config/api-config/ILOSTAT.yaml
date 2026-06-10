@@ -1,0 +1,122 @@
+# ILOSTAT API series for the FLSRI indicator data layer.
+#
+# See docs/data-provenance.md for source and integration details.
+#
+# Endpoint: https://rplumber.ilo.org/data/indicator?id=<CODE>&format=.csv
+#   Public, no auth, BUT a custom User-Agent is REQUIRED (rplumber returns 403
+#   to the default urllib UA). The loader (pipeline/sources/ilostat.py) sets it.
+#   rplumber docs: https://rplumber.ilo.org/__docs__/#overview
+#   Authoritative indicator catalog (used to confirm the codes below):
+#   https://rplumber.ilo.org/metadata/toc/indicator?lang=en&format=.csv
+#
+# Each entry:
+#   code        — ILOSTAT indicator ID with frequency suffix (_A annual).
+#   name        — human-friendly name (codebook / logs).
+#   used_by     — FLSRI indicator code(s) that consumed it.
+#                 CONTEXT ONLY — not an FLSRI domain placement.
+#   filters     — sex / classif1 / classif2 filters applied AFTER download.
+#                 ILOSTAT pulls ship the full cross-tab; filters cut to the
+#                 wanted slice. A filter referencing a dimension that is ABSENT
+#                 from a (pre-aggregated, "NOC" = no classification) response is
+#                 silently skipped — the data is already at that cut.
+#   direction   — FLSRI risk direction: "high_risk" (higher value = more risk)
+#                 or "low_risk" (higher value = LESS risk -> inverted to 0-1).
+#   floor/ceiling/unit/anchor_source — absolute 0-1 anchor (locked rule 1).
+#   confirmed   — true once the code is verified live against the ILOSTAT
+#                 catalog AND the pull returns data. Unconfirmed entries are
+#                 NOT wired and are flagged for review.
+#
+# This is a CONFIG file (what to pull). The loader reads it.
+
+series:
+  # --- CONFIRMED & WIRED ----------------------------------------------------
+
+  - code:    ILR_TUMT_NOC_RT_A
+    name:    "Trade union density rate (%) — annual"
+    used_by: ["2.2.2"]
+    confirmed: true
+    filters:
+      sex: SEX_T          # NOC series ships pre-aggregated; filter is a no-op
+    direction: low_risk    # higher union density = more worker protection = less risk
+    floor: 0.0
+    ceiling: 100.0
+    unit: "% of employees who are trade union members"
+    anchor_source: "Rate is a 0-100% share by construction; full-range absolute anchor (0 = no unionization, 100 = full)."
+
+  - code:    ILR_CBCT_NOC_RT_A
+    name:    "Collective bargaining coverage rate (%) — annual"
+    used_by: ["2.2.3"]
+    confirmed: true
+    filters:
+      sex: SEX_T
+    direction: low_risk    # higher CB coverage = more protection = less risk
+    floor: 0.0
+    ceiling: 100.0
+    unit: "% of employees covered by collective agreements"
+    anchor_source: "Rate is a 0-100% share by construction; full-range absolute anchor."
+
+  - code:    LAI_INDE_NOC_RT_A
+    name:    "Labour inspectors per 10,000 employed persons — annual"
+    used_by: ["2.6.1"]
+    confirmed: true        # resolved from null: ILOSTAT catalog id LAI_INDE_NOC_RT_A
+    filters:
+      sex: SEX_T           # NOC series; no sex column — filter is a no-op
+    direction: low_risk    # more inspection capacity = more enforcement = less risk
+    floor: 0.0
+    ceiling: 3.0
+    unit: "labour inspectors per 10,000 employed persons"
+    anchor_source: "ILO benchmark guidance: ~1 inspector per 10,000 workers in industrial-market economies, up to ~2 in transition and ~3 in less-developed economies (ILO ratio guidance). Ceiling 3 set to the upper end so well-resourced inspectorates saturate at lowest risk; floor 0 = no inspection capacity = highest risk. COVERAGE BELOW FLOOR (86 countries)."
+
+  - code:    SDG_F881_SEX_MIG_RT_A
+    name:    "SDG 8.8.1 — Fatal occupational injuries per 100,000 workers — annual"
+    used_by: ["2.6.2"]
+    confirmed: true        # resolved from null: SDG 8.8.1 fatal-injury frequency rate
+    filters:
+      sex:      SEX_T
+      classif1: MIG_STATUS_TOTAL   # total (all migrant statuses)
+    direction: high_risk   # higher fatal-injury rate = worse OSH outcomes = more risk
+    floor: 0.0
+    ceiling: 20.0
+    unit: "fatal occupational injuries per 100,000 workers"
+    anchor_source: "Absolute per-exposure anchor. High-income economies cluster ~1-3/100k; SDG 8.8.1 distribution across reporting countries has 95th pct ~17.6/100k (extreme tail to ~557). Ceiling 20/100k set near the 95th percentile so high-fatality regimes saturate at 1.0; floor 0 = no fatal-injury risk."
+
+  # --- UNCONFIRMED / NOT WIRED (flagged for review) -----------------
+  # Kept for traceability. The loader IGNORES any entry without confirmed: true.
+
+  - code:    EAR_INEE_NOC_NB_A
+    name:    "Statutory nominal gross monthly minimum wage (local currency) — annual"
+    used_by: ["2.6.3"]
+    confirmed: false
+    filters:
+    direction: low_risk
+    # CODE CONFIRMED (EAR_INEE_NOC_NB_A, 175 countries, 1980-2025) BUT NOT WIRED:
+    # values are in LOCAL CURRENCY UNITS and are NOT comparable across countries,
+    # so no defensible absolute 0-1 anchor exists. This needs a companion
+    # mean-earnings series for a minimum-to-mean (Kaitz) ratio, OR a PPP/USD
+    # conversion. Left out pending a decision on the operationalization
+    # (flagged for review; see docs/METHODS.md).
+
+  # The following stubs carry code: null AND name: null
+  # (indicators 1.3.1, 1.3.2, 1.4.3, 2.3.1). With no indicator definition there
+  # is nothing to resolve a series ID against. NOT wired; flagged for methods
+  # review to define the intended ILOSTAT measure before a code can be confirmed.
+  - code:    null
+    name:    null
+    used_by: ["1.3.1"]
+    confirmed: false
+    filters:
+  - code:    null
+    name:    null
+    used_by: ["1.3.2"]
+    confirmed: false
+    filters:
+  - code:    null
+    name:    null
+    used_by: ["1.4.3"]
+    confirmed: false
+    filters:
+  - code:    null
+    name:    null
+    used_by: ["2.3.1"]
+    confirmed: false
+    filters:

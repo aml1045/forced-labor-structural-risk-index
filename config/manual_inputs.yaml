@@ -1,0 +1,141 @@
+# Gated / manually-acquired inputs the pipeline cannot download for itself.
+# Checked by script/check_manual.py (the `check` stage of build_all.py).
+#
+# Fields per entry:
+#   path          repo-relative path or glob
+#   provider      who supplies the file
+#   url           where a human gets it
+#   license       the gate (registration / non-commercial / credentials)
+#   used_by       connectors or build steps that read it
+#   required_for  build_all stages that fail without it ([] = optional)
+#   vintage_regex optional regex capturing the vintage from the filename
+#   recreate      command that can regenerate the file, if any
+
+inputs:
+  # ---- data/raw: gated source downloads (gitignored; ship empty) ----
+  - path: data/raw/V-Dem-CY-Core-v16_csv.zip
+    provider: V-Dem Institute
+    url: https://v-dem.net/data/the-v-dem-dataset/
+    license: CC BY 4.0 (free registration)
+    used_by: [vdem]
+    required_for: [indicators]
+  - path: data/raw/GlobalFindexDatabase2025.csv
+    provider: World Bank Global Findex
+    url: https://www.worldbank.org/en/publication/globalfindex
+    license: CC BY 3.0 IGO (free download)
+    used_by: [findex]
+    required_for: [indicators]
+  - path: "data/raw/public_emdat_custom_request_*.xlsx"
+    provider: EM-DAT / CRED, UCLouvain
+    url: https://public.emdat.be
+    license: "GATED: non-commercial / academic registration; publication eligibility pending (see NOTICE)"
+    used_by: [aux_emdat]
+    required_for: [indicators]
+    vintage_regex: "(\\d{4}-\\d{2}-\\d{2})"
+  - path: "data/raw/basel-aml-index-expertedition_*.xlsx"
+    provider: Basel Institute on Governance
+    url: https://index.baselgovernance.org
+    license: Expert Edition registration; TJN FSI component re-publication unconfirmed
+    used_by: [basel_fatf]
+    required_for: [indicators]
+    vintage_regex: "(\\d{4}-\\d{2}-\\d{2})"
+  - path: data/raw/unhcr_cache.csv
+    provider: UNHCR Refugee Population Statistics (cache of live API)
+    url: https://www.unhcr.org/refugee-statistics/
+    license: open (CC BY); cache is re-creatable
+    used_by: [unhcr]
+    required_for: []   # tracked data/processed/unhcr.csv is the pinned fallback
+    recreate: "python -m pipeline.sources.unhcr --refresh"
+
+  # ---- data/aux: caches a refresh can rebuild ----
+  - path: data/aux/worldbank_cache.csv
+    provider: World Bank API (cache)
+    url: https://api.worldbank.org/v2
+    license: CC BY 4.0; cache is re-creatable
+    used_by: [worldbank, age_childhood, legal_non_recognition, recruitment_econprecarity]
+    required_for: [indicators]
+    recreate: "python build_all.py refresh"
+
+  # ---- external/: large license-gated inputs for the site-data build ----
+  - path: external/geo/world_geolev1_2025.shp
+    provider: IPUMS-International GeoLev1 boundaries
+    url: https://international.ipums.org
+    license: "GATED: IPUMS conditions of use; redistribution clearance pending (see NOTICE)"
+    used_by: [site (subnational surface, LISA)]
+    required_for: [site]
+  - path: external/geo/emdat_points_2026-05-28.geojson
+    provider: derived from EM-DAT (gated)
+    url: https://public.emdat.be
+    license: inherits EM-DAT terms
+    used_by: [site (hotspot overlay)]
+    required_for: [site]
+  - path: external/experiments/rebuild-v0.2/demscore_signal.csv
+    provider: prior-effort experiment output
+    url: (produced in-project)
+    license: internal
+    used_by: [site (build_v0_4)]
+    required_for: [site]
+  - path: external/experiments/rebuild-v0.3/scores_v0_3.csv
+    provider: prior-effort experiment output
+    url: (produced in-project)
+    license: internal
+    used_by: [site (build_v0_4), validate_v2]
+    required_for: [site]
+  - path: external/experiments/rebuild-temporal/temporal_features.csv
+    provider: prior-effort experiment output
+    url: (produced in-project)
+    license: internal
+    used_by: [site (build_v0_4)]
+    required_for: [site]
+  - path: external/experiments/source-tiedstatus/kafala_signal.csv
+    provider: prior-effort experiment output
+    url: (produced in-project)
+    license: internal
+    used_by: [site (build_v0_4)]
+    required_for: [site]
+  - path: external/experiments/ipums-signals/candidate_signals_country.csv
+    provider: IPUMS-derived signals (aggregates)
+    url: https://international.ipums.org
+    license: "GATED: IPUMS conditions of use; local-only, not redistributed"
+    used_by: [build_v0_4 sensitivity arm (skipped when absent), validate_v2]
+    required_for: []
+
+  # ---- optional ----
+  - path: data/raw/trace_bribery_risk_matrix_2024.csv
+    provider: TRACE International (hand-parsed extract)
+    url: https://www.traceinternational.org/trace-matrix
+    license: "RE-PUBLICATION-UNCONFIRMED: no explicit open license; see NOTICE"
+    used_by: [static_indices]
+    required_for: []   # tracked data/processed/static_indices.csv is the pinned fallback
+  - path: data/raw/basel_aml_index_2025.csv
+    provider: Basel Institute (hand-parsed extract)
+    url: https://index.baselgovernance.org
+    license: open with citation
+    used_by: [static_indices]
+    required_for: []
+  - path: data/raw/henley_passport_index_count_2026-05-07.csv
+    provider: Henley & Partners (hand-parsed extract)
+    url: https://www.henleyglobal.com/passport-index
+    license: "RE-PUBLICATION-UNCONFIRMED: re-publication rights unconfirmed; see NOTICE"
+    used_by: [static_indices]
+    required_for: []
+  - path: data/raw/walk_free_gsi/2023-Global-Slavery-Index-Data.xlsx
+    provider: Walk Free Global Slavery Index 2023
+    url: https://www.walkfree.org/global-slavery-index/
+    license: "GATED: registration; benchmark for validate_v2 convergent check only"
+    used_by: [validate_v2 (convergent check)]
+    required_for: []
+  - path: external/ipums-raw/ipumsi_00002.csv.gz
+    provider: IPUMS-International microdata
+    url: https://international.ipums.org
+    license: "GATED: conditional use; only needed to re-derive IPUMS signals from scratch"
+    used_by: [ipums signal derivation (offline)]
+    required_for: []
+
+env:
+  - name: UNCTAD_CLIENT_ID / UNCTAD_API_KEY
+    note: only needed to refresh aux_unctad (export concentration); cached processed CSV is the fallback
+  - name: FLSRI_EXTERNAL_DATA
+    note: override the external/ root if the gated files live outside the repo
+  - name: FLSRI_BASELINE_DATA
+    note: baseline dir for site_data_verify.py (typically the published public/data)

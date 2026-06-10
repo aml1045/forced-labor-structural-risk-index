@@ -1,0 +1,8 @@
+{
+  "name": "flsri-toolchain",
+  "private": true,
+  "description": "Pins the Node-side toolchain for the FLSRI site-data build. mapshaper's simplification output is version-dependent (see build_site_data.py header); this pin is what makes the admin-1 topojson geometry reproducible. Install with `npm ci`.",
+  "devDependencies": {
+    "mapshaper": "0.7.22"
+  }
+}

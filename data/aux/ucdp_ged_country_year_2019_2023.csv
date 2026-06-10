@@ -1,0 +1,617 @@
+country,country_id,year,type_of_violence,best_deaths
+Afghanistan,700,2019,1,29940
+Afghanistan,700,2019,2,113
+Afghanistan,700,2019,3,382
+Afghanistan,700,2020,1,20489
+Afghanistan,700,2020,2,0
+Afghanistan,700,2020,3,345
+Afghanistan,700,2021,1,35787
+Afghanistan,700,2021,2,11
+Afghanistan,700,2021,3,588
+Afghanistan,700,2022,1,926
+Afghanistan,700,2022,3,642
+Afghanistan,700,2023,1,230
+Afghanistan,700,2023,3,105
+Algeria,615,2019,1,14
+Algeria,615,2019,3,1
+Algeria,615,2020,1,28
+Algeria,615,2021,1,18
+Algeria,615,2022,1,14
+Algeria,615,2023,1,1
+Angola,540,2019,1,25
+Angola,540,2019,3,1
+Angola,540,2020,1,21
+Angola,540,2020,3,8
+Angola,540,2021,3,13
+Angola,540,2022,1,20
+Angola,540,2022,3,1
+Angola,540,2023,1,0
+Armenia,371,2019,1,2
+Armenia,371,2020,1,10
+Armenia,371,2021,1,10
+Armenia,371,2022,1,154
+Armenia,371,2023,1,20
+Austria,305,2020,3,4
+Azerbaijan,373,2019,1,9
+Azerbaijan,373,2020,1,7636
+Azerbaijan,373,2021,1,30
+Azerbaijan,373,2022,1,154
+Azerbaijan,373,2023,1,442
+Bangladesh,771,2019,1,3
+Bangladesh,771,2019,3,0
+Bangladesh,771,2020,1,3
+Bangladesh,771,2020,3,2
+Bangladesh,771,2021,2,1
+Bangladesh,771,2021,3,1
+Bangladesh,771,2022,1,6
+Bangladesh,771,2022,3,7
+Bangladesh,771,2023,2,3
+Bangladesh,771,2023,3,9
+Belgium,211,2023,3,2
+Benin,434,2019,3,1
+Benin,434,2020,1,1
+Benin,434,2021,1,11
+Benin,434,2022,1,30
+Benin,434,2023,1,28
+Benin,434,2023,3,18
+Bolivia,145,2021,2,1
+Bolivia,145,2023,2,1
+Brazil,140,2019,2,1638
+Brazil,140,2019,3,47
+Brazil,140,2020,2,2635
+Brazil,140,2020,3,33
+Brazil,140,2021,2,2574
+Brazil,140,2021,3,85
+Brazil,140,2022,2,1513
+Brazil,140,2022,3,143
+Brazil,140,2023,2,2285
+Brazil,140,2023,3,173
+Burkina Faso,439,2019,1,349
+Burkina Faso,439,2019,2,29
+Burkina Faso,439,2019,3,868
+Burkina Faso,439,2020,1,512
+Burkina Faso,439,2020,2,152
+Burkina Faso,439,2020,3,503
+Burkina Faso,439,2021,1,991
+Burkina Faso,439,2021,2,82
+Burkina Faso,439,2021,3,385
+Burkina Faso,439,2022,1,2003
+Burkina Faso,439,2022,2,44
+Burkina Faso,439,2022,3,562
+Burkina Faso,439,2023,1,4605
+Burkina Faso,439,2023,2,178
+Burkina Faso,439,2023,3,1326
+Burundi,516,2019,1,16
+Burundi,516,2019,3,59
+Burundi,516,2020,1,63
+Burundi,516,2020,3,82
+Burundi,516,2021,1,24
+Burundi,516,2021,3,57
+Burundi,516,2022,1,10
+Burundi,516,2022,3,38
+Burundi,516,2023,1,85
+Burundi,516,2023,3,38
+Cameroon,471,2019,1,714
+Cameroon,471,2019,2,7
+Cameroon,471,2019,3,147
+Cameroon,471,2020,1,440
+Cameroon,471,2020,2,1
+Cameroon,471,2020,3,351
+Cameroon,471,2021,1,603
+Cameroon,471,2021,2,34
+Cameroon,471,2021,3,190
+Cameroon,471,2022,1,415
+Cameroon,471,2022,2,1
+Cameroon,471,2022,3,251
+Cameroon,471,2023,1,358
+Cameroon,471,2023,2,17
+Cameroon,471,2023,3,263
+Central African Republic,482,2019,1,68
+Central African Republic,482,2019,2,283
+Central African Republic,482,2019,3,150
+Central African Republic,482,2020,1,78
+Central African Republic,482,2020,2,185
+Central African Republic,482,2020,3,36
+Central African Republic,482,2021,1,906
+Central African Republic,482,2021,3,174
+Central African Republic,482,2022,1,677
+Central African Republic,482,2022,3,96
+Central African Republic,482,2023,1,284
+Central African Republic,482,2023,2,101
+Central African Republic,482,2023,3,36
+Chad,483,2019,1,146
+Chad,483,2019,2,65
+Chad,483,2019,3,42
+Chad,483,2020,1,196
+Chad,483,2020,2,25
+Chad,483,2020,3,28
+Chad,483,2021,1,486
+Chad,483,2021,2,159
+Chad,483,2021,3,22
+Chad,483,2022,1,45
+Chad,483,2022,2,56
+Chad,483,2022,3,13
+Chad,483,2023,1,61
+Chad,483,2023,2,42
+Chad,483,2023,3,9
+China,710,2023,1,1
+Colombia,100,2019,1,122
+Colombia,100,2019,2,18
+Colombia,100,2019,3,73
+Colombia,100,2020,1,42
+Colombia,100,2020,2,2
+Colombia,100,2020,3,128
+Colombia,100,2021,1,113
+Colombia,100,2021,2,13
+Colombia,100,2021,3,140
+Colombia,100,2022,1,107
+Colombia,100,2022,2,67
+Colombia,100,2022,3,118
+Colombia,100,2023,1,87
+Colombia,100,2023,2,132
+Colombia,100,2023,3,215
+Congo,484,2019,1,0
+Congo,484,2019,3,0
+Congo,484,2020,1,0
+Congo,484,2022,1,3
+DR Congo (Zaire),490,2019,1,794
+DR Congo (Zaire),490,2019,2,741
+DR Congo (Zaire),490,2019,3,993
+DR Congo (Zaire),490,2020,1,1231
+DR Congo (Zaire),490,2020,2,725
+DR Congo (Zaire),490,2020,3,2049
+DR Congo (Zaire),490,2021,1,1081
+DR Congo (Zaire),490,2021,2,394
+DR Congo (Zaire),490,2021,3,2249
+DR Congo (Zaire),490,2022,1,1755
+DR Congo (Zaire),490,2022,2,822
+DR Congo (Zaire),490,2022,3,3388
+DR Congo (Zaire),490,2023,1,697
+DR Congo (Zaire),490,2023,2,497
+DR Congo (Zaire),490,2023,3,2563
+Djibouti,522,2021,2,3
+Ecuador,130,2019,1,2
+Ecuador,130,2021,2,291
+Ecuador,130,2022,2,111
+Ecuador,130,2022,3,4
+Ecuador,130,2023,2,34
+Egypt,651,2019,1,637
+Egypt,651,2019,3,27
+Egypt,651,2020,1,527
+Egypt,651,2020,3,20
+Egypt,651,2021,1,112
+Egypt,651,2021,3,12
+Egypt,651,2022,1,231
+Egypt,651,2022,3,5
+Egypt,651,2023,1,1
+Egypt,651,2023,3,5
+El Salvador,92,2019,3,1
+El Salvador,92,2021,3,1
+El Salvador,92,2022,3,88
+Eritrea,531,2022,1,4
+Ethiopia,530,2019,1,67
+Ethiopia,530,2019,2,213
+Ethiopia,530,2019,3,145
+Ethiopia,530,2020,1,20916
+Ethiopia,530,2020,2,577
+Ethiopia,530,2020,3,2930
+Ethiopia,530,2021,1,124550
+Ethiopia,530,2021,2,157
+Ethiopia,530,2021,3,4817
+Ethiopia,530,2022,1,163208
+Ethiopia,530,2022,2,21
+Ethiopia,530,2022,3,1791
+Ethiopia,530,2023,1,1683
+Ethiopia,530,2023,2,90
+Ethiopia,530,2023,3,452
+France,220,2023,2,47
+France,220,2023,3,1
+Georgia,372,2023,3,1
+Ghana,452,2022,2,16
+Ghana,452,2023,2,15
+Guatemala,90,2022,2,12
+Guinea,438,2019,3,1
+Guinea,438,2020,2,49
+Guinea,438,2021,2,1
+Haiti,41,2019,3,1
+Haiti,41,2020,3,165
+Haiti,41,2021,2,52
+Haiti,41,2021,3,79
+Haiti,41,2022,2,131
+Haiti,41,2022,3,105
+Haiti,41,2023,2,76
+Haiti,41,2023,3,359
+Honduras,91,2019,2,36
+Honduras,91,2019,3,4
+Honduras,91,2020,2,1
+Honduras,91,2021,2,5
+Honduras,91,2021,3,1
+Honduras,91,2022,2,1
+Honduras,91,2022,3,4
+Honduras,91,2023,2,109
+Honduras,91,2023,3,3
+India,750,2019,1,605
+India,750,2019,3,129
+India,750,2020,1,599
+India,750,2020,2,50
+India,750,2020,3,105
+India,750,2021,1,461
+India,750,2021,3,62
+India,750,2022,1,315
+India,750,2022,2,6
+India,750,2022,3,72
+India,750,2023,1,223
+India,750,2023,2,110
+India,750,2023,3,70
+Indonesia,850,2019,1,16
+Indonesia,850,2020,1,21
+Indonesia,850,2020,3,3
+Indonesia,850,2021,1,51
+Indonesia,850,2021,3,17
+Indonesia,850,2022,1,46
+Indonesia,850,2022,3,18
+Indonesia,850,2023,1,59
+Indonesia,850,2023,3,30
+Iran,630,2019,1,61
+Iran,630,2019,3,252
+Iran,630,2020,1,219
+Iran,630,2020,3,27
+Iran,630,2021,1,56
+Iran,630,2021,3,26
+Iran,630,2022,1,39
+Iran,630,2022,3,211
+Iran,630,2023,1,41
+Iran,630,2023,3,3
+Iraq,645,2019,1,743
+Iraq,645,2019,3,173
+Iraq,645,2020,1,872
+Iraq,645,2020,3,56
+Iraq,645,2021,1,853
+Iraq,645,2021,3,153
+Iraq,645,2022,1,979
+Iraq,645,2022,3,13
+Iraq,645,2023,1,454
+Iraq,645,2023,3,29
+Israel,666,2019,1,80
+Israel,666,2019,3,3
+Israel,666,2020,1,6
+Israel,666,2020,3,2
+Israel,666,2021,1,273
+Israel,666,2021,3,7
+Israel,666,2022,1,96
+Israel,666,2022,3,2
+Israel,666,2023,1,22709
+Israel,666,2023,3,714
+Ivory Coast,437,2020,3,3
+Kenya,501,2019,1,61
+Kenya,501,2019,2,97
+Kenya,501,2019,3,30
+Kenya,501,2020,1,94
+Kenya,501,2020,2,27
+Kenya,501,2020,3,30
+Kenya,501,2021,1,75
+Kenya,501,2021,2,49
+Kenya,501,2021,3,11
+Kenya,501,2022,1,72
+Kenya,501,2022,2,5
+Kenya,501,2022,3,24
+Kenya,501,2023,1,202
+Kenya,501,2023,3,22
+Kingdom of eSwatini (Swaziland),572,2019,3,1
+Kingdom of eSwatini (Swaziland),572,2020,3,2
+Kingdom of eSwatini (Swaziland),572,2021,3,48
+Kingdom of eSwatini (Swaziland),572,2022,3,2
+Kingdom of eSwatini (Swaziland),572,2023,3,3
+Kyrgyzstan,703,2021,1,40
+Kyrgyzstan,703,2022,1,63
+Kyrgyzstan,703,2022,3,5
+Lebanon,660,2020,1,20
+Lebanon,660,2023,1,123
+Liberia,450,2019,3,1
+Liberia,450,2020,3,2
+Libya,620,2019,1,1631
+Libya,620,2019,2,152
+Libya,620,2019,3,3
+Libya,620,2020,1,668
+Libya,620,2020,2,17
+Libya,620,2020,3,4
+Libya,620,2021,1,10
+Libya,620,2021,2,2
+Libya,620,2022,1,2
+Libya,620,2022,2,11
+Libya,620,2023,1,2
+Madagascar (Malagasy),580,2019,3,3
+Madagascar (Malagasy),580,2020,3,23
+Mali,432,2019,1,603
+Mali,432,2019,2,169
+Mali,432,2019,3,455
+Mali,432,2020,1,580
+Mali,432,2020,2,448
+Mali,432,2020,3,481
+Mali,432,2021,1,726
+Mali,432,2021,2,345
+Mali,432,2021,3,216
+Mali,432,2022,1,1440
+Mali,432,2022,2,755
+Mali,432,2022,3,1455
+Mali,432,2023,1,1259
+Mali,432,2023,2,375
+Mali,432,2023,3,475
+Mauritania,435,2020,3,0
+Mauritania,435,2023,1,6
+Mexico,70,2019,2,11995
+Mexico,70,2019,3,7
+Mexico,70,2020,2,15184
+Mexico,70,2020,3,11
+Mexico,70,2021,2,16878
+Mexico,70,2021,3,56
+Mexico,70,2022,2,14251
+Mexico,70,2022,3,85
+Mexico,70,2023,2,13831
+Mexico,70,2023,3,46
+Morocco,600,2020,1,2
+Morocco,600,2021,1,6
+Morocco,600,2022,1,14
+Morocco,600,2023,1,5
+Mozambique,541,2019,1,291
+Mozambique,541,2019,3,306
+Mozambique,541,2020,1,939
+Mozambique,541,2020,3,688
+Mozambique,541,2021,1,877
+Mozambique,541,2021,3,996
+Mozambique,541,2022,1,378
+Mozambique,541,2022,2,25
+Mozambique,541,2022,3,314
+Mozambique,541,2023,1,176
+Mozambique,541,2023,2,30
+Mozambique,541,2023,3,65
+Myanmar (Burma),775,2019,1,563
+Myanmar (Burma),775,2019,3,24
+Myanmar (Burma),775,2020,1,197
+Myanmar (Burma),775,2020,3,8
+Myanmar (Burma),775,2021,1,1073
+Myanmar (Burma),775,2021,3,707
+Myanmar (Burma),775,2022,1,2054
+Myanmar (Burma),775,2022,2,5
+Myanmar (Burma),775,2022,3,702
+Myanmar (Burma),775,2023,1,2513
+Myanmar (Burma),775,2023,3,612
+Nepal,790,2022,3,1
+Niger,436,2019,1,300
+Niger,436,2019,3,154
+Niger,436,2020,1,537
+Niger,436,2020,3,283
+Niger,436,2021,1,459
+Niger,436,2021,2,105
+Niger,436,2021,3,566
+Niger,436,2022,1,516
+Niger,436,2022,2,52
+Niger,436,2022,3,96
+Niger,436,2023,1,365
+Niger,436,2023,2,14
+Niger,436,2023,3,155
+Nigeria,475,2019,1,1326
+Nigeria,475,2019,2,728
+Nigeria,475,2019,3,389
+Nigeria,475,2020,1,2001
+Nigeria,475,2020,2,575
+Nigeria,475,2020,3,485
+Nigeria,475,2021,1,1999
+Nigeria,475,2021,2,951
+Nigeria,475,2021,3,209
+Nigeria,475,2022,1,1535
+Nigeria,475,2022,2,982
+Nigeria,475,2022,3,393
+Nigeria,475,2023,1,2084
+Nigeria,475,2023,2,1457
+Nigeria,475,2023,3,357
+Pakistan,770,2019,1,267
+Pakistan,770,2019,2,0
+Pakistan,770,2019,3,26
+Pakistan,770,2020,1,396
+Pakistan,770,2020,3,13
+Pakistan,770,2021,1,425
+Pakistan,770,2021,2,1
+Pakistan,770,2021,3,22
+Pakistan,770,2022,1,631
+Pakistan,770,2022,3,69
+Pakistan,770,2023,1,1034
+Pakistan,770,2023,2,29
+Pakistan,770,2023,3,81
+Papua New Guinea,910,2019,2,28
+Papua New Guinea,910,2021,2,38
+Papua New Guinea,910,2022,2,96
+Papua New Guinea,910,2022,3,5
+Papua New Guinea,910,2023,3,1
+Paraguay,150,2020,3,1
+Paraguay,150,2021,3,4
+Peru,135,2019,3,2
+Peru,135,2020,1,5
+Peru,135,2020,3,6
+Peru,135,2021,1,20
+Peru,135,2022,1,13
+Peru,135,2022,3,1
+Peru,135,2023,1,12
+Philippines,840,2019,1,313
+Philippines,840,2019,3,51
+Philippines,840,2020,1,349
+Philippines,840,2020,3,27
+Philippines,840,2021,1,292
+Philippines,840,2021,3,18
+Philippines,840,2022,1,240
+Philippines,840,2022,3,7
+Philippines,840,2023,1,245
+Philippines,840,2023,3,24
+Poland,290,2022,1,2
+Russia (Soviet Union),365,2019,1,26
+Russia (Soviet Union),365,2020,1,32
+Russia (Soviet Union),365,2020,3,1
+Russia (Soviet Union),365,2021,1,2
+Russia (Soviet Union),365,2022,1,67
+Russia (Soviet Union),365,2023,1,204
+Rwanda,517,2019,1,19
+Rwanda,517,2021,1,7
+Rwanda,517,2022,1,6
+Rwanda,517,2022,3,2
+Saudi Arabia,670,2019,1,5
+Saudi Arabia,670,2019,3,1
+Saudi Arabia,670,2020,1,0
+Saudi Arabia,670,2021,1,6
+Saudi Arabia,670,2023,1,9
+Senegal,433,2020,1,0
+Senegal,433,2021,1,0
+Sierra Leone,451,2021,3,1
+Somalia,520,2019,1,1946
+Somalia,520,2019,2,172
+Somalia,520,2019,3,101
+Somalia,520,2020,1,1945
+Somalia,520,2020,2,82
+Somalia,520,2020,3,93
+Somalia,520,2021,1,2174
+Somalia,520,2021,2,3
+Somalia,520,2021,3,92
+Somalia,520,2022,1,3040
+Somalia,520,2022,2,4
+Somalia,520,2022,3,71
+Somalia,520,2023,1,3862
+Somalia,520,2023,2,292
+Somalia,520,2023,3,42
+South Africa,560,2019,2,7
+South Africa,560,2019,3,1
+South Africa,560,2020,2,24
+South Africa,560,2020,3,5
+South Africa,560,2021,2,123
+South Africa,560,2022,2,4
+South Africa,560,2023,2,3
+South Africa,560,2023,3,2
+South Sudan,626,2019,1,115
+South Sudan,626,2019,2,409
+South Sudan,626,2019,3,118
+South Sudan,626,2020,1,64
+South Sudan,626,2020,2,656
+South Sudan,626,2020,3,28
+South Sudan,626,2021,1,188
+South Sudan,626,2021,2,657
+South Sudan,626,2021,3,46
+South Sudan,626,2022,1,23
+South Sudan,626,2022,2,612
+South Sudan,626,2022,3,93
+South Sudan,626,2023,1,2
+South Sudan,626,2023,2,184
+South Sudan,626,2023,3,1
+Spain,230,2023,2,2
+Sri Lanka,780,2019,3,255
+Sudan,625,2019,1,23
+Sudan,625,2019,2,193
+Sudan,625,2019,3,219
+Sudan,625,2020,1,48
+Sudan,625,2020,2,518
+Sudan,625,2020,3,61
+Sudan,625,2021,1,31
+Sudan,625,2021,2,726
+Sudan,625,2021,3,105
+Sudan,625,2022,1,54
+Sudan,625,2022,2,1279
+Sudan,625,2022,3,74
+Sudan,625,2023,1,5315
+Sudan,625,2023,2,682
+Sudan,625,2023,3,1754
+Syria,652,2019,1,7550
+Syria,652,2019,2,3485
+Syria,652,2019,3,173
+Syria,652,2020,1,4875
+Syria,652,2020,2,716
+Syria,652,2020,3,99
+Syria,652,2021,1,1542
+Syria,652,2021,2,318
+Syria,652,2021,3,88
+Syria,652,2022,1,973
+Syria,652,2022,2,612
+Syria,652,2022,3,86
+Syria,652,2023,1,1664
+Syria,652,2023,2,471
+Syria,652,2023,3,55
+Tajikistan,702,2019,1,4
+Tajikistan,702,2021,1,16
+Tajikistan,702,2022,1,87
+Tanzania,510,2019,3,8
+Tanzania,510,2020,1,25
+Tanzania,510,2020,3,19
+Tanzania,510,2021,1,14
+Tanzania,510,2021,3,12
+Tanzania,510,2022,1,2
+Tanzania,510,2022,3,2
+Thailand,800,2019,1,55
+Thailand,800,2019,3,5
+Thailand,800,2020,1,46
+Thailand,800,2020,3,1
+Thailand,800,2021,1,38
+Thailand,800,2021,3,3
+Thailand,800,2022,1,31
+Thailand,800,2022,3,4
+Thailand,800,2023,1,30
+Thailand,800,2023,3,1
+Togo,461,2019,3,1
+Togo,461,2022,1,34
+Togo,461,2022,3,28
+Togo,461,2023,1,26
+Togo,461,2023,3,50
+Tunisia,616,2019,1,20
+Tunisia,616,2020,1,12
+Tunisia,616,2021,1,18
+Tunisia,616,2022,1,3
+Tunisia,616,2023,1,3
+Turkey,640,2019,1,277
+Turkey,640,2019,2,21
+Turkey,640,2019,3,9
+Turkey,640,2020,1,195
+Turkey,640,2020,3,11
+Turkey,640,2021,1,131
+Turkey,640,2021,2,2
+Turkey,640,2022,1,82
+Turkey,640,2022,2,4
+Turkey,640,2022,3,6
+Turkey,640,2023,1,98
+Turkey,640,2023,3,1
+Uganda,500,2019,3,2
+Uganda,500,2021,1,22
+Uganda,500,2021,3,1
+Uganda,500,2022,1,25
+Uganda,500,2023,1,17
+Uganda,500,2023,3,57
+Ukraine,369,2019,1,311
+Ukraine,369,2020,1,196
+Ukraine,369,2021,1,208
+Ukraine,369,2022,1,91692
+Ukraine,369,2022,3,1129
+Ukraine,369,2023,1,70605
+Ukraine,369,2023,3,310
+United Arab Emirates,696,2022,1,3
+United Kingdom,200,2019,1,2
+United Kingdom,200,2019,3,2
+United States of America,2,2019,2,4
+United States of America,2,2022,2,1
+Venezuela,101,2019,3,83
+Venezuela,101,2020,3,5
+Venezuela,101,2021,2,7
+Venezuela,101,2021,3,6
+Venezuela,101,2022,2,9
+Venezuela,101,2022,3,26
+Venezuela,101,2023,3,15
+Yemen (North Yemen),678,2019,1,2638
+Yemen (North Yemen),678,2019,2,319
+Yemen (North Yemen),678,2019,3,2
+Yemen (North Yemen),678,2020,1,6301
+Yemen (North Yemen),678,2020,2,395
+Yemen (North Yemen),678,2020,3,52
+Yemen (North Yemen),678,2021,1,23366
+Yemen (North Yemen),678,2021,2,62
+Yemen (North Yemen),678,2021,3,35
+Yemen (North Yemen),678,2022,1,2940
+Yemen (North Yemen),678,2022,2,259
+Yemen (North Yemen),678,2022,3,21
+Yemen (North Yemen),678,2023,1,791
+Yemen (North Yemen),678,2023,2,107
+Yemen (North Yemen),678,2023,3,12
+Zimbabwe (Rhodesia),552,2019,3,8
+Zimbabwe (Rhodesia),552,2020,3,2

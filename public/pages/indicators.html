@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Indicators & data sources | FLSRI</title>
+<meta name="description" content="Explore every indicator the Forced Labor Structural Risk Index uses, per country: the standardized 0–1 values exactly as they enter the scorer, with sources.">
+<link rel="stylesheet" href="../assets/styles.css">
+</head>
+<body>
+<header id="site-header" class="site-header"></header>
+<main>
+  <section class="hero"><div class="wrap">
+    <p class="kicker">Indicators &amp; data sources</p>
+    <h1>Every indicator, and where it comes from</h1>
+    <p class="lede">Pick a country to see every standardized signal value exactly as it enters the scorer — organized by phase and domain, each with its data source. Nothing here is hidden behind the score: a missing value is shown as absent, never scored as zero. The full per-indicator register — sources, series, coverage, vintages, and the documented gaps — lives in the project repository (<code>config/data_register.csv</code> and <code>docs/data-provenance.md</code>).</p>
+  </div></section>
+
+  <section class="block"><div class="wrap-wide" id="indicator-explorer" style="display:none">
+    <h2>The indicator data, by country</h2>
+    <p class="muted"><small>The standardized 0&ndash;1 signal values exactly as they enter the scorer (0 = lowest-risk anchor, 1 = highest). A missing value is reported as absent &mdash; it is never scored as zero. Monetization signals feed the intervention lens only and are excluded from the composite.</small></p>
+    <p><label for="ind-country" style="font-weight:600">Country:&nbsp;</label><select id="ind-country" style="font-size:1rem;padding:0.25em 0.5em;max-width:20rem"></select></p>
+    <div class="table-scroll"><table class="rank" id="ind-values">
+      <thead><tr><th style="width:5.5rem">#</th><th>Indicator</th><th>Source</th><th style="width:34%">Value (0&ndash;1 risk)</th></tr></thead>
+      <tbody></tbody>
+    </table></div>
+  </section>
+
+</main>
+<footer id="site-footer" class="site-footer"></footer>
+<script src="../assets/site.js"></script>
+<script>
+// Indicator explorer + dashboard-convention display names, from data/indicators.json.
+// Graceful no-op when the file is absent (e.g. the standalone bundle over file://).
+(function () {
+  const ipath = (location.pathname.includes("/pages/") ? "../" : "") + "data/indicators.json";
+  fetch(ipath).then(r => { if (!r.ok) throw 0; return r.json(); }).then(D => {
+    // ---- per-country explorer ----
+    const sec = document.getElementById("indicator-explorer");
+    const sel = document.getElementById("ind-country");
+    const tbody = document.querySelector("#ind-values tbody");
+    if (!sec || !sel || !tbody) return;
+    const domLabel = {}; D.domains.forEach(d => domLabel[d.slug] = d);
+    // fenced modeled estimates: (iso|signal) -> {value, interval, status, provenance}
+    const MODBY = {}; (D.modeled || []).forEach(m => { MODBY[m.iso3 + "|" + m.signal] = m; });
+    D.countries.forEach(c => {
+      const o = document.createElement("option");
+      o.value = c.iso3; o.textContent = c.name; sel.appendChild(o);
+    });
+    const PHASE = {1:"Phase 1 \u00b7 Recruitment", 2:"Phase 2 \u00b7 Exploitation",
+                   M:"Monetization \u00b7 intervention lens (not in the composite)"};
+    function render(iso) {
+      const c = D.countries.find(x => x.iso3 === iso); if (!c) return;
+      let html = "", lastPhase = "", lastDom = "";
+      D.signals.forEach(s => {
+        const d = domLabel[s.domain], pn = s.num.split(".")[0];
+        if (pn !== lastPhase) { html += `<tr><td colspan="4" style="background:var(--ink,#1d1d1b);color:#fff;font-weight:700;padding:0.45em 0.6em">${PHASE[pn]}</td></tr>`; lastPhase = pn; lastDom = ""; }
+        if (s.domain !== lastDom) { html += `<tr><td colspan="4" style="font-weight:600;background:rgba(0,0,0,0.05);padding:0.35em 0.6em">${d.num}&ensp;${d.label}</td></tr>`; lastDom = s.domain; }
+        const v = c.values[s.id];
+        const mod = MODBY[iso + "|" + s.id];
+        const suppl = s.supplementary ? ' <small style="opacity:0.55">(supplementary)</small>' : "";
+        const note = s.note ? ` <small style="opacity:0.55">(${s.note})</small>` : "";
+        const modChip = mod ? ` <span title="${(mod.provenance||"").replace(/"/g,"&quot;")}" style="font-size:0.66rem;border:1px solid #6a4ea3;color:#5a3e93;border-radius:9px;padding:0 6px;white-space:nowrap">modeled estimate</span>` : "";
+        let bar = (v === undefined || v === null)
+          ? '<span class="muted">\u2014 not observed</span>'
+          : `<div style="display:flex;align-items:center;gap:0.5em"><div style="flex:1;height:9px;background:rgba(0,0,0,0.08);border-radius:4px;overflow:hidden"><div style="width:${Math.round(v*100)}%;height:100%;background:${v>=0.66?"#a8320a":v>=0.33?"#c98a00":"#3a7d44"}"></div></div><span class="num" style="min-width:3em;text-align:right">${v.toFixed(3)}</span></div>`;
+        if (mod) bar += `<div style="font-size:0.72rem;color:#6a4ea3;margin-top:2px">modeled \u00b7 80% interval ${mod.interval[0].toFixed(3)}\u2013${mod.interval[1].toFixed(3)}</div>`;
+        html += `<tr><td class="num">${s.num}</td><td>${s.title}${suppl}${note}${modChip}</td><td><small>${mod ? "Modeled estimate (gap-fill); " + s.source : s.source}</small></td><td>${bar}</td></tr>`;
+      });
+      tbody.innerHTML = html;
+    }
+    sel.addEventListener("change", () => render(sel.value));
+    sel.value = "AFG"; render("AFG");
+    sec.style.display = "";
+  }).catch(() => {});
+})();
+</script>
+</body>
+</html>

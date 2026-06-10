@@ -1,0 +1,66 @@
+# V-Dem Country-Year Core v16 — selected variables for FLSRI
+#
+# Source: V-Dem Institute, University of Gothenburg, v16 (2026). https://www.v-dem.net/
+# License: CC BY 4.0 (free for research/publication with citation).
+# Local file: 3-what you should integrate with/1-the first effort/Main Workspace/
+#   02 deliverables/Pipeline/data/01_data_processing/01_input/direct_uploads/
+#   V-Dem-CY-Core-v16_csv.zip  (CSV inside: V-Dem-CY-Core-v16.csv)
+#
+# Loader: pipeline/sources/vdem.py — reads the zip, selects ONLY these columns
+# at load time (the Core CSV is ~200 MB / 1908 columns; never load whole frame).
+# Country code: country_text_id (ISO3-style) -> normalize_to_iso3; falls back to
+#   country_name. PSG (Palestine/Gaza) and SML (Somaliland) are non-FLSRI
+#   sub-units and are correctly dropped.
+# Paradigm: most-recent country-year per variable (>= 2015 window scanned).
+#
+# DIRECTION NOTE (verified against V-Dem v16 codebook.pdf):
+#   The v2x* indices are 0-1 interval indices. For dmove/slave/rule, HIGHER =
+#   freer/better governance = LOWER forced-labor structural risk -> direction
+#   low_risk (the 0-1 score is inverted so low freedom = high risk).
+#   v2xnp_client is the EXCEPTION: V-Dem reversed its directionality so HIGHER =
+#   MORE clientelism = WORSE = HIGHER risk -> direction high_risk (NOT inverted).
+#   The codebook explicitly flags this index's directionality as opposite to the
+#   other V-Dem indices — getting this wrong would invert the clientelism signal.
+#
+# Anchors: each variable is already a bounded 0-1 V-Dem interval index, so the
+#   absolute anchors are the index's own scale endpoints floor=0.0, ceiling=1.0
+#   (a standards-anchored absolute scale, not relative min-max).
+
+source: "V-Dem Country-Year Core v16"
+license: "CC BY 4.0"
+zip_member: "V-Dem-CY-Core-v16.csv"
+id_columns: [country_name, country_text_id, year]
+year_window_min: 2015   # scan recent years; take most-recent non-null per country
+
+variables:
+  - code: v2xcl_dmove
+    label: "Freedom of domestic movement (V-Dem index)"
+    flsri_signal: "mobility constraint / freedom-of-movement (state or informal restrictions on internal movement and residence)"
+    scale: "interval 0-1 (higher = freer)"
+    direction: low_risk      # higher freedom -> lower risk -> invert
+    floor: 0.0
+    ceiling: 1.0
+
+  - code: v2xcl_slave
+    label: "Freedom from forced labor (V-Dem index)"
+    flsri_signal: "direct forced-labor / involuntary-servitude proxy (adult citizens free from servitude and forced labor)"
+    scale: "interval 0-1 (higher = freer)"
+    direction: low_risk      # higher freedom-from-forced-labor -> lower risk -> invert
+    floor: 0.0
+    ceiling: 1.0
+
+  - code: v2xnp_client
+    label: "Clientelism Index (V-Dem)"
+    flsri_signal: "clientelism — targeted contingent distribution of resources for political support (coercion-enabling patronage environment)"
+    scale: "interval 0-1 (REVERSED: higher = MORE clientelism = worse)"
+    direction: high_risk     # higher clientelism -> higher risk -> NO invert
+    floor: 0.0
+    ceiling: 1.0
+
+  - code: v2x_rule
+    label: "Rule of law index (V-Dem)"
+    flsri_signal: "rule-of-law / impartial enforcement & official compliance (judicial/enforcement-constraint analogue)"
+    scale: "interval 0-1 (higher = better)"
+    direction: low_risk      # higher rule-of-law -> lower risk -> invert
+    floor: 0.0
+    ceiling: 1.0

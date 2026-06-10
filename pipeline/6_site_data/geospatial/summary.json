@@ -1,0 +1,181 @@
+{
+  "n_points": 1850,
+  "n_hot99": 0,
+  "n_hot95": 0,
+  "n_hot90": 0,
+  "top_hot_countries": {},
+  "outbound_source": [
+    {
+      "iso3": "TON",
+      "country_name": "Tonga",
+      "outbound_remit": 1.0,
+      "composite_score": 0.3901252273296838
+    },
+    {
+      "iso3": "TJK",
+      "country_name": "Tajikistan",
+      "outbound_remit": 1.0,
+      "composite_score": 0.3616524908063996
+    },
+    {
+      "iso3": "LBN",
+      "country_name": "Lebanon",
+      "outbound_remit": 0.9529,
+      "composite_score": 0.4004264659822974
+    },
+    {
+      "iso3": "NIC",
+      "country_name": "Nicaragua",
+      "outbound_remit": 0.761,
+      "composite_score": 0.480717566505642
+    },
+    {
+      "iso3": "KGZ",
+      "country_name": "Kyrgyzstan",
+      "outbound_remit": 0.7594,
+      "composite_score": 0.354827655959146
+    },
+    {
+      "iso3": "NPL",
+      "country_name": "Nepal",
+      "outbound_remit": 0.7493,
+      "composite_score": 0.3991206321353642
+    },
+    {
+      "iso3": "HND",
+      "country_name": "Honduras",
+      "outbound_remit": 0.7343,
+      "composite_score": 0.4417329519904741
+    },
+    {
+      "iso3": "WSM",
+      "country_name": "Samoa",
+      "outbound_remit": 0.6859,
+      "composite_score": 0.2839276582115515
+    },
+    {
+      "iso3": "SLV",
+      "country_name": "El Salvador",
+      "outbound_remit": 0.6858,
+      "composite_score": 0.3914280035943241
+    },
+    {
+      "iso3": "MHL",
+      "country_name": "Marshall Islands",
+      "outbound_remit": 0.6589,
+      "composite_score": NaN
+    },
+    {
+      "iso3": "COM",
+      "country_name": "Comoros",
+      "outbound_remit": 0.658,
+      "composite_score": 0.4580998267006005
+    },
+    {
+      "iso3": "GMB",
+      "country_name": "Gambia",
+      "outbound_remit": 0.6285,
+      "composite_score": 0.3802449975276005
+    },
+    {
+      "iso3": "LBR",
+      "country_name": "Liberia",
+      "outbound_remit": 0.6079,
+      "composite_score": 0.4624492602082949
+    },
+    {
+      "iso3": "LSO",
+      "country_name": "Lesotho",
+      "outbound_remit": 0.5984,
+      "composite_score": 0.3883912974760026
+    },
+    {
+      "iso3": "GTM",
+      "country_name": "Guatemala",
+      "outbound_remit": 0.5463,
+      "composite_score": 0.4555320952233471
+    },
+    {
+      "iso3": "VUT",
+      "country_name": "Vanuatu",
+      "outbound_remit": 0.5357,
+      "composite_score": 0.4073327762322132
+    }
+  ],
+  "inbound_demand": [
+    {
+      "iso3": "PAK",
+      "country_name": "Pakistan",
+      "inbound_migrant": 1.0,
+      "composite_score": 0.4453135259218191
+    },
+    {
+      "iso3": "IND",
+      "country_name": "India",
+      "inbound_migrant": 1.0,
+      "composite_score": 0.4090018713072819
+    },
+    {
+      "iso3": "ZAF",
+      "country_name": "South Africa",
+      "inbound_migrant": 1.0,
+      "composite_score": 0.2771580092692837
+    },
+    {
+      "iso3": "CUB",
+      "country_name": "Cuba",
+      "inbound_migrant": 1.0,
+      "composite_score": 0.2773478702394965
+    },
+    {
+      "iso3": "DOM",
+      "country_name": "Dominican Republic",
+      "inbound_migrant": 0.8965,
+      "composite_score": 0.358877231841739
+    },
+    {
+      "iso3": "DZA",
+      "country_name": "Algeria",
+      "inbound_migrant": 0.8795,
+      "composite_score": 0.3039467036975117
+    },
+    {
+      "iso3": "TGO",
+      "country_name": "Togo",
+      "inbound_migrant": 0.815,
+      "composite_score": 0.496687881791913
+    },
+    {
+      "iso3": "MYS",
+      "country_name": "Malaysia",
+      "inbound_migrant": 0.729,
+      "composite_score": 0.356214771507002
+    },
+    {
+      "iso3": "BDI",
+      "country_name": "Burundi",
+      "inbound_migrant": 0.692,
+      "composite_score": 0.5081030879811598
+    },
+    {
+      "iso3": "JOR",
+      "country_name": "Jordan",
+      "inbound_migrant": 0.6575,
+      "composite_score": 0.3643219444375546
+    },
+    {
+      "iso3": "TUN",
+      "country_name": "Tunisia",
+      "inbound_migrant": 0.6535,
+      "composite_score": 0.2867760305587021
+    },
+    {
+      "iso3": "TUR",
+      "country_name": "T\u00fcrkiye",
+      "inbound_migrant": 0.5735,
+      "composite_score": 0.3675622356937104
+    }
+  ],
+  "migrant_proxy_coverage": 92,
+  "remit_coverage": 187
+}

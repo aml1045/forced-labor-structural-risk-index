@@ -1,0 +1,92 @@
+# monetization_b.yaml -- config for the Monetization Domain B connector
+# (pipeline/sources/monetization_b.py).
+#
+# DOMAIN: Monetization / Domain B -- Cash & Informal-Economy Retention
+#   (see docs/METHODS.md). Product-2 by default (rule 7); Product-1 inclusion
+#   CONDITIONAL on the three-condition test (docs/METHODS.md S8) -- NOT resolved here.
+#
+# This module maps the operationalizable subset of Domain B's conceptual signals
+# (docs/METHODS.md S4) to real datasets and standardizes 0-1 per rule 1. It
+# carries ONE genuinely new connector -- the shadow-economy size pull -- and reuses
+# a cross-domain shared variable (Findex financial exclusion) without rebuilding
+# a related connector.
+#
+# SIGNALS MAPPED (of Domain B's full conceptual set):
+#   D1 s1.2  informal / shadow-economy size  -> WB Informal Economy DB (DGE)   [new connector]
+#   D2 s2.1  formal-credit absence / exclusion -> Findex 1 - account_t_d       [SHARED w/ Recruitment-Debt]
+#
+# SIGNALS NOT MAPPED HERE (flagged for review -- no clean off-the-shelf
+# country measure; never fabricated):
+#   D1 s1.1  cash intensity (currency-in-circulation / GDP)  -- candidate IMF/BIS, not wired
+#   D1 s1.3  high-denomination-note availability             -- no country panel; bespoke
+#   D1 s1.4  hawala / IVTS prevalence                        -- no country measure; bespoke
+#   D1 s1.5  co-mingling / cash-intensive-sector prevalence  -- proxy-only; not wired
+#   D2 s2.2  advance-payment / engineered-debt prevalence    -- THIN at macro scale (docs/METHODS.md S4.2/S8.8); flagged for review
+#   m.1      corruption/governance modulator (shared, scored ONCE in correlation de-duplication -- NOT re-pulled here)
+#   z.1      formal-financial-system inclusion defeater (== inverse of s2.1; same Findex variable)
+#
+# CONNECTING FLAGS carried (docs/METHODS.md S8): s2.1/s2.2 connect -> Recruitment Debt;
+# shadow economy connects -> Exploitation informality reading. Scored in
+# Monetization form only; cross-phase de-duplication is a synthesis/correlation call.
+
+# --- D1 s1.2 : shadow-economy size (new connector) -------------------------
+shadow_economy:
+  source: World Bank Informal Economy Database (Elgin, Kose, Ohnsorge & Yu)
+  license: World Bank open data (CC BY 4.0); cite Elgin et al. 2021 "Understanding Informality"
+  source_url: https://www.worldbank.org/en/research/brief/informal-economy-database
+  # data360 SDMX-style API (live). DGE-based estimate = dynamic-general-
+  # equilibrium model estimate of the informal/shadow economy as % of official
+  # GDP. Preferred over the MIMIC estimate (DGE is the WB's headline measure and
+  # less prone to the MIMIC normalization criticism); MIMIC kept as a fallback
+  # only if DGE coverage is thin.
+  api_base: https://data360api.worldbank.org/data360/data
+  database_id: WB_INFECDB
+  indicator_primary: WB_INFECDB_DGE_P     # DGE-based, % of GDP
+  indicator_fallback: WB_INFECDB_MIMIC_P  # MIMIC-based, % of GDP (fallback)
+  ref_area_col: REF_AREA                  # ISO3-native
+  time_col: TIME_PERIOD
+  value_col: OBS_VALUE
+  floor: 8.0      # ~ low end of observed shadow-economy share (advanced economies)
+  ceiling: 50.0   # ~ high end of the developing/transition distribution
+  direction: high_risk
+  unit: shadow economy, % of official GDP (DGE estimate)
+  anchor_source: >-
+    Shadow-economy size as % of GDP (DGE model estimate, Elgin-Kose-Ohnsorge-Yu).
+    Per-exposure by construction (a GDP share). Absolute anchors: floor 8 ~ the
+    low end of observed shares (advanced economies ~8-13%); ceiling 50 ~ the high
+    end of the developing/transition distribution (Schneider & Enste 2000 report
+    ~35-40%+ in such economies; 50 caps the tail). Higher share = more low-tech
+    cash/informal retention CAPACITY (Domain B D1 s1.2), NOT realized retention --
+    the criminal-proceeds-context gate (docs/METHODS.md S5/S6) is a separate, unwired
+    conditioner. PRIOR anchors -- re-examine at the data stage, not locked.
+
+# --- D2 s2.1 : financial exclusion (SHARED variable, reused) ----------------
+financial_exclusion:
+  # SAME variable as Recruitment-Debt's findex_account_exclusion (config/
+  # api-config/findex.yaml). Reused here as Domain B's D2 s2.1; written under a
+  # distinct Monetization indicator id and flagged DUPLICATE-OF-FINDEX so the
+  # correlation de-duplication step removes the shared variance (do NOT
+  # double-count across Recruitment-Debt and Monetization-B). NOT a second pull
+  # of a new construct.
+  source_file: data/raw/GlobalFindexDatabase2025.csv
+  source: World Bank Global Findex Database 2025
+  license: CC BY 3.0 IGO (World Bank open data; attribution required)
+  source_url: https://www.worldbank.org/en/publication/globalfindex
+  group_col: group
+  group_all: all
+  year_col: year
+  iso_col: codewb
+  name_col: countrynewwb
+  column: account_t_d
+  transform: complement      # value = 1 - account ownership share
+  floor: 0.0
+  ceiling: 1.0
+  direction: high_risk       # high exclusion = high risk; no further invert
+  unit: share of adults with no financial account (0-1)
+  anchor_source: >-
+    Share of adults (15+) without an account at a bank/financial institution or
+    mobile-money provider = 1 - account_t_d. Absolute population-share anchors
+    [0,1]: 0 = universal access (min risk), 1 = total exclusion (max risk).
+    Domain B reading: low formal-financial-system reach = capacity to retain
+    proceeds outside formal records (D2 s2.1) AND the inverse of the z.1
+    inclusion defeater. PER-EXPOSURE by construction.

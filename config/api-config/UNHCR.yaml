@@ -1,0 +1,83 @@
+# UNHCR Refugee Statistics API series to refresh.
+#
+# See docs/data-provenance.md for source and integration details.
+#
+# UNHCR's population dataset is keyed on (country-of-origin x country-of-asylum
+# x year); each FLSRI series is an aggregation of one of those country axes for
+# a chosen displacement field. Specify which axis to aggregate by and which
+# field to sum.
+#
+# Format: a list under `series:`. Each item has:
+#   code         - short stable identifier (becomes the `series` value in cache)
+#   name         - human-friendly description
+#   endpoint     - UNHCR API endpoint (default: "population")
+#   aggregate_by - "coa_iso" (sum by country of asylum) or "coo_iso" (sum by
+#                  country of origin). Picks which axis becomes the iso3.
+#   field        - which item field to sum (refugees | asylum_seekers | idps |
+#                  stateless | ...)
+#   year_from / year_to - inclusive year window
+#   direction    - FLSRI risk direction (higher raw = more risk = "high_risk")
+#   used_by      - FLSRI indicator codes consuming this series (TBD at mapping)
+#
+# Endpoint: https://api.unhcr.org/population/v1/<endpoint>/?<params>
+# Public, no auth. Docs: https://api.unhcr.org/docs/refugee-statistics.html
+# License: open / CC BY (attribution required).
+#
+# API quirk worked around in the connector: the year_from/year_to RANGE params
+# are silently ignored by this endpoint, so the connector loops year-by-year
+# using year=YYYY. The coa_all=true / coo_all=true flags are required for
+# per-country rows (default response returns global year totals only).
+
+source: "UNHCR Population Statistics API"
+license: "Open / CC BY (attribution required)"
+
+series:
+  - code:         unhcr_refugees_by_coa
+    name:         "Refugees hosted, by country of asylum"
+    endpoint:     population
+    aggregate_by: coa_iso
+    field:        refugees
+    year_from:    2010
+    year_to:      2025
+    direction:    high_risk
+    used_by:      []
+
+  - code:         unhcr_refugees_by_coo
+    name:         "Refugees originating, by country of origin"
+    endpoint:     population
+    aggregate_by: coo_iso
+    field:        refugees
+    year_from:    2010
+    year_to:      2025
+    direction:    high_risk
+    used_by:      []
+
+  - code:         unhcr_idps_by_country
+    name:         "Internally displaced persons, by country"
+    endpoint:     population
+    aggregate_by: coa_iso   # coa == coo for IDPs (internal displacement)
+    field:        idps
+    year_from:    2010
+    year_to:      2025
+    direction:    high_risk
+    used_by:      []
+
+  - code:         unhcr_asylum_seekers_by_coa
+    name:         "Asylum-seekers hosted, by country of asylum"
+    endpoint:     population
+    aggregate_by: coa_iso
+    field:        asylum_seekers
+    year_from:    2010
+    year_to:      2025
+    direction:    high_risk
+    used_by:      []
+
+  - code:         unhcr_stateless_by_country
+    name:         "Stateless persons, by country"
+    endpoint:     population
+    aggregate_by: coa_iso
+    field:        stateless
+    year_from:    2010
+    year_to:      2025
+    direction:    high_risk
+    used_by:      []

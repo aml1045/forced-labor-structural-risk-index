@@ -1,0 +1,26 @@
+iso3,CNTRY_NAME,ADMIN_NAME,precarity_index,gdis_events,risk_surface,n_records
+THA,Thailand,"Ubon Ratchathani, Yasothon, Amnat Charoen",0.8443,33.0,0.7766,26285
+THA,Thailand,Kalasin,0.8622,19.0,0.7612,8798
+THA,Thailand,"Nakhon Phanom, Mukdahan",0.8515,22.0,0.7611,10068
+THA,Thailand,Si Sa Ket,0.8839,12.0,0.7537,13453
+THA,Thailand,"Phayao, Chiang Rai",0.7762,52.0,0.7523,16672
+THA,Thailand,Surin,0.8563,17.0,0.7515,12828
+THA,Thailand,Loei,0.863,15.0,0.75,6542
+VNM,Vietnam,"Lào Cai, Điện Biên, Lai Châu, Yên Bái",0.7789,47.0,0.7489,80794
+THA,Thailand,Nan,0.8543,16.0,0.7471,4923
+THA,Thailand,Roi Et,0.8874,9.0,0.7423,11999
+THA,Thailand,Sukhothai,0.8345,19.0,0.7418,5551
+THA,Thailand,Maha Sarakham,0.861,12.0,0.7377,9434
+THA,Thailand,Phatthalung,0.8241,20.0,0.7371,5149
+VNM,Vietnam,Sơn La,0.8444,15.0,0.737,32708
+ETH,Ethiopia,"Oromia, Somali",0.7054,84.0,0.7276,1582742
+THA,Thailand,Sakon Nakhon,0.8357,14.0,0.7275,10081
+VNM,Vietnam,"Hà Giang, Tuyên Quang",0.811,18.0,0.7227,44847
+THA,Thailand,Mae Hong Son,0.8146,17.0,0.7223,2703
+THA,Thailand,"Nong Bua Lam Phu, Udon Thani",0.7907,22.0,0.7185,19212
+THA,Thailand,Nong Khai,0.8162,15.0,0.7173,8845
+VNM,Vietnam,"Nghệ An, Hà Tĩnh",0.695,79.0,0.7171,98364
+VNM,Vietnam,"Đắk Lắk, Đắk Nông",0.7876,20.0,0.7116,58769
+PHL,Philippines,"Kalinga-Apayao, Apayo, Kalinga",0.7082,53.0,0.7057,12373
+THA,Thailand,Buri Ram,0.8299,9.0,0.7021,14888
+THA,Thailand,Phetchabun,0.7849,15.0,0.6954,9347

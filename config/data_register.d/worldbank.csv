@@ -1,0 +1,8 @@
+indicator,source,series_id,countries,year_min,year_max,license,direction,anchor,coverage_pct,flags
+wb_bribery_incidence,World Bank WDI + WGI,IC.FRM.BRIB.ZS,175,2007,2025,CC BY 4.0,high_risk,"[0.0, 60.0] % of firms experiencing at least one bribe payment request",89.7,
+wb_gini,World Bank WDI + WGI,SI.POV.GINI,170,1992,2025,CC BY 4.0,high_risk,"[20.0, 65.0] Gini index (0-100)",87.2,
+wb_labor_productivity,World Bank WDI + WGI,SL.GDP.PCAP.EM.KD,173,2021,2024,CC BY 4.0,low_risk,"[785.0, 119601.0] GDP per person employed (constant 2017 PPP $)",88.7,
+wb_lower_secondary_completion,World Bank WDI + WGI,SE.SEC.CMPT.LO.ZS,184,1986,2025,CC BY 4.0,low_risk,"[0.0, 100.0] % of relevant age group",94.4,
+wb_population_total,World Bank WDI + WGI,SP.POP.TOTL,194,2024,2024,CC BY 4.0,n/a (denominator),n/a (denominator),99.5,"DENOMINATOR: population is the per-capita denominator for other indicators, NOT a forced-labor risk indicator; not scaled to 0-1 and not in the risk table"
+wb_remittances_pct_gdp,World Bank WDI + WGI,BX.TRF.PWKR.DT.GD.ZS,187,1983,2024,CC BY 4.0,high_risk,"[0.0, 35.0] personal remittances received, % of GDP",95.9,
+wb_wgi_rule_of_law,World Bank WDI + WGI,GOV_WGI_RL.EST,194,2024,2024,CC BY 4.0,low_risk,"[-2.5, 2.5] WGI Rule of Law governance estimate (-2.5..+2.5)",99.5,

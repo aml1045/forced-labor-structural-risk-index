@@ -1,0 +1,12 @@
+iso3,country_name,composite_rank,national_pctile_risk,n_units,risk_mean,risk_p90,risk_max,worst_corridor_name,worst_corridor_risk,worst_corridor_top_decile,corridor_pctile,divergence,within_range,emdat_hotspots_95,emdat_in_layer
+FJI,Fiji,102.0,0.4481,4,0.5427,0.6214,0.6493,Northern,0.6493,True,0.9654,0.5174,0.2126,0,True
+VNM,Vietnam,88.0,0.5246,39,0.5837,0.7127,0.7489,"Lào Cai, Điện Biên, Lai Châu, Yên Bái",0.7489,True,0.9952,0.4706,0.4135,0,True
+THA,Thailand,80.0,0.5683,68,0.606,0.748,0.7766,"Ubon Ratchathani, Yasothon, Amnat Charoen",0.7766,True,1.0,0.4317,0.517,0,True
+PHL,Philippines,71.0,0.6175,75,0.5375,0.6543,0.7057,"Kalinga-Apayao, Apayo, Kalinga",0.7057,True,0.9848,0.3673,0.4344,0,True
+TUR,Türkiye,82.0,0.5574,61,0.4599,0.5203,0.5885,Mus,0.5885,True,0.915,0.3576,0.2791,0,True
+BEN,Benin,74.0,0.6011,12,0.477,0.5344,0.6015,Alibori,0.6015,True,0.9274,0.3263,0.2784,0,False
+PNG,Papua New Guinea,62.0,0.6667,20,0.5274,0.5896,0.6442,"Southern Highlands, Hela",0.6442,True,0.9585,0.2919,0.4565,0,True
+NPL,Nepal,61.0,0.6721,14,0.5726,0.599,0.6034,Sagarmatha,0.6034,True,0.9302,0.2581,0.0973,0,True
+IDN,Indonesia,53.0,0.7158,26,0.4928,0.5722,0.6391,"Papua, Papua Barat",0.6391,True,0.9558,0.2399,0.2864,0,True
+GHA,Ghana,50.0,0.7322,10,0.4788,0.5795,0.6482,Northern,0.6482,True,0.9648,0.2325,0.3045,0,True
+GIN,Guinea,49.0,0.7377,33,0.5116,0.5896,0.6243,Mandiana,0.6243,True,0.9489,0.2112,0.2627,0,False

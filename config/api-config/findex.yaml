@@ -1,0 +1,97 @@
+# findex.yaml -- config for the World Bank Global Findex 2025 connector
+# (pipeline/sources/findex.py).
+#
+# DOMAIN: Recruitment / Debt & Financialized Dependency (see docs/METHODS.md).
+# These signals fill the two GAP signals flagged for this domain:
+#   - Findex credit access / microfinance penetration
+#   - household over-indebtedness / advance-debt-financing proxy
+# (the c_A mobility gate was stripped per design decision -- NOT mapped here).
+#
+# SOURCE: World Bank Global Findex Database 2025 (Connectivity and Financial
+# Inclusion in the Digital Economy). Nationally-representative surveys of ~148k
+# adults across 141 economies, calendar-year 2024 wave.
+# Reused as-is (the GlobalFindexDatabase2025.csv direct upload, vintage
+# 2026-05-28); see docs/data-provenance.md.
+#
+# LICENSE: CC BY 3.0 IGO (publish-safe with attribution) -- World Bank open data.
+#
+# The aggregate-file columns below are country-level proportions (share of
+# adults, 0-1) for the 'all' demographic group, latest available wave per
+# country. Variable meanings confirmed against the World Bank Global Findex
+# microdata codebook (fin22b = borrowed from family/relatives/friends; fin22c =
+# borrowed from an informal savings club; account_t_d = has an account at a
+# bank or mobile-money provider; borrow_any_t_d = borrowed any money in the
+# past year). See findex.py header for the per-signal anchor justification.
+
+# Repo-relative raw input (resolved under the repo root by findex.py).
+source_file: data/raw/GlobalFindexDatabase2025.csv
+
+source: World Bank Global Findex Database 2025
+license: CC BY 3.0 IGO (World Bank open data; attribution required)
+source_url: https://www.worldbank.org/en/publication/globalfindex
+
+# Filter the long microdata to national totals only.
+group_col: group          # demographic-cut column
+group_all: all            # value selecting the national-total rows
+year_col: year
+iso_col: codewb           # ISO3-ish WB code; falls back to country name
+name_col: countrynewwb
+preferred_year: 2024      # latest wave; fall back to most-recent available
+
+signals:
+
+  findex_account_exclusion:
+    # 1 - account ownership. The broad-coverage financial-EXCLUSION anchor: the
+    # share of adults with NO account at a bank, other financial institution, or
+    # mobile-money provider. Inverse of formal-credit access -> R-D2/R-D3 (the
+    # crosswalk's "Findex credit access / microfinance penetration" gap; the
+    # findings' financial-access-inverse reading).
+    column: account_t_d
+    transform: complement   # value = 1 - column
+    floor: 0.0
+    ceiling: 1.0
+    direction: high_risk    # high exclusion already = high risk; no further invert
+    unit: share of adults with no financial account (0-1)
+    anchor_source: >-
+      Share of adults (15+) without an account at a bank/financial institution
+      or mobile-money provider = 1 - account_t_d. Absolute share anchors [0,1]:
+      0 = universal account access (min risk), 1 = total exclusion (max risk).
+      Per-exposure by construction (population share). Pending decision.
+
+  findex_informal_borrowing:
+    # Borrowed from family/relatives/friends (fin22b) OR an informal savings
+    # club (fin22c) in the past year. Informal-lender reliance -> R-D2 S2.1.
+    # Summed and clamped to [0,1] (the two sources overlap at the person level,
+    # so the sum is an upper bound on the informal-borrowing share).
+    column: fin22b
+    add_column: fin22c
+    floor: 0.0
+    ceiling: 1.0
+    direction: high_risk
+    unit: share of adults borrowing from informal sources (0-1)
+    anchor_source: >-
+      Share of adults who borrowed from family/relatives/friends (fin22b) or an
+      informal savings club (fin22c) in the past year, summed and clamped to
+      [0,1]. Informal/non-institutional credit reliance, the R-D2 S2.1 signal.
+      Absolute share anchors [0,1]. Note overlap: sum is an upper bound (a
+      person can use both). Pending decision -- re-examine whether to cap the
+      ceiling below 1.0 against the observed distribution.
+
+  findex_borrow_prevalence:
+    # Borrowed any money for any reason in the past year (borrow_any_t_d).
+    # Credit penetration / over-extension proxy -> R-D3 S3.1/S3.2 (household
+    # over-indebtedness / advance-debt-financing proxy). This is the closest
+    # available standing-credit-prevalence measure; it is a PROXY, not a
+    # debt-service-distress measure (no DSTI series exists in Findex) -- flagged.
+    column: borrow_any_t_d
+    floor: 0.0
+    ceiling: 1.0
+    direction: high_risk
+    unit: share of adults who borrowed any money in the past year (0-1)
+    anchor_source: >-
+      Share of adults who borrowed any money for any reason in the past year
+      (borrow_any_t_d). Standing borrowing prevalence as a PROXY for credit
+      penetration / over-indebtedness (R-D3). Absolute share anchors [0,1].
+      PROXY FLAG: Findex carries no debt-service-to-income distress series, so
+      this measures penetration, not realized over-indebtedness -- low-confidence
+      direction; flagged for review.

@@ -1,0 +1,216 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Forced Labor Structural Risk Index</title>
+<meta name="description" content="The Forced Labor Structural Risk Index maps the measurable conditions that let forced labor take root across the world's countries, scoring 184 of them where the data support a fair comparison.">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+<link rel="stylesheet" href="assets/styles.css">
+</head>
+<body>
+<header id="site-header" class="site-header"></header>
+
+<main>
+  <!-- HERO: hook + live map + clear actions -->
+  <section class="hero home-hero">
+    <div class="wrap">
+      <div class="home-hero-grid">
+        <div class="home-hero-copy">
+          <p class="kicker">Forced Labor Structural Risk Index</p>
+          <h1>Forced labor is a crime. It takes root in measurable conditions. This index maps where.</h1>
+          <p class="lede">Forced labor is largely hidden: in informal work, across borders, and behind opaque finance. The conditions that allow it to take root, however, are observable, and they vary considerably from one country to the next. This index maps those conditions across <strong>184</strong> countries, measuring the structural environment that enables forced labor rather than estimating its prevalence.</p>
+          <div class="hero-cta">
+            <a href="pages/explore.html" class="btn btn-primary">Explore the map &rarr;</a>
+            <a href="pages/rankings.html" class="btn btn-ghost">See the rankings</a>
+          </div>
+        </div>
+        <div class="home-hero-map">
+          <span class="home-map-badge">Preview</span>
+          <div id="home-map" class="home-map" aria-label="World map of structural forced-labor risk; open the Explore page for the full interactive version"></div>
+          <p class="home-map-cap"><span id="home-map-count">184 countries</span> on a 0&ndash;1 structural-risk scale. This is a small preview; the full, interactive map lives on <a href="pages/explore.html">Explore &rarr;</a></p>
+        </div>
+      </div>
+      <div class="home-findings">
+        <div class="hf"><span class="hf-k">Highest structural risk</span><span class="hf-v" id="hf-top">&ndash;</span></div>
+        <div class="hf"><span class="hf-k">Lowest</span><span class="hf-v" id="hf-bottom">&ndash;</span></div>
+        <div class="hf hf-wide"><span class="hf-k">Hidden by the national average</span><span class="hf-v">Thailand&rsquo;s Isan belt reaches a local risk near <strong>0.78</strong> and the Philippine Cordillera near <strong>0.71</strong>, while their national figures appear unremarkable. <a href="pages/explore.html">See the sub-national layer &rarr;</a></span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- INVITATION: surface the interactive content up front -->
+  <section class="block">
+    <div class="wrap">
+      <h2>See the data</h2>
+      <div class="offer-grid offer-grid-5">
+        <div class="offer">
+          <p class="of-tag">Map</p>
+          <h3>Explore</h3>
+          <p>The country risk map, with the sub-national hotspot layer and the labor-flow corridors beneath it.</p>
+          <a href="pages/explore.html" class="of-link">Open the map &rarr;</a>
+        </div>
+        <div class="offer">
+          <p class="of-tag">Ranked</p>
+          <h3>Rankings</h3>
+          <p>All 184 scored countries, sortable, with the not-scored cases shown openly.</p>
+          <a href="pages/rankings.html" class="of-link">See rankings &rarr;</a>
+        </div>
+        <div class="offer">
+          <p class="of-tag">Per country</p>
+          <h3>Country profiles</h3>
+          <p>One country&rsquo;s phase and domain breakdown, its radar, and the research behind each domain.</p>
+          <a href="pages/profiles.html" class="of-link">Browse profiles &rarr;</a>
+        </div>
+        <div class="offer">
+          <p class="of-tag">What-if</p>
+          <h3>Simulation</h3>
+          <p>Move a country&rsquo;s domains, weights, or operator and watch its score and rank recompute live.</p>
+          <a href="pages/simulate.html" class="of-link">Run a simulation &rarr;</a>
+        </div>
+        <div class="offer">
+          <p class="of-tag">Sources</p>
+          <h3>Indicators &amp; sources</h3>
+          <p>Every indicator, its data source and coverage, and the documented gaps.</p>
+          <a href="pages/indicators.html" class="of-link">See the data &rarr;</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHAT IT MEASURES: tight, R and E in plain words -->
+  <section class="block">
+    <div class="wrap">
+      <h2>What this measures</h2>
+      <p>The index reads a country through a structural lens. It scores the <strong>conditions</strong> that enable forced labor rather than its prevalence. A high score indicates that those enabling conditions are strongly present, not that a specified number of people are exploited. The composite combines the two phase components forced labor requires:</p>
+      <div class="re-pair">
+        <div class="re-cell"><b>R: vulnerability to recruitment</b><span>who is exposed, through poverty, debt, blocked mobility, exclusion, and displacement.</span></div>
+        <div class="re-op" aria-hidden="true">&times;</div>
+        <div class="re-cell"><b>E: conditions for unchecked exploitation</b><span>whether exploiting them runs without consequence, through weak enforcement, high-risk sectors, and blocked exit.</span></div>
+      </div>
+      <p class="muted"><small>The two are combined with a geometric mean, so a country scores high only when both are present. A low value on either side pulls the whole score down. <a href="pages/framework.html">How the index works</a> &middot; <a href="pages/methodology.html">Methodology &amp; limits</a></small></p>
+    </div>
+  </section>
+
+  <!-- DEEPER: the apparatus, demoted below the data -->
+  <section class="block">
+    <div class="wrap">
+      <h2>Walk the phases</h2>
+      <p>The index follows how forced labor operates as a system, from the conditions that expose people to recruitment, to the conditions under which exploitation runs unchecked. The published score combines the first two phases (Recruitment &times; Exploitation). The third, Monetization, is a separate lens and does not enter the scored composite. Each domain lists representative indicators. Where no defensible global data source exists, the condition is carried openly as a gap.</p>
+
+      <details class="why">
+        <summary>Phase 1: Recruitment (8 domains)</summary>
+        <div class="why-body">
+          <p>Where people are made vulnerable to recruitment into forced labor: poverty, debt, blocked mobility, exclusion, and shocks.</p>
+          <div class="frame" style="grid-template-columns:repeat(2,1fr)">
+            <div class="step">
+              <div class="stage">Economic Precarity</div>
+              <p>Poverty headcount ($6.85/day), informal-employment share, agrarian-employment concentration, income volatility.</p>
+            </div>
+            <div class="step">
+              <div class="stage">Debt &amp; Financialized Dependency</div>
+              <p>Financial-account exclusion, borrowing prevalence, informal-source borrowing (World Bank Global Findex).</p>
+            </div>
+            <div class="step">
+              <div class="stage">Constrained Mobility</div>
+              <p>Passport access (Henley), freedom of movement (V-Dem), refugee &amp; asylum-seeker outflow (UNHCR). <span class="flag">low confidence</span>: kafala &amp; brokerage drivers unsourced.</p>
+            </div>
+            <div class="step">
+              <div class="stage">Ascriptive Exclusion</div>
+              <p>Politically-excluded-population share (Ethnic Power Relations). <span class="flag">low confidence</span>: one signal for a four-axis driver.</p>
+            </div>
+            <div class="step">
+              <div class="stage">Legal Non-Recognition</div>
+              <p>Birth-registration incompleteness (SDG 16.9.1), statelessness prevalence (UNHCR).</p>
+            </div>
+            <div class="step">
+              <div class="stage">Gendered Labor</div>
+              <p>Gender Inequality Index (UNDP), labor-force-participation gap, legal mobility constraint, sex-by-sector employment channelling.</p>
+            </div>
+            <div class="step">
+              <div class="stage">Age / Childhood Structuring</div>
+              <p>Child-cohort share, child-labor pool, child-marriage rate, out-of-school rate (WDI / UNICEF SDG).</p>
+            </div>
+            <div class="step">
+              <div class="stage">Structural Disruption</div>
+              <p>Disaster mortality &amp; affected share (EM-DAT), conflict intensity (UCDP GED), climate vulnerability (ND-GAIN).</p>
+            </div>
+          </div>
+        </div>
+      </details>
+
+      <details class="why">
+        <summary>Phase 2: Exploitation (3 domains)</summary>
+        <div class="why-body">
+          <p>Where, once recruited, exploitation can run unchecked: foreclosed exit, demand-side economic structure, and the state&rsquo;s own production of unfreedom.</p>
+          <div class="frame">
+            <div class="step">
+              <div class="stage">Foreclosed Exit (Structural)</div>
+              <p>Collective-bargaining coverage &amp; union density, labor-inspection capacity (ILOSTAT). <span class="flag">low confidence</span>: the monopsony exit-cost spine is unsourceable at 195-country scale.</p>
+            </div>
+            <div class="step">
+              <div class="stage">Economic Structure &amp; Demand</div>
+              <p>Hazardous-sector employment share, informal-employment share (ILOSTAT/WDI), export concentration (UNCTAD). <span class="flag">low confidence</span>: buyer concentration &amp; criminal-market embedding unsourced.</p>
+            </div>
+            <div class="step">
+              <div class="stage">State Production of Unfreedom</div>
+              <p>Forced-labor &amp; clientelism indices (V-Dem). <span class="flag">low confidence</span>: tied-status, deportability &amp; protective-floor legal coding are hard gaps.</p>
+            </div>
+          </div>
+        </div>
+      </details>
+
+      <details class="why">
+        <summary>Phase 3: Monetization (2 domains), a separate lens, not in the score</summary>
+        <div class="why-body">
+          <div class="flag-note"><strong>Not scored.</strong> Monetization is a separate lens that feeds the Intervention page. It is not part of the published Recruitment &times; Exploitation composite, because its financial-integrity signals overlap the governance backbone and risk circularity &mdash; letting an outcome-flavored measure help predict the outcome it reflects.</div>
+          <div class="frame" style="grid-template-columns:repeat(2,1fr)">
+            <div class="step">
+              <div class="stage">Domain A: Financial integrity</div>
+              <p>FATF Mutual-Evaluation effectiveness &amp; listing flag, Financial Secrecy Index (via Basel AML Index), bribery risk (TRACE).</p>
+            </div>
+            <div class="step">
+              <div class="stage">Domain B: Cash &amp; concealment</div>
+              <p>Financial-account exclusion (Findex), shadow-economy size (World Bank Informal Economy Database).</p>
+            </div>
+          </div>
+        </div>
+      </details>
+
+      <p class="muted"><small>Risk concentrates where governance is weak. We report that openly, because weak governance is itself a core driver. But a pre-registered test confirms a forced-labor-specific signal survives once governance is held constant. <a href="pages/methodology.html">See the validation</a>.</small></p>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="wrap">
+      <div class="note">
+        <p style="margin:0">This index measures the structural conditions associated with forced labor, not its prevalence. It is intended to be read alongside on-the-ground knowledge, not in place of it. <a href="pages/methodology.html">Methodology &amp; limits</a> &middot; <a href="pages/intervention.html">Intervention</a></p>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer id="site-footer" class="site-footer"></footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/topojson-client@3/dist/topojson-client.min.js"></script>
+<script src="assets/site.js"></script>
+<script>
+  if (window.FLSRI && FLSRI.loadScores) {
+    FLSRI.loadScores().then(function(s){
+      if (FLSRI.fillMeta) FLSRI.fillMeta(s);
+      var scored = s.countries.filter(function(c){ return c.scored; });
+      var fmt = FLSRI.fmt || function(v){ return v; };
+      var nm = function(arr){ return arr.slice(0, 3).map(function(c){ return c.name + " (" + fmt(c.composite) + ")"; }).join(", "); };
+      var top = scored.slice().sort(function(a,b){ return b.composite - a.composite; });
+      var bot = scored.slice().sort(function(a,b){ return a.composite - b.composite; });
+      var te = document.getElementById("hf-top"); if (te) te.textContent = nm(top);
+      var be = document.getElementById("hf-bottom"); if (be) be.textContent = nm(bot);
+      var ce = document.getElementById("home-map-count"); if (ce && s.meta) ce.textContent = s.meta.n_scored + " countries";
+    });
+    // the hero map is a preview; clicking it sends people to the full interactive map
+    if (FLSRI.compositeMap) FLSRI.compositeMap("home-map", { onClick: function(){ location.href = "pages/explore.html"; } });
+  }
+</script>
+</body>
+</html>

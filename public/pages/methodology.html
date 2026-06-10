@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>How it's built (Methodology): FLSRI</title>
+<meta name="description" content="The methodology behind the Forced Labor Structural Risk Index: architecture, standardization, aggregation, validation, and spatial analysis.">
+<link rel="stylesheet" href="../assets/styles.css">
+</head>
+<body>
+<header id="site-header" class="site-header"></header>
+
+<main>
+  <section class="hero">
+    <div class="wrap">
+      <p class="kicker">How it&rsquo;s built</p>
+      <h1>The methodology</h1>
+      <p class="lede">This page sets out how a country&rsquo;s score is produced: the data behind each indicator, how the inputs are standardized and combined, and what the resulting score can and cannot support.</p>
+      <p><span class="badge-ok">Validated structure &middot; scores read in tiers</span> <span class="muted"><small>The scoring structure passed a pre-registered validation suite (discriminant validity, incremental forced-labor structure, internal structure, and rank stability), with criteria fixed in advance and re-checked on the displayed build (see &sect;6). The country scores are estimates of structural conditions: read tiers, not exact ranks, and cite the framework and code rather than the scores.</small></span></p>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="wrap">
+      <h2>1. What the index is</h2>
+      <p>The Forced Labor Structural Risk Index (FLSRI) is a country-level index, scored from 0 to 1 (where 0 is the lowest structural risk and 1 is the highest), of the structural conditions under which forced labor becomes more likely. Rather than a count or estimate of cases, it is a measure of the conditions that enable them. The scale is anchored to a theoretical maximum rather than to the worst country observed, so the highest real-country score sits near 0.66 rather than at 1.0.</p>
+      <p>The universe is roughly 195 countries. Of these, 184 are scored; the remainder lack the data coverage to support a fair comparison and are left unscored rather than assigned a misleading value.</p>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="wrap">
+      <h2>2. Architecture: phases, domains, indicators</h2>
+      <p>The index is organized around the logic of how forced labor operates as a system, expressed in three phases. The first phase captures the vulnerability that exposes populations to recruitment: economic precarity, displacement, and gaps in legal protection. The second captures the conditions under which exploitation can run unchecked: weak enforcement, high-risk sectors, and constraints on a worker&rsquo;s ability to leave. The third captures the financial conditions under which proceeds can be hidden: cash-reliant economies, opacity, and weak financial oversight.</p>
+      <p>Each phase resolves into domains, and each domain into indicators drawn from real datasets. The phase-and-domain structure draws on a routine-activity reading of exploitation: harm becomes likely when a motivated party, a vulnerable target, and the absence of a capable guardian are present together. In this build the score combines two phase-level components, vulnerability to recruitment (R) and the conditions for unchecked exploitation (E), with the financial-opacity conditions entering through the second component.</p>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="wrap">
+      <h2>3. Standardization</h2>
+      <p>Indicators are reported in incompatible units, from percentages and expert codes to raw currency values or event counts. In order to combine them, each is rescaled to a common 0-to-1 range. The rescaling is anchored to a theoretical maximum rather than to the worst country observed, which keeps the scale stable as coverage changes and prevents a single extreme country from compressing everyone else. Coverage and provenance are recorded per indicator, so a score can be traced back to the datasets that produced it.</p>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="wrap">
+      <h2>4. Aggregation and scoring</h2>
+      <p>Indicators are averaged within their domains, domains within their phases, and the phase components combined into the composite. The combination of the vulnerability and exploitation components uses a geometric mean rather than a simple average. A geometric mean penalizes imbalance: a country scores high only when both vulnerability and the conditions for unchecked exploitation are present, rather than compensating a low value on one with a high value on the other. This reflects the structural claim that forced labor requires both an exposed population and an environment in which exploiting it goes unchecked.</p>
+      <p>The build reported here weights the two components evenly. Sensitivity to that weighting, and to the within-domain treatment of governance-correlated indicators, is documented in the build report rather than hidden, because the choice is a tunable parameter rather than a finding.</p>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="wrap">
+      <h2>5. Missing data and what is left unscored</h2>
+      <p>Coverage is uneven across the 195-country universe, and the index treats that unevenness as information rather than noise. Where an indicator is missing for a country, the score is built from the indicators that remain, provided enough remain to support a defensible value. Where too little remains, the country is left unscored. This is the source of the 184-of-195 coverage figure: the eleven unscored countries are not assigned a placeholder.</p>
+      <p>A related case is state-controlled reporting. Where a regime suppresses a figure (statelessness counts are the clearest example), the suppressed value is <em>dropped</em>, never recorded as zero, so opacity can never lower a country&rsquo;s score; it can only thin the evidence beneath it. Countries whose composite rests on a structurally reduced evidence base are flagged as lower-confidence rather than adjusted. The index makes no claim to estimate what suppressed data would have shown: an earlier draft of this project treated such scores as &ldquo;suppression-flagged lower bounds,&rdquo; and that mechanism was dropped as untestable (see <a href="limitations.html">Limitations</a>).</p>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="wrap">
+      <h2>6. Validation</h2>
+      <p>The index was assessed against a pre-registered suite with pass and fail criteria fixed in advance, so the result could not be tuned after the fact. The overall verdict was a pass. The components are reported below, including the one criterion that was not demonstrated, which is disclosed rather than hidden.</p>
+      <h3>It is correlated with governance, but not reducible to it.</h3>
+      <p>An index of structural risk will correlate with the strength of a country&rsquo;s institutions, because weak governance is itself a structural driver of forced labor. The composite correlates with a standard rule-of-law measure at r&nbsp;&asymp;&nbsp;0.79 (R&sup2;&nbsp;&asymp;&nbsp;0.63). That is strong and expected, and it is also bounded: roughly a third of the variation in the score is <em>not</em> explained by governance. The pre-registered test passed because the index is governance-associated without being a governance relabel.</p>
+      <h3>It adds forced-labor-specific signal.</h3>
+      <p>The harder question is whether the index captures anything beyond governance. After residualizing both sides on governance, a forced-labor-proximate signal (the prevalence of child labor, measured from census microdata and chosen because it is only weakly tied to governance) remains positively and significantly associated with the score. This is the incremental-validity result, and it passed: the index demonstrably carries forced-labor structure, not just institutional quality re-expressed.</p>
+      <h3>The two components are distinct, and the extremes are stable.</h3>
+      <p>The vulnerability (R) and exploitation (E) components correlate at r&nbsp;&asymp;&nbsp;0.66 (Pearson; Spearman&nbsp;&rho;&nbsp;=&nbsp;0.69): related, as the theory predicts, but not redundant. Under Monte-Carlo perturbation the top and bottom deciles are stable (top-decile retention 86.5 percent and bottom-decile 80.5 percent under mild noise), while the densely-packed middle of the table is not; this is why the public ranking is read in tiers rather than as exact mid-table positions.</p>
+
+      <h3>How certain are the ranks? The bands shown across the site.</h3>
+      <p>Every scored country ships with a <strong>90% plausible rank band</strong>, displayed on the rankings table, country profiles, map tooltips and simulation. The bands come from a seeded Monte-Carlo of 10,000 draws computed during the site-data build: each draw adds Gaussian noise to every country&rsquo;s R and E (standard deviation 0.04; widened to 0.07 for the 42 countries whose composite rests on a structurally reduced evidence base &mdash; two or more of the 11 domains not scored), re-draws the R-versus-E weight uniformly between 0.40 and 0.60, and re-ranks the whole field. A country&rsquo;s band is the 5th&ndash;95th percentile of its simulated rank.</p>
+      <p>The bands are wide, and reporting them is the point: the <strong>median band spans about 45 ranks</strong>, and only about 2 percent of countries have a band within 10 ranks &mdash; mid-table ordinal positions are not findings. Tier membership is much more stable (countries stayed in their published tier in roughly 84 percent of draws on average; the top ten retained about 80 percent of its members per draw). Three result classes are displayed: <em>scored</em>; <em>scored, lower confidence</em> (the &le;9-of-11-domains case, badged on every surface and given the wider noise above &mdash; one rule driving both statements); and <em>not scored</em> (too little data for a fair comparison; never zero-filled). A dashed tier chip marks borderline countries that switched tiers in more than 30 percent of draws. The exact model (seed, draws, both standard deviations, the weight range, and the headline stability numbers) ships machine-readably in <code>data/scores.json</code> under <code>meta.uncertainty</code>.</p>
+      <h3>The result is robust to how governance is handled.</h3>
+      <p>Because the index is governance-associated, the way it treats governance matters; so that treatment was stress-tested. The build de-biases against governance by down-weighting signals that are too correlated with rule of law; the index was re-run de-biasing a single domain versus all domains, and the correlation measured against the World Bank rule-of-law index, the V-Dem rule-of-law index, or a 50/50 blend of the two. Across every combination the index is essentially unchanged: rank agreement Kendall&nbsp;&tau;&nbsp;&ge;&nbsp;0.96, governance share near 63&nbsp;percent, identical top and bottom, and the Gulf result unmoved. The published ranking does not depend on the governance specification, which is the strongest available answer to the worry that the index is a single governance measure relabelled.</p>
+
+      <h3>The honest limit: no clean external prevalence benchmark.</h3>
+      <p>The index was tested against an external estimate of realized prevalence and, net of governance on both sides, did not demonstrate a significant association. This is reported plainly. The benchmark is itself heavily governance-contaminated (its own correlation with governance is around 0.5&ndash;0.9), so a null here is uninformative rather than disconfirming. There is no clean, governance-independent prevalence measure to validate against. That absence is the gap a structural index is built to fill, and it is the index&rsquo;s most important caveat.</p>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="wrap">
+      <h2>7. Spatial structure</h2>
+      <p>A country score is a national average, and a national average conceals the regions where risk concentrates. To recover that structure, a subnational risk surface was built at the first administrative level, drawing on comparable household-survey data (IPUMS-International microdata for 97 countries). The shipped map carries 1,732 admin-1 units across 92 countries, of which roughly 1,450 units in 79 countries pass reliability filtering and carry a risk score. It is an overlay where the data exist, not a global layer, and it cannot replace the country-level index elsewhere.</p>
+      <p>A variance decomposition over those units indicates that for the labor-precarity signals available at this resolution, country membership explains the large majority of the variance (roughly 79&ndash;83 percent), leaving on the order of 17&ndash;21 percent within countries. The honest reading is meaningful local texture in specific corridors, rather than a claim that the national score is half-blind. Even so, that within-country share isolates real, recognizable high-risk corridors that a national figure averages away. The Isan belt of northeastern Thailand and the Cordillera highlands of the Philippines are the clearest cases in the data.</p>
+      <h3>Divergence: where the national figure misleads</h3>
+      <p>From the regional surface a divergence measure is computed for each covered country: the gap between its national risk percentile and the global percentile of its worst region. The widest gaps belong to countries that look unremarkable nationally but contain a region among the most at-risk anywhere: Vietnam&rsquo;s northwest highlands, Thailand&rsquo;s Isan belt, and the Philippine Cordillera are the clearest cases. These are read directly from the surface, not chosen as illustrations, and they are what the &ldquo;where the national number misleads most&rdquo; view on the explore page is built from.</p>
+      <h3>Cross-border clustering, net of governance</h3>
+      <p>Country scores cluster strongly in space: global Moran&rsquo;s I on the composite is 0.57 (pseudo-p&nbsp;=&nbsp;0.001, 999 permutations, queen contiguity), and a Local Moran&rsquo;s I marks a contiguous high-risk band of Central-African and Sahelian states. That raw band is <em>not</em> reported as a forced-labor finding on its own, because the composite shares roughly two-thirds of its variance with rule-of-law governance, and weak governance and armed conflict themselves cluster across borders, so a naive cluster map substantially reproduces the fragile-state map.</p>
+      <p>The honest test is whether the clustering survives once governance is removed. Regressing the composite on rule of law and recomputing Moran&rsquo;s I on the residual leaves it at <strong>0.35</strong> (pseudo-p&nbsp;=&nbsp;0.001), about 61&nbsp;percent of the original, and still strongly significant. So the spatial structure is not merely a governance artifact: a forced-labor-specific component clusters in space. But it is narrower than the raw band: of the nine high-risk countries in the unadjusted cluster, only three (the Central African Republic, the Democratic Republic of the Congo, and Tanzania) remain a significant high-risk cluster once governance is controlled for; the rest are accounted for by the spatial structure of governance itself. This is read as a <em>high-risk cluster</em>, never a &ldquo;corridor&rdquo;: the statistic detects geographic clustering of a structural-risk level, not the movement of people along a route. No cross-border (country-to-country) map layer is published on the explore page: the admin-1 cluster surface and the within-country divergence above carry the spatial story, and nothing on the site is estimated or filled in to substitute for it.</p>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="wrap">
+      <div class="note"><p style="margin:0">For the honest, plain-language version of these limits, see <a href="limitations.html">Limitations &amp; sources</a>. For what the index is for and how to act on it, see <a href="policymakers.html">What this tells policymakers</a>.</p></div>
+    </div>
+  </section>
+</main>
+
+<footer id="site-footer" class="site-footer"></footer>
+<script src="../assets/site.js"></script>
+</body>
+</html>

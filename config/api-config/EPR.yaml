@@ -1,0 +1,48 @@
+# EPR (Ethnic Power Relations) connector config -- Ascriptive Exclusion domain.
+#
+# Source: ETH-Zurich International Conflict Research (ICR), EPR Core dataset.
+# Group-year panel of politically-relevant ethnic groups: each group's
+# population `size` (share of country population) and `status` (access to
+# executive power). CC / academic open; published for download at icr.ethz.ch.
+#
+# Fills the Ascriptive Exclusion domain (caste/ethnic/religious/indigeneity
+# exclusion); see docs/METHODS.md. This is a fresh fetch.
+
+source_title: "ETH-Zurich Ethnic Power Relations (EPR) Core 2023"
+license: "Academic / open; downloadable at icr.ethz.ch -- redistribution terms under confirmation (see docs/data-provenance.md)"
+
+# EPR Core vintage. EPR-2023 is the latest published (covers through 2023).
+# URL pattern: https://icr.ethz.ch/data/epr/core/EPR-<vintage>.csv
+vintage: 2023
+download_url: "https://icr.ethz.ch/data/epr/core/EPR-2023.csv"
+
+# Snapshot year: take each country's group composition in effect this year
+# (the row whose [from,to] period contains it). The standing exclusion
+# structure (a standing, not event-bound, condition); see docs/METHODS.md S1-S4.
+snapshot_year: 2023
+
+# Depth-of-exclusion weights on EPR's `status` categories (docs/METHODS.md sec 3:
+# size x depth). Only the three *excluded-from-power* categories carry risk;
+# any group with access to executive power (MONOPOLY..JUNIOR PARTNER,
+# IRRELEVANT, DOMINANT, STATE COLLAPSE) contributes 0 to the excluded share.
+#   DISCRIMINATED  = active, intentional exclusion/discrimination (deepest)
+#   POWERLESS      = excluded from power, no active discrimination
+#   SELF-EXCLUSION = group voluntarily separatist (partial weight)
+status_weights:
+  DISCRIMINATED: 1.0
+  POWERLESS: 0.7
+  SELF-EXCLUSION: 0.5
+
+# Output indicator: depth-weighted excluded population share -> 0-1 risk.
+# Already a per-exposure quantity (share of population), so anchored absolutely
+# (rule 1): floor 0 = no excluded stratum (lowest risk); ceiling 0.5 = a
+# depth-weighted half of the population is in actively/structurally excluded
+# groups (the empirical extreme: Rwanda/Syria/Sudan ~0.56-0.59 raw before
+# weighting cap). Higher = more ascriptive exclusion = more risk.
+indicator:
+  output_col: epr_excluded_pop_share
+  floor: 0.0
+  ceiling: 0.5
+  direction: high_risk
+  unit: "depth-weighted share of population in politically-excluded ethnic groups"
+  anchor_source: "EPR Core 2023 (Vogt et al. 2015); absolute share-of-population anchor, ceiling 0.5 = depth-weighted half-population exclusion (empirical max ~0.59)"

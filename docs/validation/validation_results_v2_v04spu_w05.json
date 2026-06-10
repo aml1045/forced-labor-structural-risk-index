@@ -1,0 +1,238 @@
+{
+  "structure_under_test": "DISPLAYED v0.4-SPU build (SPU-only de-biasing, w=0.5; the site's published columns), re-checked against the criteria pre-registered on v0.3",
+  "build": "v0_4_spu_w05",
+  "n_scored_with_governance": 184,
+  "prereg": {
+    "discriminant_governance_R2": {
+      "test": "R^2 of v0_3_composite regressed on wb_wgi_rule_of_law (risk-aligned).",
+      "expected": "High positive association (governance co-travels) BUT R^2 < 1.",
+      "pass_if": "R^2 <= 0.80  (i.e. >=20% of composite variance is NOT governance).",
+      "FAIL_if": "R^2 > 0.90   (index is governance with a relabel -> discriminant FAIL).",
+      "grey_zone": "0.80 < R^2 <= 0.90 -> CONDITIONAL (governance-dominated but not identical)."
+    },
+    "incremental_FL_structure": {
+      "test": "Governance-residualized composite vs the orthogonal/low-laden IPUMS FL-proximate layer (child_labour, internal_migration_5yr; both <0.30 |r| with governance per ipums memo), and vs climate (ND-GAIN) & conflict (UCDP) net of governance.",
+      "expected": "child_labour +, internal_migration +, climate +, conflict + (all positive risk).",
+      "pass_if": "AT LEAST ONE non-circular FL-proximate residual correlation is positive in the pre-registered direction AND BH-significant at the spatial effective-df.",
+      "FAIL_if": "NO FL-proximate residual is positive & BH-significant -> incremental-validity NOT demonstrated."
+    },
+    "convergent_vs_realized_prevalence": {
+      "test": "Residual-on-residual (governance netted BOTH sides) vs GSI estimated prevalence /1,000.",
+      "expected": "weak positive after residualizing.",
+      "pass_if": "residualized rho > 0 and BH-significant at effective-df.",
+      "FAIL_if": "residualized rho <= 0 OR not significant -> 'convergent validity vs realized prevalence NOT demonstrated' (reported, not hidden). NB benchmark is itself contaminated (GSI prevalence Spearman ~0.50 vs governance) so a null here is uninformative, not disconfirming."
+    },
+    "REFUSED_criteria": {
+      "GSI_Total_Vulnerability": "REFUSED \u2014 r~0.91 with governance == circular (shares the backbone).",
+      "GLOTIP_detection": "REFUSED \u2014 sign-INVERTED (Spearman ~ -0.27 vs governance); detection is a state-capacity artifact, not prevalence. Convergence with it would reward strong states."
+    },
+    "internal_structure_R_E": {
+      "test": "Correlation of R (Recruitment/structural) and E (Exploitation/enabling) phase scores.",
+      "expected": "positive but well below unity (distinct, not redundant).",
+      "pass_if": "0.30 <= r(R,E) <= 0.90.",
+      "FAIL_if": "r(R,E) > 0.95 (one dimension) OR r(R,E) < 0.20 (incoherent)."
+    },
+    "uncertainty_tiers": {
+      "test": "Monte-Carlo rank stability -> report TIERS not precise mid-table ranks.",
+      "expected": "extreme tiers (top/bottom) stable; mid-table wide.",
+      "pass_if": "top-decile retention >= 0.70 under mild noise (tiers defensible).",
+      "FAIL_if": "top-decile retention < 0.50 (even the extremes are unstable)."
+    },
+    "mechanism_kafala_COHERENCE": {
+      "test": "Do kafala-system states sit elevated on R? (LABELLED COHERENCE, not validation.)",
+      "expected": "kafala states above non-kafala median on R.",
+      "note": "This is a coherence/face check, NOT an independent criterion. Cannot 'fail' the index; reported as coherence only."
+    }
+  },
+  "spatial": {
+    "geometry_source": "Natural Earth 1:110m admin_0 countries (LABEL_X/LABEL_Y centroids, REGION_UN, SUBREGION). data/geometry/country_geometry.csv",
+    "n_with_centroid": 166,
+    "n_without_centroid_dropped_from_spatial": 18,
+    "weights": "inverse-distance, 4000km bandwidth, row-standardised; haversine on centroids",
+    "morans_I_composite": 0.492,
+    "bandwidth_km": 4000.0
+  },
+  "discriminant": {
+    "composite_vs_governance_pearson_r": 0.793,
+    "R2_composite_on_governance": 0.628,
+    "pct_variance_NOT_governance": 37.2,
+    "prereg_verdict": "PASS",
+    "also_vs_labor_productivity": {
+      "benchmark": "wb_labor_productivity",
+      "expected_sign": "+ (poorer=more risk; risk-aligned check)",
+      "zero_order_pearson": 0.825,
+      "zero_order_spearman": 0.85,
+      "residualized_pearson": 0.404,
+      "residualized_spearman": 0.489,
+      "n": 173,
+      "n_residual_overlap": 173,
+      "effective_n": 21.0,
+      "p_residual_spearman_at_eff_df": 0.024733806370721124
+    }
+  },
+  "incremental_and_convergent_family": {
+    "ipums_child_labour": {
+      "benchmark": "child_labour",
+      "expected_sign": "+",
+      "zero_order_pearson": 0.247,
+      "zero_order_spearman": 0.372,
+      "residualized_pearson": 0.3,
+      "residualized_spearman": 0.362,
+      "n": 91,
+      "n_residual_overlap": 91,
+      "effective_n": 51.5,
+      "p_residual_spearman_at_eff_df": 0.00874605366064401,
+      "BH_q_value": 0.0156,
+      "BH_significant_q<0.05": true
+    },
+    "ipums_internal_migration_5yr": {
+      "benchmark": "internal_migration_5yr",
+      "expected_sign": "+",
+      "zero_order_pearson": -0.091,
+      "zero_order_spearman": -0.178,
+      "residualized_pearson": 0.156,
+      "residualized_spearman": 0.067,
+      "n": 31,
+      "n_residual_overlap": 31,
+      "effective_n": 27.6,
+      "p_residual_spearman_at_eff_df": 0.7371419896379339,
+      "BH_q_value": 0.7371,
+      "BH_significant_q<0.05": false
+    },
+    "ipums_vulnerable_employment_LADEN": {
+      "benchmark": "vulnerable_employment",
+      "expected_sign": "+ (moderately governance-laden, caveat)",
+      "zero_order_pearson": 0.793,
+      "zero_order_spearman": 0.818,
+      "residualized_pearson": 0.697,
+      "residualized_spearman": 0.679,
+      "n": 82,
+      "n_residual_overlap": 82,
+      "effective_n": 13.4,
+      "p_residual_spearman_at_eff_df": 0.009346226765710456,
+      "BH_q_value": 0.0156,
+      "BH_significant_q<0.05": true
+    },
+    "climate_ndgain": {
+      "benchmark": "ndgain_climate_vulnerability",
+      "expected_sign": "+",
+      "zero_order_pearson": 0.773,
+      "zero_order_spearman": 0.781,
+      "residualized_pearson": 0.625,
+      "residualized_spearman": 0.606,
+      "n": 182,
+      "n_residual_overlap": 182,
+      "effective_n": 31.5,
+      "p_residual_spearman_at_eff_df": 0.0002692280883375292,
+      "BH_q_value": 0.0013,
+      "BH_significant_q<0.05": true
+    },
+    "conflict_ucdp": {
+      "benchmark": "ucdp_conflict_intensity",
+      "expected_sign": "+",
+      "zero_order_pearson": 0.378,
+      "zero_order_spearman": 0.611,
+      "residualized_pearson": 0.199,
+      "residualized_spearman": 0.177,
+      "n": 184,
+      "n_residual_overlap": 184,
+      "effective_n": 103.0,
+      "p_residual_spearman_at_eff_df": 0.07344140722143944,
+      "BH_q_value": 0.0918,
+      "BH_significant_q<0.05": false
+    },
+    "gsi_prevalence_RESIDUAL_ON_RESIDUAL": {
+      "benchmark": "gsi_prevalence",
+      "n": 0,
+      "note": "insufficient overlap (<10)"
+    }
+  },
+  "FDR": {
+    "method": "Benjamini-Hochberg across residualized convergent family",
+    "m_tests": 5,
+    "family": [
+      "ipums_child_labour",
+      "ipums_internal_migration_5yr",
+      "ipums_vulnerable_employment_LADEN",
+      "climate_ndgain",
+      "conflict_ucdp"
+    ]
+  },
+  "incremental_validity_verdict": "PASS (FL-specific structure demonstrated)",
+  "incremental_validity_hits": [
+    "ipums_child_labour"
+  ],
+  "convergent_prevalence_verdict": "NOT RUN (GSI workbook not present locally; license-gated \u2014 see data/raw/walk_free_gsi/)",
+  "internal_structure": {
+    "R_vs_E_pearson": 0.659,
+    "R_vs_E_spearman": 0.694,
+    "n": 184,
+    "R_vs_composite_pearson": 0.942,
+    "E_vs_composite_pearson": 0.868,
+    "prereg_verdict": "PASS"
+  },
+  "uncertainty": {
+    "monte_carlo_draws": 4000,
+    "mild_noise_sd_0.02": {
+      "sd": 0.02,
+      "top_decile_retention": 0.865,
+      "bottom_decile_retention": 0.805,
+      "median_rank_CI_width": 34.0,
+      "mean_rank_CI_width": 30.4
+    },
+    "aggressive_noise_sd_0.04": {
+      "sd": 0.04,
+      "top_decile_retention": 0.765,
+      "bottom_decile_retention": 0.671,
+      "median_rank_CI_width": 64.0,
+      "mean_rank_CI_width": 57.4
+    },
+    "prereg_verdict": "PASS",
+    "score_deciles": {
+      "p10": 0.175,
+      "p25": 0.237,
+      "p50": 0.339,
+      "p75": 0.441,
+      "p90": 0.523
+    },
+    "packing_note": "composite tightly packed in mid-table -> report TIERS not precise mid-ranks",
+    "tier_cut_thresholds": [
+      0.274,
+      0.397
+    ]
+  },
+  "mechanism_kafala_COHERENCE": {
+    "LABEL": "COHERENCE CHECK \u2014 not an independent validation criterion; cannot pass/fail the index.",
+    "kafala_states_present": [
+      "SAU",
+      "ARE",
+      "QAT",
+      "KWT",
+      "BHR",
+      "OMN",
+      "JOR",
+      "LBN"
+    ],
+    "kafala_median_R": 0.307,
+    "nonkafala_median_R": 0.268,
+    "kafala_above_nonkafala_median": true,
+    "kafala_R_percentile_among_all": {
+      "SAU": 0.6,
+      "ARE": 0.27,
+      "QAT": 0.31,
+      "KWT": 0.67,
+      "BHR": 0.65,
+      "OMN": 0.44,
+      "JOR": 0.75,
+      "LBN": 0.74
+    }
+  },
+  "OVERALL_VERDICT": {
+    "verdict": "PASS",
+    "discriminant": "PASS",
+    "incremental_FL_structure": "PASS (FL-specific structure demonstrated)",
+    "internal_structure": "PASS",
+    "uncertainty": "PASS",
+    "convergent_vs_realized_prevalence": "NOT RUN (GSI workbook not present locally; license-gated \u2014 see data/raw/walk_free_gsi/)"
+  }
+}

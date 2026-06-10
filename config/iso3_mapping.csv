@@ -1,0 +1,586 @@
+identifier_type,identifier_value,iso3,notes
+iso3,AFG,AFG,
+iso2,AF,AFG,
+country_name,Afghanistan,AFG,official short name from target_countries.xlsx
+iso3,AGO,AGO,
+iso2,AO,AGO,
+country_name,Angola,AGO,official short name from target_countries.xlsx
+iso3,ALB,ALB,
+iso2,AL,ALB,
+country_name,Albania,ALB,official short name from target_countries.xlsx
+iso3,AND,AND,
+iso2,AD,AND,
+country_name,Andorra,AND,official short name from target_countries.xlsx
+iso3,ARE,ARE,
+iso2,AE,ARE,
+country_name,United Arab Emirates,ARE,official short name from target_countries.xlsx
+iso3,ARG,ARG,
+iso2,AR,ARG,
+country_name,Argentina,ARG,official short name from target_countries.xlsx
+iso3,ARM,ARM,
+iso2,AM,ARM,
+country_name,Armenia,ARM,official short name from target_countries.xlsx
+iso3,ATG,ATG,
+iso2,AG,ATG,
+country_name,Antigua and Barbuda,ATG,official short name from target_countries.xlsx
+iso3,AUS,AUS,
+iso2,AU,AUS,
+country_name,Australia,AUS,official short name from target_countries.xlsx
+iso3,AUT,AUT,
+iso2,AT,AUT,
+country_name,Austria,AUT,official short name from target_countries.xlsx
+iso3,AZE,AZE,
+iso2,AZ,AZE,
+country_name,Azerbaijan,AZE,official short name from target_countries.xlsx
+iso3,BDI,BDI,
+iso2,BI,BDI,
+country_name,Burundi,BDI,official short name from target_countries.xlsx
+iso3,BEL,BEL,
+iso2,BE,BEL,
+country_name,Belgium,BEL,official short name from target_countries.xlsx
+iso3,BEN,BEN,
+iso2,BJ,BEN,
+country_name,Benin,BEN,official short name from target_countries.xlsx
+iso3,BFA,BFA,
+iso2,BF,BFA,
+country_name,Burkina Faso,BFA,official short name from target_countries.xlsx
+iso3,BGD,BGD,
+iso2,BD,BGD,
+country_name,Bangladesh,BGD,official short name from target_countries.xlsx
+iso3,BGR,BGR,
+iso2,BG,BGR,
+country_name,Bulgaria,BGR,official short name from target_countries.xlsx
+iso3,BHR,BHR,
+iso2,BH,BHR,
+country_name,Bahrain,BHR,official short name from target_countries.xlsx
+iso3,BHS,BHS,
+iso2,BS,BHS,
+country_name,Bahamas,BHS,official short name from target_countries.xlsx
+iso3,BIH,BIH,
+iso2,BA,BIH,
+country_name,Bosnia and Herzegovina,BIH,official short name from target_countries.xlsx
+iso3,BLR,BLR,
+iso2,BY,BLR,
+country_name,Belarus,BLR,official short name from target_countries.xlsx
+iso3,BLZ,BLZ,
+iso2,BZ,BLZ,
+country_name,Belize,BLZ,official short name from target_countries.xlsx
+iso3,BOL,BOL,
+iso2,BO,BOL,
+country_name,"Bolivia, Plurinational State of",BOL,official short name from target_countries.xlsx
+iso3,BRA,BRA,
+iso2,BR,BRA,
+country_name,Brazil,BRA,official short name from target_countries.xlsx
+iso3,BRB,BRB,
+iso2,BB,BRB,
+country_name,Barbados,BRB,official short name from target_countries.xlsx
+iso3,BRN,BRN,
+iso2,BN,BRN,
+country_name,Brunei Darussalam,BRN,official short name from target_countries.xlsx
+iso3,BTN,BTN,
+iso2,BT,BTN,
+country_name,Bhutan,BTN,official short name from target_countries.xlsx
+iso3,BWA,BWA,
+iso2,BW,BWA,
+country_name,Botswana,BWA,official short name from target_countries.xlsx
+iso3,CAF,CAF,
+iso2,CF,CAF,
+country_name,Central African Republic,CAF,official short name from target_countries.xlsx
+iso3,CAN,CAN,
+iso2,CA,CAN,
+country_name,Canada,CAN,official short name from target_countries.xlsx
+iso3,CHE,CHE,
+iso2,CH,CHE,
+country_name,Switzerland,CHE,official short name from target_countries.xlsx
+iso3,CHL,CHL,
+iso2,CL,CHL,
+country_name,Chile,CHL,official short name from target_countries.xlsx
+iso3,CHN,CHN,
+iso2,CN,CHN,
+country_name,China,CHN,official short name from target_countries.xlsx
+iso3,CIV,CIV,
+iso2,CI,CIV,
+country_name,Côte d'Ivoire,CIV,official short name from target_countries.xlsx
+iso3,CMR,CMR,
+iso2,CM,CMR,
+country_name,Cameroon,CMR,official short name from target_countries.xlsx
+iso3,COD,COD,
+iso2,CD,COD,
+country_name,"Congo, The Democratic Republic of the",COD,official short name from target_countries.xlsx
+iso3,COG,COG,
+iso2,CG,COG,
+country_name,Congo,COG,official short name from target_countries.xlsx
+iso3,COL,COL,
+iso2,CO,COL,
+country_name,Colombia,COL,official short name from target_countries.xlsx
+iso3,COM,COM,
+iso2,KM,COM,
+country_name,Comoros,COM,official short name from target_countries.xlsx
+iso3,CPV,CPV,
+iso2,CV,CPV,
+country_name,Cabo Verde,CPV,official short name from target_countries.xlsx
+iso3,CRI,CRI,
+iso2,CR,CRI,
+country_name,Costa Rica,CRI,official short name from target_countries.xlsx
+iso3,CUB,CUB,
+iso2,CU,CUB,
+country_name,Cuba,CUB,official short name from target_countries.xlsx
+iso3,CYP,CYP,
+iso2,CY,CYP,
+country_name,Cyprus,CYP,official short name from target_countries.xlsx
+iso3,CZE,CZE,
+iso2,CZ,CZE,
+country_name,Czechia,CZE,official short name from target_countries.xlsx
+iso3,DEU,DEU,
+iso2,DE,DEU,
+country_name,Germany,DEU,official short name from target_countries.xlsx
+iso3,DJI,DJI,
+iso2,DJ,DJI,
+country_name,Djibouti,DJI,official short name from target_countries.xlsx
+iso3,DMA,DMA,
+iso2,DM,DMA,
+country_name,Dominica,DMA,official short name from target_countries.xlsx
+iso3,DNK,DNK,
+iso2,DK,DNK,
+country_name,Denmark,DNK,official short name from target_countries.xlsx
+iso3,DOM,DOM,
+iso2,DO,DOM,
+country_name,Dominican Republic,DOM,official short name from target_countries.xlsx
+iso3,DZA,DZA,
+iso2,DZ,DZA,
+country_name,Algeria,DZA,official short name from target_countries.xlsx
+iso3,ECU,ECU,
+iso2,EC,ECU,
+country_name,Ecuador,ECU,official short name from target_countries.xlsx
+iso3,EGY,EGY,
+iso2,EG,EGY,
+country_name,Egypt,EGY,official short name from target_countries.xlsx
+iso3,ERI,ERI,
+iso2,ER,ERI,
+country_name,Eritrea,ERI,official short name from target_countries.xlsx
+iso3,ESP,ESP,
+iso2,ES,ESP,
+country_name,Spain,ESP,official short name from target_countries.xlsx
+iso3,EST,EST,
+iso2,EE,EST,
+country_name,Estonia,EST,official short name from target_countries.xlsx
+iso3,ETH,ETH,
+iso2,ET,ETH,
+country_name,Ethiopia,ETH,official short name from target_countries.xlsx
+iso3,FIN,FIN,
+iso2,FI,FIN,
+country_name,Finland,FIN,official short name from target_countries.xlsx
+iso3,FJI,FJI,
+iso2,FJ,FJI,
+country_name,Fiji,FJI,official short name from target_countries.xlsx
+iso3,FRA,FRA,
+iso2,FR,FRA,
+country_name,France,FRA,official short name from target_countries.xlsx
+iso3,FSM,FSM,
+iso2,FM,FSM,
+country_name,"Micronesia, Federated States of",FSM,official short name from target_countries.xlsx
+iso3,GAB,GAB,
+iso2,GA,GAB,
+country_name,Gabon,GAB,official short name from target_countries.xlsx
+iso3,GBR,GBR,
+iso2,GB,GBR,
+country_name,United Kingdom,GBR,official short name from target_countries.xlsx
+iso3,GEO,GEO,
+iso2,GE,GEO,
+country_name,Georgia,GEO,official short name from target_countries.xlsx
+iso3,GHA,GHA,
+iso2,GH,GHA,
+country_name,Ghana,GHA,official short name from target_countries.xlsx
+iso3,GIN,GIN,
+iso2,GN,GIN,
+country_name,Guinea,GIN,official short name from target_countries.xlsx
+iso3,GMB,GMB,
+iso2,GM,GMB,
+country_name,Gambia,GMB,official short name from target_countries.xlsx
+iso3,GNB,GNB,
+iso2,GW,GNB,
+country_name,Guinea-Bissau,GNB,official short name from target_countries.xlsx
+iso3,GNQ,GNQ,
+iso2,GQ,GNQ,
+country_name,Equatorial Guinea,GNQ,official short name from target_countries.xlsx
+iso3,GRC,GRC,
+iso2,GR,GRC,
+country_name,Greece,GRC,official short name from target_countries.xlsx
+iso3,GRD,GRD,
+iso2,GD,GRD,
+country_name,Grenada,GRD,official short name from target_countries.xlsx
+iso3,GTM,GTM,
+iso2,GT,GTM,
+country_name,Guatemala,GTM,official short name from target_countries.xlsx
+iso3,GUY,GUY,
+iso2,GY,GUY,
+country_name,Guyana,GUY,official short name from target_countries.xlsx
+iso3,HND,HND,
+iso2,HN,HND,
+country_name,Honduras,HND,official short name from target_countries.xlsx
+iso3,HRV,HRV,
+iso2,HR,HRV,
+country_name,Croatia,HRV,official short name from target_countries.xlsx
+iso3,HTI,HTI,
+iso2,HT,HTI,
+country_name,Haiti,HTI,official short name from target_countries.xlsx
+iso3,HUN,HUN,
+iso2,HU,HUN,
+country_name,Hungary,HUN,official short name from target_countries.xlsx
+iso3,IDN,IDN,
+iso2,ID,IDN,
+country_name,Indonesia,IDN,official short name from target_countries.xlsx
+iso3,IND,IND,
+iso2,IN,IND,
+country_name,India,IND,official short name from target_countries.xlsx
+iso3,IRL,IRL,
+iso2,IE,IRL,
+country_name,Ireland,IRL,official short name from target_countries.xlsx
+iso3,IRN,IRN,
+iso2,IR,IRN,
+country_name,"Iran, Islamic Republic of",IRN,official short name from target_countries.xlsx
+iso3,IRQ,IRQ,
+iso2,IQ,IRQ,
+country_name,Iraq,IRQ,official short name from target_countries.xlsx
+iso3,ISL,ISL,
+iso2,IS,ISL,
+country_name,Iceland,ISL,official short name from target_countries.xlsx
+iso3,ISR,ISR,
+iso2,IL,ISR,
+country_name,Israel,ISR,official short name from target_countries.xlsx
+iso3,ITA,ITA,
+iso2,IT,ITA,
+country_name,Italy,ITA,official short name from target_countries.xlsx
+iso3,JAM,JAM,
+iso2,JM,JAM,
+country_name,Jamaica,JAM,official short name from target_countries.xlsx
+iso3,JOR,JOR,
+iso2,JO,JOR,
+country_name,Jordan,JOR,official short name from target_countries.xlsx
+iso3,JPN,JPN,
+iso2,JP,JPN,
+country_name,Japan,JPN,official short name from target_countries.xlsx
+iso3,KAZ,KAZ,
+iso2,KZ,KAZ,
+country_name,Kazakhstan,KAZ,official short name from target_countries.xlsx
+iso3,KEN,KEN,
+iso2,KE,KEN,
+country_name,Kenya,KEN,official short name from target_countries.xlsx
+iso3,KGZ,KGZ,
+iso2,KG,KGZ,
+country_name,Kyrgyzstan,KGZ,official short name from target_countries.xlsx
+iso3,KHM,KHM,
+iso2,KH,KHM,
+country_name,Cambodia,KHM,official short name from target_countries.xlsx
+iso3,KIR,KIR,
+iso2,KI,KIR,
+country_name,Kiribati,KIR,official short name from target_countries.xlsx
+iso3,KNA,KNA,
+iso2,KN,KNA,
+country_name,Saint Kitts and Nevis,KNA,official short name from target_countries.xlsx
+iso3,KOR,KOR,
+iso2,KR,KOR,
+country_name,"Korea, Republic of",KOR,official short name from target_countries.xlsx
+iso3,KWT,KWT,
+iso2,KW,KWT,
+country_name,Kuwait,KWT,official short name from target_countries.xlsx
+iso3,LAO,LAO,
+iso2,LA,LAO,
+country_name,Lao People's Democratic Republic,LAO,official short name from target_countries.xlsx
+iso3,LBN,LBN,
+iso2,LB,LBN,
+country_name,Lebanon,LBN,official short name from target_countries.xlsx
+iso3,LBR,LBR,
+iso2,LR,LBR,
+country_name,Liberia,LBR,official short name from target_countries.xlsx
+iso3,LBY,LBY,
+iso2,LY,LBY,
+country_name,Libya,LBY,official short name from target_countries.xlsx
+iso3,LCA,LCA,
+iso2,LC,LCA,
+country_name,Saint Lucia,LCA,official short name from target_countries.xlsx
+iso3,LIE,LIE,
+iso2,LI,LIE,
+country_name,Liechtenstein,LIE,official short name from target_countries.xlsx
+iso3,LKA,LKA,
+iso2,LK,LKA,
+country_name,Sri Lanka,LKA,official short name from target_countries.xlsx
+iso3,LSO,LSO,
+iso2,LS,LSO,
+country_name,Lesotho,LSO,official short name from target_countries.xlsx
+iso3,LTU,LTU,
+iso2,LT,LTU,
+country_name,Lithuania,LTU,official short name from target_countries.xlsx
+iso3,LUX,LUX,
+iso2,LU,LUX,
+country_name,Luxembourg,LUX,official short name from target_countries.xlsx
+iso3,LVA,LVA,
+iso2,LV,LVA,
+country_name,Latvia,LVA,official short name from target_countries.xlsx
+iso3,MAR,MAR,
+iso2,MA,MAR,
+country_name,Morocco,MAR,official short name from target_countries.xlsx
+iso3,MCO,MCO,
+iso2,MC,MCO,
+country_name,Monaco,MCO,official short name from target_countries.xlsx
+iso3,MDA,MDA,
+iso2,MD,MDA,
+country_name,"Moldova, Republic of",MDA,official short name from target_countries.xlsx
+iso3,MDG,MDG,
+iso2,MG,MDG,
+country_name,Madagascar,MDG,official short name from target_countries.xlsx
+iso3,MDV,MDV,
+iso2,MV,MDV,
+country_name,Maldives,MDV,official short name from target_countries.xlsx
+iso3,MEX,MEX,
+iso2,MX,MEX,
+country_name,Mexico,MEX,official short name from target_countries.xlsx
+iso3,MHL,MHL,
+iso2,MH,MHL,
+country_name,Marshall Islands,MHL,official short name from target_countries.xlsx
+iso3,MKD,MKD,
+iso2,MK,MKD,
+country_name,North Macedonia,MKD,official short name from target_countries.xlsx
+iso3,MLI,MLI,
+iso2,ML,MLI,
+country_name,Mali,MLI,official short name from target_countries.xlsx
+iso3,MLT,MLT,
+iso2,MT,MLT,
+country_name,Malta,MLT,official short name from target_countries.xlsx
+iso3,MMR,MMR,
+iso2,MM,MMR,
+country_name,Myanmar,MMR,official short name from target_countries.xlsx
+iso3,MNE,MNE,
+iso2,ME,MNE,
+country_name,Montenegro,MNE,official short name from target_countries.xlsx
+iso3,MNG,MNG,
+iso2,MN,MNG,
+country_name,Mongolia,MNG,official short name from target_countries.xlsx
+iso3,MOZ,MOZ,
+iso2,MZ,MOZ,
+country_name,Mozambique,MOZ,official short name from target_countries.xlsx
+iso3,MRT,MRT,
+iso2,MR,MRT,
+country_name,Mauritania,MRT,official short name from target_countries.xlsx
+iso3,MUS,MUS,
+iso2,MU,MUS,
+country_name,Mauritius,MUS,official short name from target_countries.xlsx
+iso3,MWI,MWI,
+iso2,MW,MWI,
+country_name,Malawi,MWI,official short name from target_countries.xlsx
+iso3,MYS,MYS,
+iso2,MY,MYS,
+country_name,Malaysia,MYS,official short name from target_countries.xlsx
+iso3,NAM,NAM,
+iso2,,NAM,
+country_name,Namibia,NAM,official short name from target_countries.xlsx
+iso3,NER,NER,
+iso2,NE,NER,
+country_name,Niger,NER,official short name from target_countries.xlsx
+iso3,NGA,NGA,
+iso2,NG,NGA,
+country_name,Nigeria,NGA,official short name from target_countries.xlsx
+iso3,NIC,NIC,
+iso2,NI,NIC,
+country_name,Nicaragua,NIC,official short name from target_countries.xlsx
+iso3,NLD,NLD,
+iso2,NL,NLD,
+country_name,Netherlands,NLD,official short name from target_countries.xlsx
+iso3,NOR,NOR,
+iso2,NO,NOR,
+country_name,Norway,NOR,official short name from target_countries.xlsx
+iso3,NPL,NPL,
+iso2,NP,NPL,
+country_name,Nepal,NPL,official short name from target_countries.xlsx
+iso3,NRU,NRU,
+iso2,NR,NRU,
+country_name,Nauru,NRU,official short name from target_countries.xlsx
+iso3,NZL,NZL,
+iso2,NZ,NZL,
+country_name,New Zealand,NZL,official short name from target_countries.xlsx
+iso3,OMN,OMN,
+iso2,OM,OMN,
+country_name,Oman,OMN,official short name from target_countries.xlsx
+iso3,PAK,PAK,
+iso2,PK,PAK,
+country_name,Pakistan,PAK,official short name from target_countries.xlsx
+iso3,PAN,PAN,
+iso2,PA,PAN,
+country_name,Panama,PAN,official short name from target_countries.xlsx
+iso3,PER,PER,
+iso2,PE,PER,
+country_name,Peru,PER,official short name from target_countries.xlsx
+iso3,PHL,PHL,
+iso2,PH,PHL,
+country_name,Philippines,PHL,official short name from target_countries.xlsx
+iso3,PLW,PLW,
+iso2,PW,PLW,
+country_name,Palau,PLW,official short name from target_countries.xlsx
+iso3,PNG,PNG,
+iso2,PG,PNG,
+country_name,Papua New Guinea,PNG,official short name from target_countries.xlsx
+iso3,POL,POL,
+iso2,PL,POL,
+country_name,Poland,POL,official short name from target_countries.xlsx
+iso3,PRK,PRK,
+iso2,KP,PRK,
+country_name,"Korea, Democratic People's Republic of",PRK,official short name from target_countries.xlsx
+iso3,PRT,PRT,
+iso2,PT,PRT,
+country_name,Portugal,PRT,official short name from target_countries.xlsx
+iso3,PRY,PRY,
+iso2,PY,PRY,
+country_name,Paraguay,PRY,official short name from target_countries.xlsx
+iso3,PSE,PSE,
+iso2,PS,PSE,
+country_name,"Palestine, State of",PSE,official short name from target_countries.xlsx
+iso3,QAT,QAT,
+iso2,QA,QAT,
+country_name,Qatar,QAT,official short name from target_countries.xlsx
+iso3,ROU,ROU,
+iso2,RO,ROU,
+country_name,Romania,ROU,official short name from target_countries.xlsx
+iso3,RUS,RUS,
+iso2,RU,RUS,
+country_name,Russian Federation,RUS,official short name from target_countries.xlsx
+iso3,RWA,RWA,
+iso2,RW,RWA,
+country_name,Rwanda,RWA,official short name from target_countries.xlsx
+iso3,SAU,SAU,
+iso2,SA,SAU,
+country_name,Saudi Arabia,SAU,official short name from target_countries.xlsx
+iso3,SDN,SDN,
+iso2,SD,SDN,
+country_name,Sudan,SDN,official short name from target_countries.xlsx
+iso3,SEN,SEN,
+iso2,SN,SEN,
+country_name,Senegal,SEN,official short name from target_countries.xlsx
+iso3,SGP,SGP,
+iso2,SG,SGP,
+country_name,Singapore,SGP,official short name from target_countries.xlsx
+iso3,SLB,SLB,
+iso2,SB,SLB,
+country_name,Solomon Islands,SLB,official short name from target_countries.xlsx
+iso3,SLE,SLE,
+iso2,SL,SLE,
+country_name,Sierra Leone,SLE,official short name from target_countries.xlsx
+iso3,SLV,SLV,
+iso2,SV,SLV,
+country_name,El Salvador,SLV,official short name from target_countries.xlsx
+iso3,SMR,SMR,
+iso2,SM,SMR,
+country_name,San Marino,SMR,official short name from target_countries.xlsx
+iso3,SOM,SOM,
+iso2,SO,SOM,
+country_name,Somalia,SOM,official short name from target_countries.xlsx
+iso3,SRB,SRB,
+iso2,RS,SRB,
+country_name,Serbia,SRB,official short name from target_countries.xlsx
+iso3,SSD,SSD,
+iso2,SS,SSD,
+country_name,South Sudan,SSD,official short name from target_countries.xlsx
+iso3,STP,STP,
+iso2,ST,STP,
+country_name,São Tomé and Príncipe,STP,official short name from target_countries.xlsx
+iso3,SUR,SUR,
+iso2,SR,SUR,
+country_name,Suriname,SUR,official short name from target_countries.xlsx
+iso3,SVK,SVK,
+iso2,SK,SVK,
+country_name,Slovakia,SVK,official short name from target_countries.xlsx
+iso3,SVN,SVN,
+iso2,SI,SVN,
+country_name,Slovenia,SVN,official short name from target_countries.xlsx
+iso3,SWE,SWE,
+iso2,SE,SWE,
+country_name,Sweden,SWE,official short name from target_countries.xlsx
+iso3,SWZ,SWZ,
+iso2,SZ,SWZ,
+country_name,Eswatini,SWZ,official short name from target_countries.xlsx
+iso3,SYC,SYC,
+iso2,SC,SYC,
+country_name,Seychelles,SYC,official short name from target_countries.xlsx
+iso3,SYR,SYR,
+iso2,SY,SYR,
+country_name,Syrian Arab Republic,SYR,official short name from target_countries.xlsx
+iso3,TCD,TCD,
+iso2,TD,TCD,
+country_name,Chad,TCD,official short name from target_countries.xlsx
+iso3,TGO,TGO,
+iso2,TG,TGO,
+country_name,Togo,TGO,official short name from target_countries.xlsx
+iso3,THA,THA,
+iso2,TH,THA,
+country_name,Thailand,THA,official short name from target_countries.xlsx
+iso3,TJK,TJK,
+iso2,TJ,TJK,
+country_name,Tajikistan,TJK,official short name from target_countries.xlsx
+iso3,TKM,TKM,
+iso2,TM,TKM,
+country_name,Turkmenistan,TKM,official short name from target_countries.xlsx
+iso3,TLS,TLS,
+iso2,TL,TLS,
+country_name,Timor-Leste,TLS,official short name from target_countries.xlsx
+iso3,TON,TON,
+iso2,TO,TON,
+country_name,Tonga,TON,official short name from target_countries.xlsx
+iso3,TTO,TTO,
+iso2,TT,TTO,
+country_name,Trinidad and Tobago,TTO,official short name from target_countries.xlsx
+iso3,TUN,TUN,
+iso2,TN,TUN,
+country_name,Tunisia,TUN,official short name from target_countries.xlsx
+iso3,TUR,TUR,
+iso2,TR,TUR,
+country_name,Turkiye,TUR,official short name from target_countries.xlsx
+iso3,TUV,TUV,
+iso2,TV,TUV,
+country_name,Tuvalu,TUV,official short name from target_countries.xlsx
+iso3,TZA,TZA,
+iso2,TZ,TZA,
+country_name,"Tanzania, United Republic of",TZA,official short name from target_countries.xlsx
+iso3,UGA,UGA,
+iso2,UG,UGA,
+country_name,Uganda,UGA,official short name from target_countries.xlsx
+iso3,UKR,UKR,
+iso2,UA,UKR,
+country_name,Ukraine,UKR,official short name from target_countries.xlsx
+iso3,URY,URY,
+iso2,UY,URY,
+country_name,Uruguay,URY,official short name from target_countries.xlsx
+iso3,USA,USA,
+iso2,US,USA,
+country_name,United States,USA,official short name from target_countries.xlsx
+iso3,UZB,UZB,
+iso2,UZ,UZB,
+country_name,Uzbekistan,UZB,official short name from target_countries.xlsx
+iso3,VAT,VAT,
+iso2,VA,VAT,
+country_name,Holy See (Vatican City State),VAT,official short name from target_countries.xlsx
+iso3,VCT,VCT,
+iso2,VC,VCT,
+country_name,Saint Vincent and the Grenadines,VCT,official short name from target_countries.xlsx
+iso3,VEN,VEN,
+iso2,VE,VEN,
+country_name,"Venezuela, Bolivarian Republic of",VEN,official short name from target_countries.xlsx
+iso3,VNM,VNM,
+iso2,VN,VNM,
+country_name,Viet Nam,VNM,official short name from target_countries.xlsx
+iso3,VUT,VUT,
+iso2,VU,VUT,
+country_name,Vanuatu,VUT,official short name from target_countries.xlsx
+iso3,WSM,WSM,
+iso2,WS,WSM,
+country_name,Samoa,WSM,official short name from target_countries.xlsx
+iso3,YEM,YEM,
+iso2,YE,YEM,
+country_name,Yemen,YEM,official short name from target_countries.xlsx
+iso3,ZAF,ZAF,
+iso2,ZA,ZAF,
+country_name,South Africa,ZAF,official short name from target_countries.xlsx
+iso3,ZMB,ZMB,
+iso2,ZM,ZMB,
+country_name,Zambia,ZMB,official short name from target_countries.xlsx
+iso3,ZWE,ZWE,
+iso2,ZW,ZWE,
+country_name,Zimbabwe,ZWE,official short name from target_countries.xlsx

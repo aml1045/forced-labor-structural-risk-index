@@ -1,0 +1,46 @@
+# UNCTADSTAT API queries to refresh.
+#
+# See docs/data-provenance.md for source and integration details. Consumed by
+# pipeline/sources/aux_unctad.py (self-contained).
+#
+# UNCTAD's API is unusual relative to WB / ILOSTAT / UNHCR:
+#   - requires Client ID + API key auth headers (ClientId + ClientSecret).
+#     aux_unctad.py reads them from the repo .env.txt (lines "Client ID:" /
+#     "API key:") or env vars UNCTAD_CLIENT_ID / UNCTAD_API_KEY.
+#   - each indicator has its own endpoint path
+#   - filtering, column selection, and derived columns are passed as OData
+#     $filter / $select / $compute expressions
+#   - response is gzipped CSV
+#   - the economy-code column is UNCTAD's internal numeric code == UN M49
+#     numeric (verified: France=250, Bangladesh=050, China=156, Germany=276).
+#     aux_unctad.py maps it to ISO3 via pycountry numeric lookup. The 5xxx
+#     codes are regional aggregates and are dropped.
+#
+# Endpoint: https://unctadstat-user-api.unctad.org/<endpoint>
+
+series:
+  - code:      unctad_concent_div_exports
+    name:      "Merchandise: Product concentration and diversification indices -- exports, annual"
+    endpoint:  "US.ConcentDiversIndices/cur/Facts?culture=en"
+    filter:    "Flow/Code eq '01' and Year ge 2000"
+    select:    "Economy/Code,Economy/Label,Year,Concentration_Index_Value"
+    orderby:   "Economy/Order asc,Year asc"
+    compute:   "round(M6036/Value div 1, 3) as Concentration_Index_Value"
+    # NOTE: UNCTAD's CSV output sanitises OData `/` paths to `_` (e.g. the
+    # `Economy/Code` field in $select becomes `Economy_Code` in the header).
+    # Economy_Code is UNCTAD's numeric economy code == UN M49 numeric --
+    # mapped to ISO3 in aux_unctad.py via pycountry.
+    iso_col:   "Economy_Code"
+    year_col:  "Year"
+    value_col: "Concentration_Index_Value"
+    used_by:   ["2.3.4"]
+    # DIRECTION-FIXED (design decision): Flow/Code '01' = EXPORTS.
+    # Indicator 2.3.4 is EXPORT commodity concentration, so this filter was
+    # switched from '02' (imports) to '01' (exports) to match the construct. The
+    # earlier direction ambiguity is resolved. DATA-PULL-REFRESH-REQUIRED: the
+    # data/processed/aux_unctad.csv table must be re-pulled against this export
+    # filter at the data stage (connector is currently blocked on credentials).
+
+# Add more entries as new UNCTAD-sourced indicators come online. Each entry
+# needs endpoint + filter + select strings -- find them in the "Web service"
+# export panel of the relevant indicator on the UNCTAD data centre.

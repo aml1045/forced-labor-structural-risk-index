@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Rankings: FLSRI</title>
+<meta name="description" content="The full ranking of structural forced-labor risk across 184 scored countries, searchable and sortable, with the 11 countries left unscored shown honestly.">
+<link rel="stylesheet" href="../assets/styles.css">
+</head>
+<body>
+<header id="site-header" class="site-header"></header>
+
+<main>
+  <section class="hero">
+    <div class="wrap">
+      <p class="kicker">Rankings</p>
+      <h1>Every scored country, in order</h1>
+      <p class="lede">The full ranking of structural forced-labor risk. A higher score means more of the conditions that enable forced labor are present together, not that more people are exploited, which the index does not attempt to count. Search for a country, or sort by any column. The eleven countries the data cannot yet rank fairly are listed at the end, unscored rather than zero-filled.</p>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="wrap-wide">
+      <div class="stat-strip">
+        <div class="stat"><b data-meta="n_scored">184</b><span>countries scored</span></div>
+        <div class="stat"><b data-meta="n_universe">195</b><span>countries in scope</span></div>
+        <div class="stat"><b data-meta="composite_max">0.66</b><span>highest score (of a theoretical 1.0)</span></div>
+        <div class="stat"><b data-meta="composite_min">0.11</b><span>lowest score</span></div>
+      </div>
+
+      <div class="rank-controls">
+        <input type="search" id="rank-search" class="rank-search" placeholder="Search country or ISO3 code…" aria-label="Search countries">
+        <span class="rank-count" id="rank-count"></span>
+      </div>
+      <p class="muted"><small>Every rank carries its <strong>90% plausible band</strong> from 10,000 perturbed re-scorings (shown under the rank and as the bar at right); mid-table bands are tens of ranks wide, so read <strong>tiers</strong> (Higher / Middle / Lower &mdash; cut points frozen at the validation registration run, not re-tuned per build), not exact positions. A <em>low confidence</em> chip marks countries whose composite rests on 9 or fewer of the 11 domains. Component columns: <strong>R</strong> = vulnerability to recruitment, <strong>E</strong> = conditions for unchecked exploitation.</small></p>
+
+      <div class="note"><p style="margin:0"><strong>Read a low score for a known destination country with care.</strong> The index measures <em>origin-side</em> structural conditions; it does not yet capture destination-side sponsorship systems (such as <em>kafala</em> tied legal status), so several wealthy migrant-destination states (including the Gulf) score lower than their well-documented forced-labor risk. A low rank there means the index does not yet read that pathway, not that the risk is absent. See <a href="limitations.html">Limitations</a>.</p></div>
+
+      <div class="table-scroll">
+        <table class="rank">
+          <thead>
+            <tr>
+              <th>Tier</th>
+              <th data-sort="name">Country</th>
+              <th data-sort="rank" data-active="asc" style="text-align:right">Rank <span style="font-weight:400">(90% band)</span></th>
+              <th data-sort="composite" style="text-align:right">Score</th>
+              <th data-sort="R" style="text-align:right">R</th>
+              <th data-sort="E" style="text-align:right">E</th>
+              <th>Plausible rank band</th>
+            </tr>
+          </thead>
+          <tbody id="rank-body"></tbody>
+        </table>
+      </div>
+      <p class="muted"><small>Scores and rank bands read directly from the published build output (<code>data/scores.json</code>); the band model is documented in the <a href="methodology.html">methodology</a>. Click any country name to open its profile.</small></p>
+    </div>
+  </section>
+</main>
+
+<footer id="site-footer" class="site-footer"></footer>
+
+<script src="../assets/site.js"></script>
+<script>
+  FLSRI.loadScores().then(FLSRI.fillMeta);
+  FLSRI.buildRankings();
+</script>
+</body>
+</html>

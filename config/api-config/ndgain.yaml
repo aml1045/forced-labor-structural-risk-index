@@ -1,0 +1,38 @@
+# ND-GAIN connector config -- Structural Disruption domain, D2 chronic climate.
+#
+# Source: Notre Dame Global Adaptation Initiative (ND-GAIN) Country Index --
+# the VULNERABILITY component (exposure + sensitivity + adaptive-capacity over
+# six life-supporting sectors: food, water, health, ecosystems, human habitat,
+# infrastructure). A country-year panel, already a 0-1 index (higher = more
+# vulnerable). Creative-Commons / free-open (publish-safe).
+#
+# Fills Structural Disruption D2 "chronic climate vulnerability" (s2.1 climate
+# exposure/sensitivity), flagged GAP -- no loaded indicator; see docs/METHODS.md.
+# The raw zip (ndgain_countryindex_2026.zip) was harvested and the
+# vulnerability.csv staged to data/aux/ndgain_vulnerability_raw.csv; see
+# docs/data-provenance.md.
+
+source_title: "ND-GAIN Country Index 2026 (vulnerability score) -- Notre Dame Global Adaptation Initiative"
+license: "Creative Commons (free/open, publish-safe with attribution) -- gain.nd.edu"
+
+# data/aux cache (staged from ndgain_countryindex_2026.zip ->
+# resources/vulnerability/vulnerability.csv). Wide panel: ISO3, Name, 1995..2023.
+cache_file: ndgain_vulnerability_raw.csv
+iso_col: ISO3
+
+# Use the most-recent fully-populated year in the panel. 2023 is the latest
+# column in the 2026 edition; values are continuous and already 0-1.
+snapshot_year: "2023"
+
+# Output indicator: ND-GAIN vulnerability is ALREADY a 0-1 composite on an
+# absolute conceptual scale (0 = least vulnerable, 1 = most vulnerable), so it
+# is anchored ABSOLUTELY at its native bounds (floor 0, ceiling 1) -- NOT a
+# winsorized min-max relative fallback. Direction high_risk (higher
+# vulnerability = more structural-disruption recruitment exposure).
+indicator:
+  output_col: ndgain_climate_vulnerability
+  floor: 0.0
+  ceiling: 1.0
+  direction: high_risk
+  unit: "ND-GAIN vulnerability score (0-1 composite, native bounds)"
+  anchor_source: "ND-GAIN Country Index methodology (Chen et al. 2015); native 0-1 composite, anchored at its own conceptual bounds 0..1 -- absolute, not relative"

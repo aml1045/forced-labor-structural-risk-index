@@ -1,0 +1,14 @@
+{
+  "unhcr_cache.csv": {
+    "n_rows": 14404,
+    "retrieved": "2026-06-10",
+    "series": "unhcr (population API, 5 series)",
+    "sha256": "5357e72bd2a863fd022e279f2c37386ed63935cb84f66cc927a69799b4f4af56"
+  },
+  "worldbank_cache.csv": {
+    "n_rows": 88498,
+    "retrieved": "2026-06-10",
+    "series": "recruitment_econprecarity (WDI series)",
+    "sha256": "620a6c33aa4d7e79de2c805574197b32b24db8a958cfa1ad3ed56b29d8c1b226"
+  }
+}

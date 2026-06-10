@@ -1,0 +1,178 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The framework: FLSRI</title>
+<meta name="description" content="The Phase, Domain and Indicator structure behind the Forced Labor Structural Risk Index: how vulnerability and unchecked exploitation combine into a single structural-risk score.">
+<link rel="stylesheet" href="../assets/styles.css">
+</head>
+<body>
+<header id="site-header" class="site-header"></header>
+
+<main>
+  <section class="hero">
+    <div class="wrap">
+      <p class="kicker">The framework</p>
+      <h1>How the index reads a country</h1>
+      <p class="lede">The Forced Labor Structural Risk Index is built from the logic of how forced labor operates as a system, not from a flat list of indicators. It moves through three layers: the <strong>phases</strong> of how exploitation comes about, the <strong>domains</strong> that make each phase concrete, and the <strong>indicators</strong> (real datasets) that give each domain a number. This page lays out that structure plainly.</p>
+      <p><span class="badge-ok">Validated structure &middot; scores read in tiers</span> <span class="muted"><small>The structure shown here is the one the published build scores; it passed its pre-registered validation suite, re-checked on the displayed build (see <a href="methodology.html">methodology</a>). The scores it produces are estimates of structural conditions, shown with uncertainty bands and read in tiers.</small></span></p>
+    </div>
+  </section>
+
+  <!-- THREE LAYERS, ONE SCORE (narrative spine, carried from the original site) -->
+  <section class="block">
+    <div class="wrap">
+      <h2>Three layers, one score</h2>
+      <p>The index has a fixed shape. <strong>Indicators</strong> feed into <strong>domains</strong>, domains feed into <strong>phases</strong>, and the phases combine into a single <strong>composite score</strong> for each country. Every layer is on the same 0&ndash;1 scale: 0 is the lowest structural risk, 1 is the highest theoretical worst.</p>
+      <div class="spine">
+        <div class="node"><div class="lvl">1</div><h4>Indicator</h4><p>A single measured quantity from a real dataset (the share of children in child labor, the strength of rule of law), rescaled to 0&ndash;1 against a fixed anchor.</p></div>
+        <div class="arrow">&rarr;</div>
+        <div class="node"><div class="lvl">2</div><h4>Domain</h4><p>A group of indicators measuring one mechanism. The domain score is the average of its indicators; missing ones are dropped, not zeroed.</p></div>
+        <div class="arrow">&rarr;</div>
+        <div class="node"><div class="lvl">3</div><h4>Phase</h4><p>One side of the structural claim: vulnerability to recruitment (R) or unchecked exploitation (E). A phase averages the domains inside it.</p></div>
+        <div class="arrow">&rarr;</div>
+        <div class="node"><div class="lvl">&radic;</div><h4>Composite</h4><p>The published score: the geometric mean of R and E. This is the number a country is ranked by.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- THE SPINE -->
+  <section class="block">
+    <div class="wrap">
+      <h2>The spine: vulnerability, then unchecked exploitation</h2>
+      <p>Forced labor needs two things to hold together: a population exposed to recruitment, and an environment in which exploiting that population goes unchecked. The index encodes this directly as two phase components (<strong>Recruitment (R)</strong> and <strong>Exploitation (E)</strong>) and combines them with a <strong>geometric mean</strong> rather than a simple average.</p>
+      <div class="combine-visual">
+        <div class="term"><b class="gloss-link" data-gloss="phase-R">R</b><span>vulnerability to recruitment</span></div>
+        <div class="op">&times;</div>
+        <div class="term"><b class="gloss-link" data-gloss="phase-E">E</b><span>unchecked exploitation</span></div>
+        <div class="op">&rarr; &radic;&nbsp;=</div>
+        <div class="term"><b class="gloss-link" data-gloss="composite">composite</b><span>published structural-risk score</span></div>
+      </div>
+      <div class="note"><p style="margin:0"><strong>composite = &radic;<span style="text-decoration:overline">&nbsp;R &times; E&nbsp;</span></strong> &nbsp;:&nbsp; a geometric mean penalizes imbalance. A country scores high only when <em>both</em> the exposed population and the unchecked environment are present. A high value on one cannot paper over a low value on the other, which is the structural claim made precise: neither half produces forced labor alone. <a href="simulate.html">Try switching it to a plain average in the simulation</a> to see what that assumption is worth.</p></div>
+      <details class="why">
+        <summary>Why a geometric mean, and not a simple average?</summary>
+        <div class="why-body">
+          <p>The whole theory of the index is that forced labor is a convergence: it needs several separately-necessary conditions to hold at once. The two phase components are the two big ones: an exposed population (R) and an environment where exploiting it goes unchecked (E). A geometric mean is the standard way to say "both are required": it multiplies the two before taking the root, so a country low on either side is pulled down hard, and a high value on one side cannot buy back a low value on the other.</p>
+          <p>It was chosen over strict multiplication because pure multiplication is brittle: one noisily-measured near-zero would annihilate an otherwise informative score. The geometric mean keeps the "both required" logic without letting a single sparse half zero everything out. It is a deliberate middle path, and the <a href="simulate.html">simulation</a> exposes the fully-compensatory alternative.</p>
+        </div>
+      </details>
+      <div class="frame">
+        <div class="step"><div class="stage">Phase R</div><h3>Vulnerability to recruitment</h3><p>Who is exposed, and why: economic precarity, debt dependence, exclusion, displacement, and gaps in legal protection that leave people open to coercive recruitment.</p></div>
+        <div class="step"><div class="stage">Phase E</div><h3>Conditions for unchecked exploitation</h3><p>Whether exploitation can run without consequence: labor demand in high-risk sectors, blocked exit, and the state&rsquo;s own production of unfreedom.</p></div>
+        <div class="step"><div class="stage">Lens</div><h3>Monetization (the Disruptor axis)</h3><p>How proceeds are concealed and retained: financial opacity and cash dependence. Mapped as the second product (the <a href="intervention.html">Intervention</a> page) but held separate; it does not enter the headline composite in the published build.</p></div>
+      </div>
+      <details class="why">
+        <summary>Why is Monetization a separate lens instead of part of the score?</summary>
+        <div class="why-body">
+          <p>The model splits structural conditions into two roles. <strong>Drivers</strong> generate risk (vulnerability (R) and unchecked exploitation (E)), and those are what the published score measures. <strong>Disruptors</strong> are the points where the cycle could be broken: the financial machinery that lets proceeds be retained. Monetization is primarily a Disruptor, which is a different question (where could you act?) from the one the score answers (where is risk worst?).</p>
+          <p>Two practical reasons keep it out of the headline number in the published build. First, the placement of Monetization in the composite was left open in the model's foundation: it is a design question, not a settled finding. Second, financial-opacity conditions tend to score high for wealthy demand-side economies, so folding them into a risk score naively would muddy what "high risk" means. So it is mapped, used for the intervention reading, and disclosed as not moving the rank. The <a href="intervention.html">Intervention</a> page is where this second product lives.</p>
+        </div>
+      </details>
+    </div>
+  </section>
+
+  <!-- DOMAINS -->
+  <section class="block">
+    <div class="wrap">
+      <h2>The domains</h2>
+      <p>Each phase resolves into domains: the concrete mechanisms through which the phase operates. Domains are averaged within their phase. Governance enters once, as a <strong class="gloss-link" data-gloss="governance-modulator">protective modulator</strong>: strong rule of law attenuates a domain&rsquo;s risk, weak rule of law leaves it largely intact.</p>
+      <details class="why">
+        <summary>Why disclose the governance link instead of removing it?</summary>
+        <div class="why-body">
+          <p>Rule of law explains about two-thirds of the score, and the temptation is to strip that out so the index looks "independent" of governance. The build deliberately does not. Weak governance is one of the best-established structural drivers of forced labor: an index that scored fragile states as low-risk would be measuring the wrong thing. So the relationship is reported as a finding, and the harder point is proven instead: a forced-labor-specific signal (child labor) survives once governance is held constant, so the index is governance-<em>associated</em>, not governance with a new label. The <a href="simulate.html">simulation</a> allows the governance-shared share to be stripped directly, showing what residual remains.</p>
+        </div>
+      </details>
+
+      <h3>Recruitment domains: who is made vulnerable</h3>
+      <table class="data">
+        <thead><tr><th>Domain</th><th>What it captures</th></tr></thead>
+        <tbody>
+          <tr><td><strong class="gloss-link" data-gloss="economic-precarity">Economic precarity</strong></td><td>Poverty, informality, and income insecurity that force acceptance of dangerous work.</td></tr>
+          <tr><td><strong class="gloss-link" data-gloss="debt-financialized-dependency">Debt &amp; financialized dependency</strong></td><td>Recruitment-fee and migration debt, and the financial dependence that converts a job into bondage.</td></tr>
+          <tr><td><strong class="gloss-link" data-gloss="ascriptive-exclusion">Ascriptive exclusion</strong></td><td>Exclusion by caste, ethnicity, or minority status that channels groups into exploitable work.</td></tr>
+          <tr><td><strong class="gloss-link" data-gloss="gender-structuring">Gendered labor</strong></td><td>Gendered segmentation of labor that concentrates risk in feminized and hidden sectors.</td></tr>
+          <tr><td><strong class="gloss-link" data-gloss="age-childhood-structuring">Age &amp; childhood structuring</strong></td><td>The presence of child labor and the structures that route minors into work.</td></tr>
+          <tr><td><strong class="gloss-link" data-gloss="legal-non-recognition">Legal non-recognition</strong></td><td>Statelessness and absent legal status that strip workers of protection and recourse.</td></tr>
+          <tr><td><strong class="gloss-link" data-gloss="constrained-mobility">Constrained mobility</strong></td><td>Restrictions (including sponsorship regimes) that tie a worker&rsquo;s legal status to an employer.</td></tr>
+          <tr><td><strong class="gloss-link" data-gloss="structural-disruption">Structural disruption</strong></td><td>Conflict, displacement, and disaster shocks that abruptly enlarge the vulnerable population.</td></tr>
+        </tbody>
+      </table>
+
+      <h3>Exploitation domains: where it runs unchecked</h3>
+      <table class="data">
+        <thead><tr><th>Domain</th><th>What it captures</th></tr></thead>
+        <tbody>
+          <tr><td><strong class="gloss-link" data-gloss="economic-structure-demand">Economic structure &amp; demand</strong></td><td>The sectoral demand for cheap, coercible labor: the strongest-sourced exploitation domain in the published build.</td></tr>
+          <tr><td><strong class="gloss-link" data-gloss="foreclosed-exit-structural">Foreclosed exit (structural)</strong></td><td>Monopsony and exit-cost structures that make leaving impossible. <span class="muted">Flagged: its generating signal is under-sourced; carried as a low-confidence stand-in.</span></td></tr>
+          <tr><td><strong class="gloss-link" data-gloss="state-production-of-unfreedom">State production of unfreedom</strong></td><td>State-imposed and state-tolerated coercion. <span class="muted">Flagged: runs on a partial driver set.</span></td></tr>
+        </tbody>
+      </table>
+      <p class="muted"><small>The domains that are thinly sourced are named rather than hidden. Two of the three Exploitation domains are sub-floor by design, so the Exploitation phase rests heavily on Economic Structure &amp; Demand. This is the single largest construct-validity caveat in the index, and it is documented in full in the methodology and on the <a href="limitations.html">limitations</a> page.</small></p>
+    </div>
+  </section>
+
+  <!-- INDICATORS -->
+  <section class="block">
+    <div class="wrap">
+      <h2>The indicators</h2>
+      <p>Each domain is given a number by one or more real datasets, drawn from established cross-national sources covering governance, labor, financial access, migration and displacement, child labor, and disaster exposure. Every indicator is standardized to a common 0-to-1 scale, anchored to a theoretical maximum rather than to the worst country observed, so the scale stays stable as coverage changes.</p>
+      <h3>What happens when an indicator is missing</h3>
+      <p>Coverage is uneven, and the index treats that as information rather than noise. Where an indicator is missing, the domain score is rebuilt from the indicators that remain, provided enough remain to support a defensible value. A missing value is never silently set to zero. Where too little remains, the country is left unscored rather than assigned a misleading number; this is why 184 of 195 countries are scored and the rest are shown honestly as not-scored.</p>
+      <p>For the full standardization, aggregation, governance-modulation and validation detail, see <a href="methodology.html">Methodology</a>.</p>
+    </div>
+  </section>
+
+  <!-- DATA PIPELINE -->
+  <section class="block">
+    <div class="wrap">
+      <h2>From raw data to a score</h2>
+      <p>The pipeline is deliberately legible. Established cross-national datasets are pulled and normalized to a common country key, each series is standardized to 0&ndash;1 against a fixed anchor with its risk direction set explicitly, indicators are averaged into domains, domains into the two phases, and the phases into the composite by geometric mean. Coverage is recorded at every step, and a country is scored only where enough of its inputs survive the coverage floor.</p>
+      <div class="spine" style="grid-template-columns:1fr auto 1fr auto 1fr auto 1fr">
+        <div class="node"><div class="lvl">&middot;</div><h4>Pull &amp; key</h4><p>Source series joined on a single 195-country key, missing left missing.</p></div>
+        <div class="arrow">&rarr;</div>
+        <div class="node"><div class="lvl">&middot;</div><h4>Standardize</h4><p>Each series to 0&ndash;1 on a fixed anchor; risk direction set explicitly.</p></div>
+        <div class="arrow">&rarr;</div>
+        <div class="node"><div class="lvl">&middot;</div><h4>Aggregate</h4><p>Indicators&rarr;domains&rarr;phases by average; drop-and-re-average on gaps.</p></div>
+        <div class="arrow">&rarr;</div>
+        <div class="node"><div class="lvl">&middot;</div><h4>Combine</h4><p>R and E by geometric mean; coverage floor decides who is scored.</p></div>
+      </div>
+      <p class="muted"><small>The exact source list, anchors, directions and coverage live in the <a href="methodology.html">methodology</a> and the codebook.</small></p>
+    </div>
+  </section>
+
+  <!-- HONEST FINDINGS -->
+  <section class="block">
+    <div class="wrap">
+      <h2>What the published index actually shows</h2>
+      <div class="takeaways">
+        <div class="takeaway">
+          <p class="num">01</p>
+          <h3>Governance is most of the signal, and the build says so.</h3>
+          <p>Rule of law explains roughly 63 percent of the composite (R&sup2;&nbsp;=&nbsp;0.628). That is disclosed as a finding, not hidden: weak governance is itself a core structural driver. But over a third of the variation is something else, and a forced-labor-specific signal (child labor) survives once governance is held constant.</p>
+        </div>
+        <div class="takeaway">
+          <p class="num">02</p>
+          <h3>National averages hide the corridors that matter.</h3>
+          <p>Within many countries, risk concentrates in specific regions a single national figure conceals: Thailand&rsquo;s northeast, the Philippine Cordillera. The <a href="explore.html">subnational maps</a> bring those hidden corridors into view; risk also clusters regionally across borders (global Moran&rsquo;s&nbsp;I 0.49&ndash;0.57 across spatial-weight choices; see <a href="methodology.html">methodology</a>).</p>
+        </div>
+        <div class="takeaway">
+          <p class="num">03</p>
+          <h3>The benchmark is honest about its limits.</h3>
+          <p>The two phases are distinct, not redundant, and the extreme tiers are rank-stable. But the only available prevalence benchmark is itself entangled with governance, so convergence is reported cautiously rather than claiming the index predicts measured prevalence.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="wrap">
+      <div class="note"><p style="margin:0">Want to see how sensitive the structure is to these choices? The <a href="simulate.html">simulation</a> recomputes the whole field live (reweight the two phases, switch the combining operator, or strip the governance-shared share) using the real R and E scores behind every country. It is a what-if on the assumptions, not a forecast of outcomes.</p></div>
+    </div>
+  </section>
+</main>
+
+<footer id="site-footer" class="site-footer"></footer>
+<script src="../assets/site.js"></script>
+</body>
+</html>

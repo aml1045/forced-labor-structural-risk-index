@@ -1,0 +1,52 @@
+# World Bank API series the FLSRI pipeline depends on.
+#
+# PORTED from the first effort
+# (3-what you should integrate with/1-the first effort/.../config/api-sources/
+#  worldbank-series.yaml) from the integration plan.
+#
+# Read by pipeline/sources/worldbank.py. Each entry declares ONE WB series:
+#
+#     - code:    SP.POP.TOTL
+#       name:    "Population, total"
+#       used_by: ["shared denominator (...)"]
+#
+# Optional fields:
+#   source:  integer WB source id. Omit (or null) for the default WDI source.
+#            Use source: 3 for WGI series (e.g. GOV_WGI_RL.EST). REQUIRED for
+#            any non-WDI series — without it the API returns no rows.
+#
+# All seven series verified present (non-null values observed) in the prior
+# fresh cache (worldbank_cache.csv, vintage 2026-05-28) and re-pullable from
+# https://api.worldbank.org/v2 (no auth). License: CC BY 4.0 (open data).
+
+series:
+
+  - code:    SP.POP.TOTL
+    name:    "Population, total"
+    role:    "denominator"   # NOT a risk indicator; per-capita denominator only
+    used_by: ["shared denominator (per-capita scaling for EM-DAT, UNHCR, etc.)"]
+
+  - code:    SI.POV.GINI
+    name:    "Gini index"
+    used_by: ["economic inequality"]
+
+  - code:    SE.SEC.CMPT.LO.ZS
+    name:    "Lower secondary completion rate, total (% of relevant age group)"
+    used_by: ["educational attainment"]
+
+  - code:    BX.TRF.PWKR.DT.GD.ZS
+    name:    "Personal remittances received (% of GDP)"
+    used_by: ["remittance dependence"]
+
+  - code:    SL.GDP.PCAP.EM.KD
+    name:    "GDP per person employed (constant 2017 PPP $)"
+    used_by: ["labor productivity (inverse)"]
+
+  - code:    IC.FRM.BRIB.ZS
+    name:    "Bribery incidence (% of firms experiencing at least one bribe payment request)"
+    used_by: ["bribery prevalence"]
+
+  - code:    GOV_WGI_RL.EST
+    name:    "WGI: Rule of Law - Governance estimate (-2.5 to +2.5; higher = stronger rule of law)"
+    source:  3   # WGI is a non-default WB source; REQUIRED or the pull returns 0 rows
+    used_by: ["rule of law"]

@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Explore the map: FLSRI</title>
+<meta name="description" content="One full-bleed map of forced-labor structural risk: country composite, the subnational admin-1 risk surface, labor-export pressure, and spatial clusters, all switchable as layers on a single editorial map.">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+<link rel="stylesheet" href="../assets/styles.css">
+</head>
+<body class="explore-body">
+<header id="site-header" class="site-header"></header>
+
+<main>
+  <!-- FULL-BLEED MAP: the map IS the page -->
+  <section class="map-page" id="explore-map-page">
+    <div id="explore-map" class="map-canvas-full"></div>
+
+    <!-- top-left: title + caption -->
+    <div class="map-overlay mo-title">
+      <p class="kicker">Explore the map</p>
+      <h1>One map, four ways to read the risk</h1>
+      <p class="mo-sub">Switch layers to move from the national composite down to the regions a country average conceals, out to labor migration pressure, and into the spatial clusters the data form.</p>
+    </div>
+
+    <!-- top-right: layer switcher -->
+    <div class="map-overlay mo-layers">
+      <p class="ml-head">Layer</p>
+      <div class="ml-toggle" id="explore-layers" role="group" aria-label="Map layer">
+        <button data-layer="composite" aria-pressed="true">Country composite risk<span class="lbl-sub">national structural-risk score (184 scored)</span></button>
+        <button data-layer="subnational" aria-pressed="false">Subnational risk surface<span class="lbl-sub">admin-1, ~1,450 regions (97 countries)</span></button>
+        <button data-layer="corridors" aria-pressed="false">Labor migration pressure<span class="lbl-sub">remittance flows: origin (in) &amp; demand (out)</span></button>
+        <button data-layer="monetization" aria-pressed="false">Monetization lens<span class="lbl-sub">concealment &amp; retention of proceeds (not in the score)</span></button>
+        <button data-layer="lisa" aria-pressed="false">Spatial clusters (LISA)<span class="lbl-sub">HH / LL / HL / LH region clusters (admin-1)</span></button>
+      </div>
+      <p class="ml-aux" id="explore-layer-aux"></p>
+    </div>
+
+    <!-- bottom-left: legend (per-layer) -->
+    <div class="map-overlay mo-legend">
+      <div class="legend" id="explore-legend"></div>
+      <p class="lg-note" id="explore-legend-note"></p>
+    </div>
+
+    <!-- bottom-right: count / source inset -->
+    <div class="map-overlay mo-count" id="explore-count"></div>
+
+    <!-- floating hover readout -->
+    <div class="map-overlay mo-hover" id="explore-hover" hidden></div>
+  </section>
+
+  <!-- BELOW THE FOLD: the explanatory tables (page scrolls; map does not zoom on wheel) -->
+  <section class="block">
+    <div class="wrap-wide">
+      <h2>Where a national number hides the most</h2>
+      <p class="wrap" style="padding:0">A national figure averages a whole country into one number, and in doing so it erases the places where risk actually concentrates. Two patterns stand out in the subnational data: countries whose highest-risk regions sit far above their national average, and the corridors themselves, clusters of high-risk regions the country score averages away.</p>
+      <table class="data">
+        <thead><tr><th>Country</th><th class="num">National tier</th><th class="num">Highest-risk region (risk)</th><th class="num">Range across regions</th></tr></thead>
+        <tbody id="hidden-list"></tbody>
+      </table>
+      <p class="muted"><small>The Philippines is the clearest case in the data: nationally middling, but its highest-risk regions (the Cordillera highlands, Masbate, Western Samar, and Sultan Kudarat) reach a local risk near 0.71. In Thailand, the northeastern Isan belt dominates the highest-risk regions globally (local risk near 0.74&ndash;0.78). These regions are read directly from the regional surface, not chosen as illustrations.</small></p>
+      <table class="data">
+        <thead><tr><th>Highest-risk regions in the data</th><th>Country</th><th class="num">Local risk</th></tr></thead>
+        <tbody id="corridor-list"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="wrap-wide">
+      <h2>Where the national number misleads most</h2>
+      <p class="wrap" style="padding:0">Some countries look unremarkable on the national map yet hide a region among the most at-risk places on earth. This is measured as <em>divergence</em>: the gap between where a country ranks nationally and where its highest-risk region ranks globally. The three cases below have the widest gaps in the data.</p>
+      <div id="diverge-cards" class="diverge-grid"></div>
+      <p class="wrap muted" style="padding:0"><small>The bar runs from the lowest to the highest regional risk worldwide. The grey mark is the country&rsquo;s national percentile; the red mark is its highest-risk region&rsquo;s. Every value is read straight from the regional surface. Source: <code>divergence_headline.csv</code>.</small></p>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="wrap">
+      <h2>What each layer is, and is not</h2>
+      <div class="note">
+        <p style="margin:0 0 0.6em"><strong>Country composite</strong>: the published national structural-risk score (184 of 195 scored). <strong>Subnational surface</strong>: admin-1 risk derived from IPUMS-International census microdata and GDIS disaster locations — 1,732 regions across 92 countries on the map, of which ~1,450 regions in 79 countries pass reliability filtering and carry a score; countries with no surface carry no fill and confirm &ldquo;no data&rdquo; on hover (not low-risk, just not measured), and the surface weights (0.70 precarity + 0.30 shock) are a documented choice. <strong>Labor migration pressure</strong>: remittance flows as a share of GDP, both directions: blue marks <em>origin</em> economies reliant on labor sent abroad (inflows received), and red marks <em>destination</em> economies whose residents send the most home (outflows paid), the demand side, where migrant labor concentrates (the Gulf, Luxembourg, Switzerland). Corridors are proxied from two observed series &mdash; outbound remittances sent as a share of GDP (the origin side) and inbound migrant population share (the destination side) &mdash; not from tracked movements of people; not part of the composite score. <strong>Spatial clusters (LISA)</strong>: statistically significant High-High / Low-Low / High-Low / Low-High clusters across admin-1 regions (FDR-corrected, global Moran&rsquo;s I&nbsp;=&nbsp;0.81). A separate country-level analysis (not mapped) shows the cross-border clustering largely tracks governance; see the <a href="methodology.html">methodology</a>.</p>
+        <p style="margin:0"><strong>Coverage ceilings are real.</strong> No layer is global. An unfilled or absent country always means &ldquo;no reliable data here,&rdquo; never &ldquo;zero risk&rdquo;; hover to confirm. The composite is the published product; the other layers are second-pass analytical overlays, labelled as such.</p>
+      </div>
+      <p><a href="rankings.html">See the full rankings</a> &middot; <a href="profiles.html">Open a country profile</a> &middot; <a href="methodology.html">How the spatial layers are built</a> &middot; <a href="limitations.html">Limitations &amp; sources</a></p>
+    </div>
+  </section>
+</main>
+
+<footer id="site-footer" class="site-footer"></footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.heat/0.2.0/leaflet-heat.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/topojson-client@3/dist/topojson-client.min.js"></script>
+<script src="../assets/site.js"></script>
+<script>
+  FLSRI.exploreMap("explore-map", {
+    layersEl: "explore-layers",
+    legendEl: "explore-legend",
+    legendNoteEl: "explore-legend-note",
+    countEl: "explore-count",
+    hoverEl: "explore-hover",
+    auxEl: "explore-layer-aux",
+    pageEl: "explore-map-page",
+    onCountryClick: iso3 => { window.location.href = "profiles.html#" + iso3; },
+  });
+
+  // explanatory tables below the fold
+  Promise.all([
+    fetch("../data/subnational.json").then(r=>r.json()),
+    fetch("../data/scores.json").then(r=>r.json()),
+  ]).then(([d, sc])=>{
+    const nameByIso = {};
+    (sc.countries||[]).forEach(c => { nameByIso[c.iso3] = c.name; });
+    const cName = iso => nameByIso[iso] || iso;
+    const tierLabel = {high:"Higher", mid:"Middle", low:"Lower"};
+    const spread = d.within_country_spread.slice().sort((a,b)=>b.risk_range-a.risk_range).slice(0,12);
+    document.getElementById("hidden-list").innerHTML = spread.map(s =>
+      `<tr><td>${cName(s.iso3)}</td><td class="num">${tierLabel[s.tier]||s.tier}</td><td class="num">${s.risk_max.toFixed(2)}</td><td class="num">${s.risk_range.toFixed(2)}</td></tr>`
+    ).join("");
+    document.getElementById("corridor-list").innerHTML = d.corridors.slice(0,12).map(c =>
+      `<tr><td>${c.region}</td><td>${c.country}</td><td class="num">${c.risk.toFixed(2)}</td></tr>`
+    ).join("");
+  });
+
+  fetch("../data/divergence.json").then(r=>r.json()).then(d=>{
+    const top = d.rows.filter(r=>r.n_units>=10).slice(0,3);
+    const pct = v => Math.round(v*100);
+    document.getElementById("diverge-cards").innerHTML = top.map((r,i) => `
+      <div class="diverge-card">
+        <p class="dc-flag">Widest gap #${i+1}</p>
+        <h3>${r.country}</h3>
+        <p class="dc-region">${r.worst_corridor_name}</p>
+        <div class="dc-scale">
+          <span>low</span>
+          <span class="dc-track">
+            <span class="dc-nat" style="left:${pct(r.national_pctile)}%" title="national percentile"></span>
+            <span class="dc-cor" style="left:${pct(r.corridor_pctile)}%" title="highest-risk-region percentile"></span>
+          </span>
+          <span>high</span>
+        </div>
+        <div class="dc-nums">
+          <span class="dc-num"><b>${(r.national_pctile*100).toFixed(0)}<small style="font-size:0.5em">%</small></b><span>national rank</span></span>
+          <span class="dc-num"><b>${(r.corridor_pctile*100).toFixed(0)}<small style="font-size:0.5em">%</small></b><span>highest-risk region</span></span>
+          <span class="dc-num"><b>${r.worst_corridor_risk.toFixed(2)}</b><span>local risk</span></span>
+        </div>
+      </div>`).join("");
+  });
+</script>
+</body>
+</html>

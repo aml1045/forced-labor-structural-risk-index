@@ -1,0 +1,6 @@
+indicator,source,series_id,countries,year_min,year_max,license,direction,anchor,coverage_pct,flags
+unhcr_asylum_seekers_by_coa,UNHCR Population Statistics API,unhcr_asylum_seekers_by_coa,182,2010,2025,Open / CC BY (attribution required),high_risk,"[0.0, 5000.0] persons per 100k population",93.3,
+unhcr_idps_by_country,UNHCR Population Statistics API,unhcr_idps_by_country,182,2010,2025,Open / CC BY (attribution required),high_risk,"[0.0, 5000.0] persons per 100k population",93.3,
+unhcr_refugees_by_coa,UNHCR Population Statistics API,unhcr_refugees_by_coa,182,2010,2025,Open / CC BY (attribution required),high_risk,"[0.0, 5000.0] persons per 100k population",93.3,
+unhcr_refugees_by_coo,UNHCR Population Statistics API,unhcr_refugees_by_coo,193,2010,2025,Open / CC BY (attribution required),high_risk,"[0.0, 5000.0] persons per 100k population",99.0,
+unhcr_stateless_by_country,UNHCR Population Statistics API,unhcr_stateless_by_country,182,2010,2025,Open / CC BY (attribution required),high_risk,"[0.0, 5000.0] persons per 100k population",93.3,

@@ -1,0 +1,130 @@
+{
+"meta": {
+"desc": "Countries whose worst sub-national corridor sits far above their national risk percentile. divergence = corridor global percentile minus national global percentile.",
+"source": "geospatial/divergence_headline.csv",
+"n": 11
+},
+"rows": [
+{
+"iso3": "FJI",
+"country": "Fiji",
+"composite_rank": 102,
+"national_pctile": 0.448,
+"n_units": 4,
+"worst_corridor_name": "Northern",
+"worst_corridor_risk": 0.649,
+"corridor_pctile": 0.965,
+"divergence": 0.517
+},
+{
+"iso3": "VNM",
+"country": "Vietnam",
+"composite_rank": 88,
+"national_pctile": 0.525,
+"n_units": 39,
+"worst_corridor_name": "Lào Cai, Điện Biên, Lai Châu, Yên Bái",
+"worst_corridor_risk": 0.749,
+"corridor_pctile": 0.995,
+"divergence": 0.471
+},
+{
+"iso3": "THA",
+"country": "Thailand",
+"composite_rank": 80,
+"national_pctile": 0.568,
+"n_units": 68,
+"worst_corridor_name": "Ubon Ratchathani, Yasothon, Amnat Charoen",
+"worst_corridor_risk": 0.777,
+"corridor_pctile": 1.0,
+"divergence": 0.432
+},
+{
+"iso3": "PHL",
+"country": "Philippines",
+"composite_rank": 71,
+"national_pctile": 0.618,
+"n_units": 75,
+"worst_corridor_name": "Kalinga-Apayao, Apayo, Kalinga",
+"worst_corridor_risk": 0.706,
+"corridor_pctile": 0.985,
+"divergence": 0.367
+},
+{
+"iso3": "TUR",
+"country": "Türkiye",
+"composite_rank": 82,
+"national_pctile": 0.557,
+"n_units": 61,
+"worst_corridor_name": "Mus",
+"worst_corridor_risk": 0.589,
+"corridor_pctile": 0.915,
+"divergence": 0.358
+},
+{
+"iso3": "BEN",
+"country": "Benin",
+"composite_rank": 74,
+"national_pctile": 0.601,
+"n_units": 12,
+"worst_corridor_name": "Alibori",
+"worst_corridor_risk": 0.602,
+"corridor_pctile": 0.927,
+"divergence": 0.326
+},
+{
+"iso3": "PNG",
+"country": "Papua New Guinea",
+"composite_rank": 62,
+"national_pctile": 0.667,
+"n_units": 20,
+"worst_corridor_name": "Southern Highlands, Hela",
+"worst_corridor_risk": 0.644,
+"corridor_pctile": 0.959,
+"divergence": 0.292
+},
+{
+"iso3": "NPL",
+"country": "Nepal",
+"composite_rank": 61,
+"national_pctile": 0.672,
+"n_units": 14,
+"worst_corridor_name": "Sagarmatha",
+"worst_corridor_risk": 0.603,
+"corridor_pctile": 0.93,
+"divergence": 0.258
+},
+{
+"iso3": "IDN",
+"country": "Indonesia",
+"composite_rank": 53,
+"national_pctile": 0.716,
+"n_units": 26,
+"worst_corridor_name": "Papua, Papua Barat",
+"worst_corridor_risk": 0.639,
+"corridor_pctile": 0.956,
+"divergence": 0.24
+},
+{
+"iso3": "GHA",
+"country": "Ghana",
+"composite_rank": 50,
+"national_pctile": 0.732,
+"n_units": 10,
+"worst_corridor_name": "Northern",
+"worst_corridor_risk": 0.648,
+"corridor_pctile": 0.965,
+"divergence": 0.233
+},
+{
+"iso3": "GIN",
+"country": "Guinea",
+"composite_rank": 49,
+"national_pctile": 0.738,
+"n_units": 33,
+"worst_corridor_name": "Mandiana",
+"worst_corridor_risk": 0.624,
+"corridor_pctile": 0.949,
+"divergence": 0.211
+}
+]
+}

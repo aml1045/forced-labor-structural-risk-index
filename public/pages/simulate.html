@@ -1,0 +1,229 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Simulation: FLSRI</title>
+<meta name="description" content="A structural what-if tool. Change the R-vs-E weight, the combining operator, and a governance what-if, and watch every country's score and rank respond. It shows how the SCORE reacts to structural and weighting assumptions; it is not a forecast of real-world outcomes.">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<link rel="stylesheet" href="../assets/styles.css">
+</head>
+<body>
+<header id="site-header" class="site-header"></header>
+
+<main>
+  <section class="hero">
+    <div class="wrap">
+      <p class="kicker">Simulation</p>
+      <h1>A structural what-if, not a forecast</h1>
+      <p class="lede">The published score rests on a few deliberate choices: an equal-weight geometric mean of two components (vulnerability to recruitment and the conditions for unchecked exploitation). Those choices are arguable, and a good index should show what hangs on them. This tool recomputes the whole field live from the real per-country data: adjust any of a country&rsquo;s structural domains, shift the weight, switch the combining operator (geometric vs arithmetic mean), or apply a governance what-if, and the map, the rankings, and any country&rsquo;s score move with you.</p>
+      <div class="honest-banner">
+        <p><strong>What this is, and is not.</strong> This is a <strong>structural simulation</strong>. It shows how the <em>score</em> responds to structural and weighting assumptions, and nothing more. It is <strong>not a forecast of real-world outcomes</strong>, and it does <strong>not</strong> predict the effect of any intervention. Moving the controls does not model a country changing; it shows how sensitive the index is to the choices made in building it. For where the structure could actually be acted on, see <a href="intervention.html">Intervention</a>, and note that even that page identifies candidate levers, not their impact.</p>
+      </div>
+      <p><span class="badge-ok">Real data, real formula</span> <span class="muted"><small>Every value is the country&rsquo;s actual R and E score from the published build. The default settings reproduce the published index exactly. Nothing here is simulated dynamics; it is the same aggregation, recomputed under your assumptions.</small></span></p>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="wrap-wide">
+      <div class="sim-layout">
+
+        <!-- CONTROLS -->
+        <aside class="sim-panel">
+          <h3>Controls</h3>
+          <p class="muted" style="margin:0 0 4px"><small>The defaults are the published model. Change one thing at a time to see what it does.</small></p>
+
+          <div class="field">
+            <label class="fl" for="sim-country">Country in focus</label>
+            <select id="sim-country"></select>
+          </div>
+
+          <div class="field">
+            <label class="fl">Balance between the two components</label>
+            <input type="range" min="0" max="100" value="50" step="1" id="sim-weight" aria-label="Weight on exploitation versus recruitment">
+            <div class="sim-weight-label" id="sim-weight-label"></div>
+            <p class="muted" style="margin:6px 0 0"><small>Centre (50/50) is the published equal weight. The scoring rules set equal weight as the default; this slider is the &ldquo;what if they were weighted differently&rdquo; check.</small></p>
+          </div>
+
+          <div class="field">
+            <label class="fl">How the two combine</label>
+            <div class="sim-seg">
+              <button data-sim-op="geometric" aria-pressed="true">Geometric mean</button>
+              <button data-sim-op="arithmetic" aria-pressed="false">Arithmetic mean</button>
+            </div>
+            <p class="muted" style="margin:6px 0 0"><small><strong>Geometric</strong> is the published operator: both halves are separately necessary, so a country low on either is pulled down. <strong>Arithmetic</strong> is fully compensatory: a high half can fully offset a low one. The choice between them is the compensatory&ndash;conjunctive question the methodology settles.</small></p>
+            <details class="why" style="margin:10px 0 0">
+              <summary>Why a geometric mean?</summary>
+              <div class="why-body">
+                <p>The structural claim is that forced labor needs <em>both</em> an exposed population and an environment where exploiting it goes unchecked; neither alone produces it. A geometric mean encodes that: a country scores high only when both halves are high, and a low value on one drags the whole down rather than being papered over by the other. A plain average would let a very high vulnerability score "buy back" a low exploitation score, which would contradict the theory. Switch to arithmetic above to watch that compensation switch on.</p>
+              </div>
+            </details>
+          </div>
+
+          <div class="field">
+            <label class="fl">Governance what-if</label>
+            <label class="sim-toggle"><input type="checkbox" id="sim-gov"><span>Remove the share of the score explained by governance, leaving the forced-labor-specific residual.</span></label>
+            <p class="muted" style="margin:6px 0 0"><small>Validation of the displayed build found governance explains roughly <strong>63&nbsp;percent</strong> of the composite (R&sup2;&nbsp;=&nbsp;0.628); over a third is something else. Turning this on shrinks the across-country spread by &radic;(1&minus;0.628)&nbsp;&asymp;&nbsp;0.61, isolating that residual. It is a labelled reweighting of the shipped composite, not a re-run of the upstream pipeline.</small></p>
+          </div>
+
+          <div class="field">
+            <label class="fl">Adjust this country&rsquo;s domains</label>
+            <p class="muted" style="margin:0 0 4px"><small>Not sure where to start? The <a href="intervention.html">Intervention page</a> ranks these domains by leverage on the score and can pre-load a move here. Hover any domain for the real indicators inside it.</small></p>
+            <p class="muted" style="margin:0 0 6px"><small>Move any structural domain and watch this country&rsquo;s R, E, score and rank respond: a faithful recompute, since each phase is exactly the mean of its domains. Recruitment domains feed R, Exploitation domains feed E. Monetization is a lens, not in the score.</small></p>
+            <div style="margin:0 0 10px">
+              <p class="muted" style="margin:0 0 4px"><small><strong>Policy starting points</strong> &mdash; each button applies a stylized structural change to the selected country (score arithmetic on the real data, not a forecast of any policy's effect):</small></p>
+              <div id="sim-presets" style="display:flex;flex-wrap:wrap;gap:6px">
+                <button type="button" class="sim-preset" data-dom="constrained-mobility" data-pct="20">Open the mobility gap &minus;20%</button>
+                <button type="button" class="sim-preset" data-dom="foreclosed-exit-structural" data-pct="20">Strengthen exit rights &minus;20%</button>
+                <button type="button" class="sim-preset" data-dom="legal-non-recognition" data-pct="20">Close documentation gaps &minus;20%</button>
+                <button type="button" class="sim-preset" data-dom="age-childhood-structuring" data-pct="20">Protect children &amp; schooling &minus;20%</button>
+              </div>
+            </div>
+            <div id="sim-domains" class="sim-domains"></div>
+          </div>
+
+          <div class="field">
+            <button class="sim-reset" id="sim-reset">Reset to the published model</button>
+          </div>
+
+          <div class="sim-formula" id="sim-formula"></div>
+        </aside>
+
+        <!-- OUTPUTS -->
+        <div>
+          <div class="sim-readout">
+            <div class="ro-head">
+              <h2><span id="sim-name">&ndash;</span> <span class="iso" id="sim-iso" style="font-size:0.78rem;color:var(--ink-faint)"></span></h2>
+              <span class="ro-score" id="sim-sim">&ndash;</span>
+              <span class="tier" id="sim-tier"></span>
+              <span class="sim-arrow flat" id="sim-delta" style="margin-left:auto"></span>
+            </div>
+            <div class="ro-grid">
+              <div class="cell"><b id="sim-base">&ndash;</b><span>published score</span></div>
+              <div class="cell"><b id="sim-rank">&ndash;</b><span>rank now (was <span id="sim-rank-base">&ndash;</span>)</span></div>
+              <div class="cell"><b><span id="sim-R-top">&ndash;</span> &middot; <span id="sim-E-top">&ndash;</span></b><span>your R &middot; E inputs</span></div>
+            </div>
+            <div class="sim-bars">
+              <div class="sim-bar-row"><div>Vulnerability to recruitment (R)</div><div class="bar-track"><div class="bar-fill" id="sim-bar-R" style="width:0%"></div></div><div class="bar-val" id="sim-R">&ndash;</div></div>
+              <div class="sim-bar-row"><div>Conditions for unchecked exploitation (E)</div><div class="bar-track"><div class="bar-fill" id="sim-bar-E" style="width:0%"></div></div><div class="bar-val" id="sim-E">&ndash;</div></div>
+              <div class="sim-bar-row"><div><strong>Recomputed score</strong></div><div class="bar-track"><div class="bar-fill" id="sim-bar-sim" style="width:0%;background:var(--accent)"></div></div><div class="bar-val"></div></div>
+            </div>
+            <div class="sim-strip" id="sim-strip"></div>
+            <p class="muted" style="margin:6px 0 0"><small><strong>Simulated ranks carry no uncertainty band.</strong> The published 90% bands quantify measurement uncertainty of the published scores; once you change the assumptions, that calibration no longer applies. Treat simulated ranks as illustrative re-orderings, not estimates.</small></p>
+          </div>
+
+          <div class="sim-radar-block">
+            <h3>Domain shape, drag to explore</h3>
+            <p class="muted" style="margin:0 0 6px"><small>This country's structural shape. Drag any solid point to change a domain and watch the score, rank, map and leaderboard respond. It stays in sync with the domain sliders in the controls.</small></p>
+            <div id="sim-radar"></div>
+          </div>
+
+          <div class="map-shell">
+            <div class="map-bar">
+              <span class="map-title">The world under your settings</span>
+              <span class="muted"><small>hover for simulated vs published</small></span>
+            </div>
+            <div id="sim-map" class="map-canvas"></div>
+            <div class="legend">
+              <span><span class="ramp" aria-hidden="true">
+                <span style="background:#fff7ec"></span><span style="background:#fde0c5"></span><span style="background:#fdbf8f"></span><span style="background:#f99858"></span><span style="background:#ef7128"></span><span style="background:#d24f12"></span><span style="background:#a8320a"></span><span style="background:#781d07"></span>
+              </span></span>
+              <span>Less &rarr; more structural risk, recomputed live</span>
+              <span style="margin-left:auto"><span class="swatch" style="background:#e8e2d8"></span>Not scored</span>
+            </div>
+          </div>
+
+          <h2>Top of the ranking, recomputed</h2>
+          <div class="table-scroll" style="max-height:none">
+            <table class="rank">
+              <thead><tr><th>Rank <span class="muted" style="font-weight:400">(simulated &mdash; bands do not apply)</span></th><th>Country</th><th>Now</th><th>Published</th><th>Move</th></tr></thead>
+              <tbody id="sim-board"></tbody>
+            </table>
+          </div>
+          <p class="muted"><small>That the top of the table barely moves as you swing the weight is itself a finding: the highest-risk countries score high on <em>both</em> components, so they stay near the top regardless of the balance; the published equal weight is defensible because the ranking is not fragile to it. Switch to the arithmetic operator and the spread compresses (low halves no longer drag scores down); turn on the governance what-if and the field flattens toward its mean, leaving the forced-labor-specific residual that survives once governance is held constant.</small></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="wrap">
+      <div class="note">
+        <p style="margin:0 0 0.6em"><strong>What this tool does, exactly.</strong> It reads each scored country&rsquo;s real R and E from <code>data/scores.json</code> and its per-domain scores from <code>data/domains.json</code>, recomputes the composite under the domain adjustments, operator and weights you choose, then re-ranks all 184 scored countries and repaints the map. With the controls at their defaults it returns the published score for every country (matching the index to within rounding). It is the genuine aggregation formula, not an approximation.</p>
+        <p style="margin:0"><strong>How far down it goes.</strong> The shipped data exposes the two phase components <em>and their domains</em>, so you can move any of a country&rsquo;s structural domains and watch R, E, the score and rank respond: a faithful recompute, because each phase is exactly the mean of its domains (verified to reproduce the published R and E). It does <strong>not</strong> expose every raw indicator <em>within</em> a domain, so sub-domain indicators can&rsquo;t be moved one at a time, and it does not re-run the upstream pipeline. The governance what-if is a transparent spread-shrink grounded in the published discriminant R&sup2; (0.628), clearly labelled as such. Read the whole tool as a sensitivity check on the structure and the choices that turn it into a published score.</p>
+      </div>
+      <p><a href="intervention.html">Where the structure could be acted on</a> &middot; <a href="profiles.html">See full country profiles</a> &middot; <a href="methodology.html">How the score is built</a> &middot; <a href="rankings.html">The published rankings</a></p>
+    </div>
+  </section>
+</main>
+
+<footer id="site-footer" class="site-footer"></footer>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/topojson-client@3/dist/topojson-client.min.js"></script>
+<script src="../assets/site.js"></script>
+<script>
+  // Preset deep-links from the Intervention page: #ISO3.domain-slug.PCT
+  // (e.g. #THA.constrained-mobility.10 = open Thailand with that domain lowered 10%).
+  // The applied change is score arithmetic on the real data — not a policy prediction.
+  (function () {
+    const m = (location.hash || "").match(/^#([A-Za-z]{3})\.([a-z0-9-]+)\.(\d{1,2})$/);
+    if (m) {
+      window.__simPreset = { slug: m[2], pct: Number(m[3]) };
+      history.replaceState(null, "", "#" + m[1].toUpperCase());
+    }
+  })();
+  FLSRI.initSimulation("sim-map");
+  // policy preset buttons: apply a proportional cut to one domain of the selected country
+  document.querySelectorAll(".sim-preset").forEach(btn => {
+    btn.style.cssText += ";font-size:0.78rem;padding:3px 9px;border:1px solid #d6d8dd;border-radius:12px;background:#f4f5f7;cursor:pointer";
+    btn.addEventListener("click", () => {
+      const inp = document.querySelector(`#sim-domains input[data-dom="${btn.dataset.dom}"]`);
+      if (!inp) { btn.title = "This domain is not scored for the selected country"; return; }
+      const base = Number(inp.getAttribute("data-base"));
+      inp.value = String(Math.max(0, base * (1 - Number(btn.dataset.pct) / 100)));
+      inp.dispatchEvent(new Event("input", { bubbles: true }));
+      inp.scrollIntoView({ block: "center", behavior: "smooth" });
+    });
+  });
+  (function () {
+    const pre = window.__simPreset;
+    if (!pre) return;
+    const mount = document.getElementById("sim-domains");
+    if (!mount) return;
+    let applied = false;
+    const obs = new MutationObserver(() => {
+      if (applied) return;
+      const inp = mount.querySelector(`input[data-dom="${pre.slug}"]`);
+      if (!inp) return;
+      applied = true; obs.disconnect();
+      const base = Number(inp.getAttribute("data-base"));
+      inp.value = String(Math.max(0, base * (1 - pre.pct / 100)));
+      inp.dispatchEvent(new Event("input", { bubbles: true }));
+      inp.closest(".sim-dom").style.outline = "2px solid #1f6feb";
+      inp.scrollIntoView({ block: "center", behavior: "smooth" });
+    });
+    obs.observe(mount, { childList: true, subtree: true });
+    setTimeout(() => obs.disconnect(), 15000);
+  })();
+  // Per-domain tooltips: name the real indicators inside each slider's domain.
+  (function () {
+    const ipath = (location.pathname.includes("/pages/") ? "../" : "") + "data/indicators.json";
+    fetch(ipath).then(r => { if (!r.ok) throw 0; return r.json(); }).then(D => {
+      const byDom = {};
+      D.signals.forEach(s => (byDom[s.domain] = byDom[s.domain] || []).push(s.title));
+      const mount = document.getElementById("sim-domains");
+      if (!mount) return;
+      const apply = () => mount.querySelectorAll(".sim-dom").forEach(div => {
+        const inp = div.querySelector("input[data-dom]");
+        const k = inp && inp.getAttribute("data-dom");
+        if (k && byDom[k] && !div.title)
+          div.title = "Indicators in this domain: " + byDom[k].join("; ");
+      });
+      new MutationObserver(apply).observe(mount, { childList: true, subtree: true });
+      apply();
+    }).catch(() => {});
+  })();
+</script>
+</body>
+</html>

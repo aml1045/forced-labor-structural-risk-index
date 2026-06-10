@@ -1,0 +1,70 @@
+{
+  "admin1": {
+    "label": "ADMIN-1 (IPUMS, ~97 countries)",
+    "n_total": 1732,
+    "n_used": 1451,
+    "n_isolates": 48,
+    "global_moran_I": 0.8061119245093924,
+    "global_moran_z": 41.6441774644439,
+    "global_moran_p_sim": 0.001,
+    "permutations": 999,
+    "alpha": 0.05,
+    "n_valid_for_lisa": 1403,
+    "n_sig_raw": 598,
+    "n_sig_fdr": 433,
+    "cluster_counts_fdr": {
+      "Not-Significant": 970,
+      "High-High": 232,
+      "Low-Low": 195,
+      "Isolate (no neighbours)": 48,
+      "Low-High": 5,
+      "High-Low": 1
+    },
+    "cluster_counts_raw": {
+      "Not-Significant": 805,
+      "High-High": 306,
+      "Low-Low": 284,
+      "Isolate (no neighbours)": 48,
+      "Low-High": 7,
+      "High-Low": 1
+    },
+    "gistar_hot_fdr": 237,
+    "gistar_cold_fdr": 197
+  },
+  "country": {
+    "label": "COUNTRY (FLSRI composite)",
+    "n_total": 177,
+    "n_used": 164,
+    "n_isolates": 15,
+    "global_moran_I": 0.5718714796345096,
+    "global_moran_z": 9.079560046218033,
+    "global_moran_p_sim": 0.001,
+    "permutations": 999,
+    "alpha": 0.05,
+    "n_valid_for_lisa": 149,
+    "n_sig_raw": 51,
+    "n_sig_fdr": 18,
+    "cluster_counts_fdr": {
+      "Not-Significant": 131,
+      "Isolate (no neighbours)": 15,
+      "High-High": 9,
+      "Low-Low": 9
+    },
+    "cluster_counts_raw": {
+      "Not-Significant": 98,
+      "High-High": 24,
+      "Low-Low": 21,
+      "Isolate (no neighbours)": 15,
+      "Low-High": 5,
+      "High-Low": 1
+    },
+    "gistar_hot_fdr": 9,
+    "gistar_cold_fdr": 9
+  },
+  "country_reconciliation": {
+    "queen_contiguity_I": 0.5718714796345096,
+    "knn4_I": 0.540401880530697,
+    "knn6_I": 0.5234421609513,
+    "knn8_I": 0.4938947771132475
+  }
+}
