@@ -476,10 +476,10 @@
       minZoom: 1, maxZoom: 6, attributionControl: true,
       maxBounds: [[-60, -180], [85, 180]], maxBoundsViscosity: 1.0,
     }).setView([18, 12], 1.6);
-    // CARTO light, label-free basemap — one clean muted base, no multilingual clutter.
+    // Esri light gray basemap — one clean muted base, no multilingual clutter.
     // noWrap keeps a single world (no repeated continents across the antimeridian).
-    L.tileLayer("https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png", {
-      attribution: '&copy; OpenStreetMap, &copy; CARTO', subdomains: "abcd", maxZoom: 19, noWrap: true,
+    L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}", {
+      attribution: 'Tiles &copy; Esri', subdomains: "abcd", maxZoom: 19, noWrap: true,
     }).addTo(map);
     const tip = makeTip(el);
 
@@ -550,8 +550,8 @@
     // Dark-matter (label-free) basemap makes the lit-up risk surface read as a coherent layer rather
     // than a scatter of pale patches on white — the subnational story is the headline, so it must pop.
     // noWrap keeps a single world (no repeated continents across the antimeridian).
-    L.tileLayer("https://{s}.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}{r}.png", {
-      attribution: '&copy; OpenStreetMap, &copy; CARTO', subdomains: "abcd", maxZoom: 19, noWrap: true,
+    L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}", {
+      attribution: 'Tiles &copy; Esri', subdomains: "abcd", maxZoom: 19, noWrap: true,
     }).addTo(map);
     const tip = makeTip(el);
 
@@ -1358,10 +1358,10 @@
       minZoom: 1, maxZoom: 6,
       maxBounds: [[-60, -180], [85, 180]], maxBoundsViscosity: 1.0,
     }).setView([18, 12], 1.6);
-    // CARTO light, label-free basemap — match the composite map; no multilingual clutter.
+    // Esri light gray basemap — match the composite map; no multilingual clutter.
     // noWrap keeps a single world (no repeated continents across the antimeridian).
-    L.tileLayer("https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png", {
-      attribution: '&copy; OpenStreetMap, &copy; CARTO', subdomains: "abcd", maxZoom: 19, noWrap: true,
+    L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}", {
+      attribution: 'Tiles &copy; Esri', subdomains: "abcd", maxZoom: 19, noWrap: true,
     }).addTo(map);
     const tip = makeTip(el);
     Promise.all([
@@ -1582,9 +1582,9 @@
       minZoom: 1, maxZoom: 8, worldCopyJump: false,
       maxBounds: [[-62, -180], [85, 180]], maxBoundsViscosity: 1.0,
     }).setView([20, 14], 2);
-    // CARTO light, label-free basemap — the reference's clean muted base. noWrap = single world.
-    L.tileLayer("https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png", {
-      attribution: '&copy; OpenStreetMap, &copy; CARTO', subdomains: "abcd", maxZoom: 19, noWrap: true,
+    // Esri light gray basemap — the reference's clean muted base. noWrap = single world.
+    L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}", {
+      attribution: 'Tiles &copy; Esri', subdomains: "abcd", maxZoom: 19, noWrap: true,
     }).addTo(map);
 
     // fade the top-left title card while a popup is open, so it never collides with one
