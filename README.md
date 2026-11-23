@@ -103,3 +103,5 @@ reference build (a 13-domain reproducibility harness kept separate from the
 
 The full statement is on the site's
 [Limitations page](public/pages/limitations.html).
+
+Code is released under the MIT License. Data remains subject to the terms of its original sources (see the Sources page).
